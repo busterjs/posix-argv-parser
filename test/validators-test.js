@@ -119,6 +119,15 @@ buster.testCase("buster-args built in validators", {
                     buster.assert.match(errors[0], /is required/);
                     done();
                 });
+            },
+
+            "test not setting option": function (done) {
+                this.a.handle([null, null], function (errors) {
+                    buster.assert.equals(errors.length, 1);
+                    buster.assert.match(errors[0], "-p");
+                    buster.assert.match(errors[0], /is required/);
+                    done();
+                });
             }
         },
 
@@ -126,6 +135,15 @@ buster.testCase("buster-args built in validators", {
             "test setting option": function (done) {
                 this.a.handle([null, null, "-p"], function (errors) {
                     buster.assert.isUndefined(errors);
+                    done();
+                });
+            },
+
+            "test not setting option": function (done) {
+                this.a.handle([null, null], function (errors) {
+                    buster.assert.equals(errors.length, 1);
+                    buster.assert.match(errors[0], "-p");
+                    buster.assert.match(errors[0], /is required/);
                     done();
                 });
             }
