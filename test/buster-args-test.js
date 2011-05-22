@@ -2,6 +2,11 @@ var buster = require("buster");
 var busterArgs = require("./../lib/buster-args");
 var path = require("path");
 
+var fixtureDir = path.normalize(__dirname + "/fixtures");
+var existingDir = fixtureDir;
+var existingFile = fixtureDir + "/a_file.txt";
+var missingDirOrFile = "/tmp/buster/roflmao/does-not-exist";
+
 buster.testCase("buster-args single dash option", {
     setUp: function () {
         this.a = Object.create(busterArgs);
@@ -560,11 +565,6 @@ buster.testCase("buster-args mix and match", {
 buster.testCase("buster-args file and directory operands", {
     setUp: function () {
         this.a = Object.create(busterArgs);
-
-        var fixtureDir = path.normalize(__dirname + "/fixtures");
-        this.existingDir = fixtureDir;
-        this.existingFile = fixtureDir + "/a_file.txt";
-        this.missing = "/tmp/buster/roflmao/does-not-exist";
     },
 
     "directory option": {
@@ -574,29 +574,32 @@ buster.testCase("buster-args file and directory operands", {
 
         "test on existing directory": function (done) {
             var self = this;
-            this.a.handle([null, null, this.existingDir], function (errors) {
+            this.a.handle([null, null, existingDir], function (errors) {
                 buster.assert.isUndefined(errors);
-                buster.assert.equals(self.o.value(), self.existingDir);
+                buster.assert.equals(self.o.value(), existingDir);
+                buster.assert(self.o.isSet);
                 done();
             });
         },
 
         "test on existing file": function (done) {
             var self = this;
-            this.a.handle([null, null, this.existingFile], function (errors) {
+            this.a.handle([null, null, existingFile], function (errors) {
                 buster.assert.equals(errors.length, 1);
                 buster.assert.match(errors[0], /is a file/i);
-                buster.assert.match(errors[0], self.existingFile);
+                buster.assert.match(errors[0], existingFile);
+                buster.assert.isFalse(self.o.isSet);
                 done();
             });
         },
 
         "test on none existing file/directory": function (done) {
             var self = this;
-            this.a.handle([null, null, this.missing], function (errors) {
+            this.a.handle([null, null, missingDirOrFile], function (errors) {
                 buster.assert.equals(errors.length, 1);
                 buster.assert.match(errors[0], /no such file or directory/i);
-                buster.assert.match(errors[0], self.missing);
+                buster.assert.match(errors[0], missingDirOrFile);
+                buster.assert.isFalse(self.o.isSet);
                 done();
             });
         }
@@ -609,29 +612,32 @@ buster.testCase("buster-args file and directory operands", {
 
         "test on existing directory": function (done) {
             var self = this;
-            this.a.handle([null, null, this.existingDir], function (errors) {
+            this.a.handle([null, null, existingDir], function (errors) {
                 buster.assert.equals(errors.length, 1);
                 buster.assert.match(errors[0], /is a directory/i);
-                buster.assert.match(errors[0], self.existingDir);
+                buster.assert.match(errors[0], existingDir);
+                buster.assert.isFalse(self.o.isSet);
                 done();
             });
         },
 
         "test on existing file": function (done) {
             var self = this;
-            this.a.handle([null, null, this.existingFile], function (errors) {
+            this.a.handle([null, null, existingFile], function (errors) {
                 buster.assert.isUndefined(errors);
-                buster.assert.equals(self.o.value(), self.existingFile);
+                buster.assert.equals(self.o.value(), existingFile);
+                buster.assert(self.o.isSet);
                 done();
             });
         },
 
         "test on none existing file/directory": function (done) {
             var self = this;
-            this.a.handle([null, null, this.missing], function (errors) {
+            this.a.handle([null, null, missingDirOrFile], function (errors) {
                 buster.assert.equals(errors.length, 1);
                 buster.assert.match(errors[0], /no such file or directory/i);
-                buster.assert.match(errors[0], self.missing);
+                buster.assert.match(errors[0], missingDirOrFile);
+                buster.assert.isFalse(self.o.isSet);
                 done();
             });
         }
@@ -644,28 +650,31 @@ buster.testCase("buster-args file and directory operands", {
 
         "test on existing directory": function (done) {
             var self = this;
-            this.a.handle([null, null, this.existingDir], function (errors) {
+            this.a.handle([null, null, existingDir], function (errors) {
                 buster.assert.isUndefined(errors);
-                buster.assert.equals(self.o.value(), self.existingDir);
+                buster.assert.equals(self.o.value(), existingDir);
+                buster.assert(self.o.isSet);
                 done();
             });
         },
 
         "test on existing file": function (done) {
             var self = this;
-            this.a.handle([null, null, this.existingFile], function (errors) {
+            this.a.handle([null, null, existingFile], function (errors) {
                 buster.assert.isUndefined(errors);
-                buster.assert.equals(self.o.value(), self.existingFile);
+                buster.assert.equals(self.o.value(), existingFile);
+                buster.assert(self.o.isSet);
                 done();
             });
         },
 
         "test on none existing file/directory": function (done) {
             var self = this;
-            this.a.handle([null, null, this.missing], function (errors) {
+            this.a.handle([null, null, missingDirOrFile], function (errors) {
                 buster.assert.equals(errors.length, 1);
                 buster.assert.match(errors[0], /no such file or directory/i);
-                buster.assert.match(errors[0], self.missing);
+                buster.assert.match(errors[0], missingDirOrFile);
+                buster.assert.isFalse(self.o.isSet);
                 done();
             });
         }
