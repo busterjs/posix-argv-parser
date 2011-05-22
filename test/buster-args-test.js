@@ -395,20 +395,3 @@ buster.testCase("buster-args mix and match", {
         }); 
     }
 });
-
-buster.testCase("buster-args error handling", {
-    setUp: function () {
-        this.a = Object.create(busterArgs);
-    },
-
-    "test handling none existing option errors": function (done) {
-        this.a.createOption("-p");
-        this.a.handle([null, null, "-z"], function (errors) {
-            buster.assert.equals(errors.length, 1);
-            buster.assert.match(errors[0], /unknown argument/i)
-            buster.assert.match(errors[0], "-z")
-
-            done();
-        });
-    },
-});
