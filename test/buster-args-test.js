@@ -559,6 +559,109 @@ buster.testCase("buster-args mix and match", {
         buster.assert.exception(function () {
             self.a.createOption("--port");
         });
+    },
+
+    "test single dash option and operand with option first": function (done) {
+        var opt = this.a.createOption("-p");
+        var opd = this.a.createOperand(busterArgs.OPD_DIRECTORY);
+
+        this.a.handle([null, null, "-p", existingDir], function (errors) {
+            buster.assert(opt.isSet);
+            buster.assert(opt.timesSet, 1);
+            buster.assert.equals(opd.value(), existingDir);
+            done();
+        });
+    },
+
+    "test single dash option and operand with operand first": function (done) {
+        var opt = this.a.createOption("-p");
+        var opd = this.a.createOperand(busterArgs.OPD_DIRECTORY);
+
+        this.a.handle([null, null, existingDir, "-p"], function (errors) {
+            buster.assert(opt.isSet);
+            buster.assert(opt.timesSet, 1);
+            buster.assert.equals(opd.value(), existingDir);
+            done();
+        });
+    },
+
+    "test single dash option with value and operand": function (done) {
+        var opt = this.a.createOption("-p");
+        opt.hasValue = true;
+        var opd = this.a.createOperand(busterArgs.OPD_DIRECTORY);
+
+        this.a.handle([null, null, "-p", existingDir], function (errors) {
+            buster.assert.equals(opt.value(), existingDir);
+            buster.assert.isFalse(opd.isSet);
+            done();
+        });
+    },
+
+    "test single dash option with value and operand without assigning value": function (done) {
+        var opt = this.a.createOption("-p");
+        opt.hasValue = true;
+        var opd = this.a.createOperand(busterArgs.OPD_DIRECTORY);
+
+        this.a.handle([null, null, existingDir, "-p"], function (errors) {
+            buster.assert(opt.isSet);
+            buster.assert.isUndefined(opt.value());
+
+            buster.assert(opd.isSet);
+            buster.assert.equals(opd.value(), existingDir);
+            done();
+        });
+    },
+
+    "test double dash option and operand with option first": function (done) {
+        var opt = this.a.createOption("--port");
+        var opd = this.a.createOperand(busterArgs.OPD_DIRECTORY);
+
+        this.a.handle([null, null, "--port", existingDir], function (errors) {
+            buster.assert(opt.isSet);
+            buster.assert(opt.timesSet, 1);
+            buster.assert.equals(opd.value(), existingDir);
+            done();
+        });
+    },
+
+    "test double dash option and operand with operand first": function (done) {
+        var opt = this.a.createOption("--port");
+        var opd = this.a.createOperand(busterArgs.OPD_DIRECTORY);
+
+        this.a.handle([null, null, existingDir, "--port"], function (errors) {
+            buster.assert(opt.isSet);
+            buster.assert(opt.timesSet, 1);
+            buster.assert.equals(opd.value(), existingDir);
+            done();
+        });
+    },
+
+    "test double dash option with value and operand": function (done) {
+        var opt = this.a.createOption("--port");
+        opt.hasValue = true;
+        var opd = this.a.createOperand(busterArgs.OPD_DIRECTORY);
+
+        this.a.handle([null, null, "--port", existingDir], function (errors) {
+            buster.assert(opt.isSet);
+            buster.assert.equals(opt.value(), existingDir);
+            buster.assert.isFalse(opd.isSet);
+            done();
+        });
+    },
+
+    "test double dash option with value and operand without assigning value": function (done) {
+        var opt = this.a.createOption("--port");
+        opt.hasValue = true;
+        var opd = this.a.createOperand(busterArgs.OPD_DIRECTORY);
+
+        this.a.handle([null, null, existingDir, "--port"], function (errors) {
+            buster.assert(opt.isSet);
+            buster.assert.isUndefined(opt.value());
+
+            buster.assert(opd.isSet);
+            buster.assert.equals(opd.value(), existingDir);
+            done();
+        });
     }
 });
 
