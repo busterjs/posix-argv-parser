@@ -100,7 +100,7 @@ buster.testCase("buster-args built in validators", {
             this.opt.addValidator(busterArgs.validators.required());
         },
 
-        "with value": {
+        "for option with value": {
             setUp: function () {
                 this.opt.hasValue = true;
             },
@@ -131,7 +131,7 @@ buster.testCase("buster-args built in validators", {
             }
         },
 
-        "without value": {
+        "for option without value": {
             "test setting option": function (done) {
                 this.a.handle([null, null, "-p"], function (errors) {
                     buster.assert.isUndefined(errors);
