@@ -568,7 +568,7 @@ buster.testCase("buster-args mix and match", {
         this.a.handle([null, null, "-p", existingDir], function (errors) {
             buster.assert(opt.isSet);
             buster.assert(opt.timesSet, 1);
-            buster.assert.equals(opd.value(), existingDir);
+            buster.assert.match(opd.value(), {path: existingDir});
             done();
         });
     },
@@ -580,7 +580,7 @@ buster.testCase("buster-args mix and match", {
         this.a.handle([null, null, existingDir, "-p"], function (errors) {
             buster.assert(opt.isSet);
             buster.assert(opt.timesSet, 1);
-            buster.assert.equals(opd.value(), existingDir);
+            buster.assert.match(opd.value(), {path: existingDir});
             done();
         });
     },
@@ -607,7 +607,7 @@ buster.testCase("buster-args mix and match", {
             buster.assert.isUndefined(opt.value());
 
             buster.assert(opd.isSet);
-            buster.assert.equals(opd.value(), existingDir);
+            buster.assert.match(opd.value(), {path: existingDir});
             done();
         });
     },
@@ -619,7 +619,7 @@ buster.testCase("buster-args mix and match", {
         this.a.handle([null, null, "--port", existingDir], function (errors) {
             buster.assert(opt.isSet);
             buster.assert(opt.timesSet, 1);
-            buster.assert.equals(opd.value(), existingDir);
+            buster.assert.match(opd.value(), {path: existingDir});
             done();
         });
     },
@@ -631,7 +631,7 @@ buster.testCase("buster-args mix and match", {
         this.a.handle([null, null, existingDir, "--port"], function (errors) {
             buster.assert(opt.isSet);
             buster.assert(opt.timesSet, 1);
-            buster.assert.equals(opd.value(), existingDir);
+            buster.assert.match(opd.value(), {path: existingDir});
             done();
         });
     },
@@ -659,7 +659,7 @@ buster.testCase("buster-args mix and match", {
             buster.assert.isUndefined(opt.value());
 
             buster.assert(opd.isSet);
-            buster.assert.equals(opd.value(), existingDir);
+            buster.assert.match(opd.value(), {path: existingDir});
             done();
         });
     }
@@ -668,6 +668,18 @@ buster.testCase("buster-args mix and match", {
 buster.testCase("buster-args file and directory operands", {
     setUp: function () {
         this.a = Object.create(busterArgs);
+    },
+
+    "test gets stat info as value": function (done) {
+        var opd = this.a.createOperand(busterArgs.OPD_DIRECTORY);
+        this.a.handle([null, null, existingDir], function (errors) {
+            buster.assert("stat" in opd.value());
+
+            require("fs").stat(existingDir, function (err, stat) {
+                buster.assert.equals(opd.value().stat, stat);
+                done();
+            });
+        });
     },
 
     "directory option": {
@@ -679,7 +691,7 @@ buster.testCase("buster-args file and directory operands", {
             var self = this;
             this.a.handle([null, null, existingDir], function (errors) {
                 buster.assert.isUndefined(errors);
-                buster.assert.equals(self.o.value(), existingDir);
+                buster.assert.match(self.o.value(), {path: existingDir});
                 buster.assert(self.o.isSet);
                 done();
             });
@@ -728,7 +740,7 @@ buster.testCase("buster-args file and directory operands", {
             var self = this;
             this.a.handle([null, null, existingFile], function (errors) {
                 buster.assert.isUndefined(errors);
-                buster.assert.equals(self.o.value(), existingFile);
+                buster.assert.match(self.o.value(), {path: existingFile});
                 buster.assert(self.o.isSet);
                 done();
             });
@@ -755,7 +767,7 @@ buster.testCase("buster-args file and directory operands", {
             var self = this;
             this.a.handle([null, null, existingDir], function (errors) {
                 buster.assert.isUndefined(errors);
-                buster.assert.equals(self.o.value(), existingDir);
+                buster.assert.match(self.o.value(), {path: existingDir});
                 buster.assert(self.o.isSet);
                 done();
             });
@@ -765,7 +777,7 @@ buster.testCase("buster-args file and directory operands", {
             var self = this;
             this.a.handle([null, null, existingFile], function (errors) {
                 buster.assert.isUndefined(errors);
-                buster.assert.equals(self.o.value(), existingFile);
+                buster.assert.match(self.o.value(), {path: existingFile});
                 buster.assert(self.o.isSet);
                 done();
             });
