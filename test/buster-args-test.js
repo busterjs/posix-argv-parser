@@ -148,7 +148,7 @@ buster.testCase("buster-args single dash option", {
             buster.assert(opt1.isSet);
             buster.assert.equals(opt1.timesSet, 1);
 
-            buster.assert(!opt2.isSet);
+            buster.assert.isFalse(opt2.isSet);
 
             done();
         });
@@ -224,7 +224,7 @@ buster.testCase("buster-args single dash option", {
             buster.assert(opt1.isSet);
             buster.assert.equals(opt1.value(), "z");
 
-            buster.assert(!opt2.isSet);
+            buster.assert.isFalse(opt2.isSet);
 
             done();
         });
@@ -505,7 +505,7 @@ buster.testCase("buster-args mix and match", {
         var opt2 = this.a.createOption("--port");
 
         this.a.handle([null, null, "--port"], function (errors) {
-            buster.assert(!opt1.isSet);
+            buster.assert.isFalse(opt1.isSet);
 
             buster.assert(opt2.isSet);
             buster.assert.equals(opt2.timesSet, 1);
@@ -522,7 +522,7 @@ buster.testCase("buster-args mix and match", {
             buster.assert(opt1.isSet);
             buster.assert.equals(opt1.timesSet, 1);
 
-            buster.assert(!opt2.isSet);
+            buster.assert.isFalse(opt2.isSet);
 
             done();
         }); 
