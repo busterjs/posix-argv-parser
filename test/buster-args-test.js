@@ -267,6 +267,18 @@ buster.testCase("buster-args single dash option", {
             buster.assert.match(errors[0], "-p");
             done();
         });
+    },
+
+    "test equals sign with spaces": function (done) {
+        var opt = this.a.createOption("-p");
+        opt.hasValue = true;
+
+        this.a.handle([null, null, "-p", "=", "123"], function (errors) {
+            buster.assert.equals(opt.value(), "=");
+            buster.assert.match(errors[0], /unknown argument/i);
+            buster.assert.match(errors[0], "123");
+            done();
+        });
     }
 });
 
@@ -395,6 +407,18 @@ buster.testCase("buster-args double dash option", {
         this.a.handle([null, null, "--port=foo"], function (errors) {
             buster.assert.match(errors[0], /does not have a value/i);
             buster.assert.match(errors[0], "--port");
+            done();
+        });
+    },
+
+    "test equals sign with spaces": function (done) {
+        var opt = this.a.createOption("--port");
+        opt.hasValue = true;
+
+        this.a.handle([null, null, "--port", "=", "123"], function (errors) {
+            buster.assert.equals(opt.value(), "=");
+            buster.assert.match(errors[0], /unknown argument/i);
+            buster.assert.match(errors[0], "123");
             done();
         });
     }
