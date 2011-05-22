@@ -223,6 +223,28 @@ buster.testCase("buster-args single dash option", {
 
             done();
         });
+    },
+
+    "test passing value to option with value with space between option and value": function (done) {
+        var opt = this.a.createOption("-p");
+        opt.hasValue = true;
+
+        this.a.handle([null, null, "-p", "foo"], function (errors) {
+            buster.assert.isUndefined(errors);
+            buster.assert(opt.isSet);
+            buster.assert.equals(opt.value(), "foo");
+            done();
+        });
+    },
+
+    "test passing value to option without value with space between option and value": function (done) {
+        var opt = this.a.createOption("-p");
+
+        this.a.handle([null, null, "-p", "foo"], function (errors) {
+            buster.assert.match(errors[0], /unknown argument/i);
+            buster.assert.match(errors[0], "foo");
+            done();
+        });
     }
 });
 
