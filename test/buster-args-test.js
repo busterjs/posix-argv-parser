@@ -781,5 +781,36 @@ buster.testCase("buster-args file and directory operands", {
                 done();
             });
         }
+    },
+
+    "operand with required validator": {
+        setUp: function () {
+            this.o = this.a.createOperand(busterArgs.OPD_DIRECTORY);
+            this.o.addValidator(busterArgs.validators.required());
+        },
+
+        "test setting to existing directory": function (done) {
+            this.a.handle([null, null, existingDir], function (errors) {
+                buster.assert.isUndefined(errors);
+                done();
+            });
+        },
+
+        "test setting to none existing directory": function (done) {
+            this.a.handle([null, null, missingDirOrFile], function (errors) {
+                buster.assert.isNotUndefined(errors);
+                buster.assert.match(errors[0], "no such file or directory");
+                done();
+            });
+        },
+
+        "test not setting": function (done) {
+            var self = this;
+            this.a.handle([null, null], function (errors) {
+                buster.assert.isNotUndefined(errors);
+                buster.assert.equals(errors.length, 1);
+                done();
+            });
+        }
     }
 });
