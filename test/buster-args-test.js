@@ -15,6 +15,26 @@ buster.testCase("buster-args single dash option", {
         });
     },
 
+    "test with multiple characters": function () {
+        var self = this;
+
+        buster.assert.exception(function () {
+            self.a.createOption("-pf");
+        });
+
+        buster.assert.exception(function () {
+            self.a.createOption("--");
+        });
+
+        buster.assert.exception(function () {
+            self.a.createOption("-pff");
+        });
+
+        buster.assert.exception(function () {
+            self.a.createOption("-p", "-pfff");
+        });
+    },
+
     "test one option twice as separate options": function (done) {
         var opt = this.a.createOption("-p");
         this.a.handle([null, null, "-p", "-p"], function (errors) {
@@ -293,6 +313,18 @@ buster.testCase("buster-args double dash option", {
             buster.assert(opt.isSet);
             buster.assert.equals(opt.timesSet, 1);
             done();
+        });
+    },
+
+    "test containing a dash": function () {
+        var self = this;
+
+        buster.assert.exception(function () {
+            self.a.createOption("--te-st");
+        });
+
+        buster.assert.exception(function () {
+            self.a.createOption("---");
         });
     },
 
