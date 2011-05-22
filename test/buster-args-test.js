@@ -526,5 +526,32 @@ buster.testCase("buster-args mix and match", {
 
             done();
         }); 
+    },
+
+    "test same option specified twice in one option": function () {
+        var self = this;
+
+        buster.assert.exception(function () {
+            self.a.createOption("-p", "-p");
+        });
+
+        buster.assert.exception(function () {
+            self.a.createOption("--port", "--port");
+        });
+    },
+
+    "test same option specified in a different option": function () {
+        var self = this;
+        this.a.createOption("-p");
+
+        buster.assert.exception(function () {
+            self.a.createOption("-p");
+        });
+
+        this.a.createOption("--port");
+
+        buster.assert.exception(function () {
+            self.a.createOption("--port");
+        });
     }
 });
