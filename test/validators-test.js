@@ -6,6 +6,47 @@ buster.testCase("buster-args built in validators", {
         this.a = Object.create(busterArgs);
     },
 
+    "test basic validator with error": function (done) {
+        var actualError = "An error message";
+
+        var opt = this.a.createOption("-p");
+        opt.addValidator(function () {
+            return buster.promise.create().reject(actualError);
+        });
+
+        this.a.handle([null, null, "-p"], function (errors) {
+            buster.assert.equals(errors.length, 1);
+            buster.assert.equals(errors[0], actualError);
+            done();
+        });
+    },
+
+    "test basic validator without error": function (done) {
+        var opt = this.a.createOption("-p");
+        opt.addValidator(function () {
+            return buster.promise.create().resolve();
+        });
+
+        this.a.handle([null, null, "-p"], function (errors) {
+            buster.assert.isUndefined(errors);
+            done();
+        });
+    },
+
+    "test adding validator that uses the value of the option": function (done) {
+        var opt = this.a.createOption("-p");
+        opt.hasValue = true;
+        opt.addValidator(function () {
+            return buster.promise.create().reject(this.value() + " is crazy.");
+        });
+
+        this.a.handle([null, null, "-p1234"], function (errors) {
+            buster.assert.equals(errors.length, 1);
+            buster.assert.equals(errors[0], "1234 is crazy.");
+            done();
+        });
+    },
+
     "integer": {
         setUp: function () {
             this.opt = this.a.createOption("-p");

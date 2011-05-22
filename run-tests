@@ -1,4 +1,3 @@
 #!/usr/bin/env node
 require("./test/buster-args-test");
-require("./test/error-handling-test");
 require("./test/validators-test");
