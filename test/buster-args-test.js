@@ -245,6 +245,28 @@ buster.testCase("buster-args single dash option", {
             buster.assert.match(errors[0], "foo");
             done();
         });
+    },
+
+    "test passing value to option with value using equals": function (done) {
+        var opt = this.a.createOption("-p");
+        opt.hasValue = true;
+
+        this.a.handle([null, null, "-p=foo"], function (errors) {
+            buster.assert.isUndefined(errors);
+            buster.assert(opt.isSet);
+            buster.assert.equals(opt.value(), "foo");
+            done();
+        });
+    },
+
+    "test passing value to option without value using equals": function (done) {
+        var opt = this.a.createOption("-p");
+
+        this.a.handle([null, null, "-p=foo"], function (errors) {
+            buster.assert.match(errors[0], /does not have a value/i);
+            buster.assert.match(errors[0], "-p");
+            done();
+        });
     }
 });
 
@@ -351,6 +373,28 @@ buster.testCase("buster-args double dash option", {
 
             buster.assert(opt2.isSet);
 
+            done();
+        });
+    },
+
+    "test passing value to option with value using equals": function (done) {
+        var opt = this.a.createOption("--port");
+        opt.hasValue = true;
+
+        this.a.handle([null, null, "--port=foo"], function (errors) {
+            buster.assert.isUndefined(errors);
+            buster.assert(opt.isSet);
+            buster.assert.equals(opt.value(), "foo");
+            done();
+        });
+    },
+
+    "test passing value to option without value using equals": function (done) {
+        var opt = this.a.createOption("--port");
+
+        this.a.handle([null, null, "--port=foo"], function (errors) {
+            buster.assert.match(errors[0], /does not have a value/i);
+            buster.assert.match(errors[0], "--port");
             done();
         });
     }
