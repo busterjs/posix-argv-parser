@@ -43,5 +43,19 @@ buster.testCase("buster-args error handling", {
             buster.assert.isUndefined(errors);
             done();
         });
+    },
+
+    "test adding validator that uses the value of the option": function (done) {
+        var opt = this.a.createOption("-p");
+        opt.hasValue = true;
+        opt.addValidator(function () {
+            return buster.promise.create().reject(this.value() + " is crazy.");
+        });
+
+        this.a.handle([null, null, "-p1234"], function (errors) {
+            buster.assert.equals(errors.length, 1);
+            buster.assert.equals(errors[0], "1234 is crazy.");
+            done();
+        });
     }
 });
