@@ -32,7 +32,6 @@ buster.testCase("buster-args error handling", {
         });
     },
 
-
     "test basic validator without error": function (done) {
         var opt = this.a.createOption("-p");
         opt.addValidator(function () {
