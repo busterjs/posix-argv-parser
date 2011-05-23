@@ -662,6 +662,15 @@ buster.testCase("buster-args mix and match", {
             buster.assert.match(opd.value(), {path: existingDir});
             done();
         });
+    },
+
+    "test creating option with operand present": function () {
+        var self = this;
+        this.a.createOperand(busterArgs.OPD_DIRECTORY);
+
+        buster.assert.noException(function () {
+            self.a.createOption("-p");
+        });
     }
 });
 
