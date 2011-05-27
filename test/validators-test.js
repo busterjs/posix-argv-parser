@@ -47,6 +47,32 @@ buster.testCase("buster-args built in validators", {
         });
     },
 
+    "test option validator returning a string instead of a promise": function (done) {
+        var opt = this.a.createOption("-p");
+        opt.addValidator(function () {
+            return "This is an error message.";
+        });
+
+        this.a.handle([null, null, "-p"], function (errors) {
+            buster.assert.equals(errors.length, 1);
+            buster.assert.equals(errors[0], "This is an error message.");
+            done();
+        });
+    },
+
+    "test operand validator returning a string instead of a promise": function (done) {
+        var opt = this.a.createOperand();
+        opt.addValidator(function () {
+            return "This is an error message.";
+        });
+
+        this.a.handle([null, null], function (errors) {
+            buster.assert.equals(errors.length, 1);
+            buster.assert.equals(errors[0], "This is an error message.");
+            done();
+        });
+    },
+
     "integer": {
         setUp: function () {
             this.opt = this.a.createOption("-p");
