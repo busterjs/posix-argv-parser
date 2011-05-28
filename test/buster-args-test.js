@@ -730,6 +730,12 @@ buster.testCase("buster-args file and directory operands", {
                 buster.assert.isFalse(self.o.isSet);
                 done();
             });
+        },
+
+        "test no value": function (done) {
+            this.a.handle([null, null], function (errors) {
+                done();
+            });
         }
     },
 
@@ -769,6 +775,12 @@ buster.testCase("buster-args file and directory operands", {
                 buster.assert.isFalse(self.o.isSet);
                 done();
             });
+        },
+
+        "test no value": function (done) {
+            this.a.handle([null, null], function (errors) {
+                done();
+            });
         }
     },
 
@@ -805,6 +817,12 @@ buster.testCase("buster-args file and directory operands", {
                 buster.assert.match(errors[0], /no such file or directory/i);
                 buster.assert.match(errors[0], missingDirOrFile);
                 buster.assert.isFalse(self.o.isSet);
+                done();
+            });
+        },
+
+        "test no value": function (done) {
+            this.a.handle([null, null], function (errors) {
                 done();
             });
         }
