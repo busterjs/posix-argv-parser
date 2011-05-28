@@ -73,6 +73,17 @@ buster.testCase("buster-args built in validators", {
         });
     },
 
+    "test validator returning nothing is considered valid": function (done) {
+        var opt = this.a.createOption("-p");
+        opt.addValidator(function () {});
+
+        this.a.handle([null, null, "-p"], function (errors) {
+            buster.assert.isUndefined(errors);
+            buster.assert(opt.isSet);
+            done();
+        });
+    },
+
     "integer": {
         setUp: function () {
             this.opt = this.a.createOption("-p");
