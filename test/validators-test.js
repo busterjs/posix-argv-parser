@@ -401,10 +401,26 @@ buster.testCase("buster-args built in validators", {
             });
         },
 
+        "test integer with signature": function (done) {
+            this.o.addValidator(busterArgs.validators.integer("I love ${1} and ${2}!"));
+            this.a.handle([null, null, "-p", "not a number"], function (errors) {
+                buster.assert.equals(errors[0], "I love not a number and -p!");
+                done();
+            });
+        },
+
         "test number": function (done) {
             this.o.addValidator(busterArgs.validators.number("I love ${1}!"));
             this.a.handle([null, null, "-p", "not a number"], function (errors) {
                 buster.assert.equals(errors[0], "I love not a number!");
+                done();
+            });
+        },
+
+        "test number with signature": function (done) {
+            this.o.addValidator(busterArgs.validators.number("I love ${1} and ${2}!"));
+            this.a.handle([null, null, "-p", "not a number"], function (errors) {
+                buster.assert.equals(errors[0], "I love not a number and -p!");
                 done();
             });
         },
