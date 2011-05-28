@@ -561,6 +561,16 @@ buster.testCase("buster-args file and directory operands", {
         this.a = Object.create(busterArgs);
     },
 
+    "test plain operand": function (done) {
+        var opd = this.a.createOperand();
+
+        this.a.handle([null, null, "123abc"], function (errors) {
+            buster.assert(opd.isSet);
+            buster.assert.equals(opd.value(), "123abc");
+            done();
+        });
+    },
+
     "test single dash option and operand with option first": function (done) {
         var opt = this.a.createOption("-p");
         var opd = this.a.createOperand();
