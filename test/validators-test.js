@@ -271,7 +271,7 @@ buster.testCase("buster-args built in validators", {
                 var self = this;
                 this.a.handle([null, null, existingFile], function (errors) {
                     buster.assert.equals(errors.length, 1);
-                    buster.assert.match(errors[0], /is a file/i);
+                    buster.assert.match(errors[0], /is not a directory/i);
                     buster.assert.match(errors[0], existingFile);
                     buster.assert.isFalse(self.o.isSet);
                     done();
@@ -308,7 +308,7 @@ buster.testCase("buster-args built in validators", {
                 var self = this;
                 this.a.handle([null, null, existingDir], function (errors) {
                     buster.assert.equals(errors.length, 1);
-                    buster.assert.match(errors[0], /is a directory/i);
+                    buster.assert.match(errors[0], /is not a file/i);
                     buster.assert.match(errors[0], existingDir);
                     buster.assert.isFalse(self.o.isSet);
                     done();
