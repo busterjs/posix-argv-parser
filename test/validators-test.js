@@ -431,6 +431,22 @@ buster.testCase("buster-args built in validators", {
                 buster.assert.equals(errors[0], "I love -p!");
                 done();
             });
-        }
+        },
+
+        "test file with no such file or dir": function (done) {
+            this.o.addValidator(busterArgs.validators.file("foo", "Foo ${1}"));
+            this.a.handle([null, null, "-p", missingDirOrFile], function (errors) {
+                buster.assert.equals(errors[0], "Foo " + missingDirOrFile);
+                done();
+            });
+        },
+
+        "test file with directory": function (done) {
+            this.o.addValidator(busterArgs.validators.file("Foo ${1}", "foo"));
+            this.a.handle([null, null, "-p", existingDir], function (errors) {
+                buster.assert.equals(errors[0], "Foo " + existingDir);
+                done();
+            });
+        },
     }
 });
