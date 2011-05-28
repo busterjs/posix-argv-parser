@@ -461,6 +461,13 @@ buster.testCase("buster-args mix and match", {
         this.a = Object.create(busterArgs);
     },
 
+    "test not passing any options": function () {
+        var self = this;
+        buster.assert.exception(function () {
+            self.a.createOption();
+        });
+    },
+
     "test handling none existing option errors": function (done) {
         this.a.createOption("-p");
         this.a.handle([null, null, "-z"], function (errors) {
