@@ -131,7 +131,7 @@ buster.testCase("buster-args built in validators", {
                 buster.assert.match(errors[0], /not an integer/);
                 done();
             });
-        }
+        },
     },
 
     "number": {
@@ -384,6 +384,37 @@ buster.testCase("buster-args built in validators", {
                     done();
                 });
             }
+        }
+    },
+
+    "custom error messages": {
+        setUp: function () {
+            this.o = this.a.createOption("-p");
+            this.o.hasValue = true;
+        },
+
+        "test integer": function (done) {
+            this.o.addValidator(busterArgs.validators.integer("I love $1!"));
+            this.a.handle([null, null, "-p", "not a number"], function (errors) {
+                buster.assert.equals(errors[0], "I love not a number!");
+                done();
+            });
+        },
+
+        "test number": function (done) {
+            this.o.addValidator(busterArgs.validators.number("I love $1!"));
+            this.a.handle([null, null, "-p", "not a number"], function (errors) {
+                buster.assert.equals(errors[0], "I love not a number!");
+                done();
+            });
+        },
+
+        "test required": function (done) {
+            this.o.addValidator(busterArgs.validators.required("I love $1!"));
+            this.a.handle([null, null], function (errors) {
+                buster.assert.equals(errors[0], "I love -p!");
+                done();
+            });
         }
     }
 });
