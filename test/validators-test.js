@@ -7,6 +7,8 @@ var fixtureDir = path.normalize(__dirname + "/fixtures");
 var existingDir = fixtureDir;
 var existingFile = fixtureDir + "/a_file.txt";
 var missingDirOrFile = "/tmp/buster/roflmao/does-not-exist";
+// TODO: don't depend on /dev/sda being available.
+var notFileOrDirButExists = "/dev/sda";
 
 buster.testCase("buster-args built in validators", {
     setUp: function () {
@@ -387,11 +389,10 @@ buster.testCase("buster-args built in validators", {
             },
 
             "test with existing item that isn't file or directory": function (done) {
-                // TODO: don't depend on /dev/sda being available.
-                this.a.handle([null, null, "/dev/sda"], function (errors) {
+                this.a.handle([null, null, notFileOrDirButExists], function (errors) {
                     buster.assert.equals(errors.length, 1);
                     buster.assert.match(errors[0], /not a file or directory/i);
-                    buster.assert.match(errors[0], "/dev/sda");
+                    buster.assert.match(errors[0], notFileOrDirButExists);
                     done();
                 });
             }
@@ -475,5 +476,21 @@ buster.testCase("buster-args built in validators", {
                 done();
             });
         },
+
+        "test fileOrDir with no such file or dir": function (done) {
+            this.o.addValidator(busterArgs.validators.fileOrDirectory("foo", "Foo ${1}"));
+            this.a.handle([null, null, "-p", missingDirOrFile], function (errors) {
+                buster.assert.equals(errors[0], "Foo " + missingDirOrFile);
+                done();
+            }); 
+        },
+
+        "test fileOrDir with existing but not file or dir": function (done) {
+            this.o.addValidator(busterArgs.validators.fileOrDirectory("Foo ${1}", "foo"));
+            this.a.handle([null, null, "-p", notFileOrDirButExists], function (errors) {
+                buster.assert.equals(errors[0], "Foo " + notFileOrDirButExists);
+                done();
+            }); 
+        }
     }
 });
