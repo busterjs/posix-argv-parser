@@ -690,5 +690,14 @@ buster.testCase("buster-args file and directory operands", {
             buster.assert.equals(errors.length, 1);
             done();
         });
-    }
+    },
+
+   "test creating option with operand present": function () {
+        var self = this;
+        this.a.createOperand(busterArgs.OPD_DIRECTORY);
+
+        buster.assert.noException(function () {
+            self.a.createOption("-p");
+        });
+   }
 });
