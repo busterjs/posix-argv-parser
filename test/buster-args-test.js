@@ -553,6 +553,12 @@ buster.testCase("buster-args mix and match", {
         buster.assert.exception(function () {
             self.a.createOption("--port");
         });
+    }
+});
+
+buster.testCase("buster-args file and directory operands", {
+    setUp: function () {
+        this.a = Object.create(busterArgs);
     },
 
     "test single dash option and operand with option first": function (done) {
@@ -667,11 +673,5 @@ buster.testCase("buster-args mix and match", {
             buster.assert.equals(errors.length, 1);
             done();
         });
-    }
-});
-
-buster.testCase("buster-args file and directory operands", {
-    setUp: function () {
-        this.a = Object.create(busterArgs);
     }
 });
