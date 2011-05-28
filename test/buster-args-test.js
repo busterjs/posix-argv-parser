@@ -662,6 +662,17 @@ buster.testCase("buster-args mix and match", {
             buster.assert.match(opd.value(), "123abc");
             done();
         });
+    },
+
+    "test not setting operand with required validator": function (done) {
+        var opd = this.a.createOperand();
+        opd.addValidator(busterArgs.validators.required());
+
+        this.a.handle([null, null], function (errors) {
+            buster.assert.isNotUndefined(errors);
+            buster.assert.equals(errors.length, 1);
+            done();
+        });
     }
 });
 
@@ -797,16 +808,5 @@ buster.testCase("buster-args file and directory operands", {
                 done();
             });
         }
-    },
-
-    "test not setting operand with required validator": function (done) {
-        var opd = this.a.createOperand();
-        opd.addValidator(busterArgs.validators.required());
-
-        this.a.handle([null, null], function (errors) {
-            buster.assert.isNotUndefined(errors);
-            buster.assert.equals(errors.length, 1);
-            done();
-        });
     }
 });
