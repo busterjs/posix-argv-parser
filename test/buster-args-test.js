@@ -563,24 +563,24 @@ buster.testCase("buster-args mix and match", {
 
     "test single dash option and operand with option first": function (done) {
         var opt = this.a.createOption("-p");
-        var opd = this.a.createOperand(busterArgs.OPD_DIRECTORY);
+        var opd = this.a.createOperand();
 
-        this.a.handle([null, null, "-p", existingDir], function (errors) {
+        this.a.handle([null, null, "-p", "123abc"], function (errors) {
             buster.assert(opt.isSet);
             buster.assert(opt.timesSet, 1);
-            buster.assert.match(opd.value(), {path: existingDir});
+            buster.assert.match(opd.value(), "123abc");
             done();
         });
     },
 
     "test single dash option and operand with operand first": function (done) {
         var opt = this.a.createOption("-p");
-        var opd = this.a.createOperand(busterArgs.OPD_DIRECTORY);
+        var opd = this.a.createOperand();
 
-        this.a.handle([null, null, existingDir, "-p"], function (errors) {
+        this.a.handle([null, null, "123abc", "-p"], function (errors) {
             buster.assert(opt.isSet);
             buster.assert(opt.timesSet, 1);
-            buster.assert.match(opd.value(), {path: existingDir});
+            buster.assert.match(opd.value(), "123abc");
             done();
         });
     },
@@ -588,10 +588,10 @@ buster.testCase("buster-args mix and match", {
     "test single dash option with value and operand": function (done) {
         var opt = this.a.createOption("-p");
         opt.hasValue = true;
-        var opd = this.a.createOperand(busterArgs.OPD_DIRECTORY);
+        var opd = this.a.createOperand();
 
-        this.a.handle([null, null, "-p", existingDir], function (errors) {
-            buster.assert.equals(opt.value(), existingDir);
+        this.a.handle([null, null, "-p", "123abc"], function (errors) {
+            buster.assert.equals(opt.value(), "123abc");
             buster.assert.isFalse(opd.isSet);
             done();
         });
@@ -600,38 +600,38 @@ buster.testCase("buster-args mix and match", {
     "test single dash option with value and operand without assigning value": function (done) {
         var opt = this.a.createOption("-p");
         opt.hasValue = true;
-        var opd = this.a.createOperand(busterArgs.OPD_DIRECTORY);
+        var opd = this.a.createOperand();
 
-        this.a.handle([null, null, existingDir, "-p"], function (errors) {
+        this.a.handle([null, null, "123abc", "-p"], function (errors) {
             buster.assert(opt.isSet);
             buster.assert.isUndefined(opt.value());
 
             buster.assert(opd.isSet);
-            buster.assert.match(opd.value(), {path: existingDir});
+            buster.assert.match(opd.value(), "123abc");
             done();
         });
     },
 
     "test double dash option and operand with option first": function (done) {
         var opt = this.a.createOption("--port");
-        var opd = this.a.createOperand(busterArgs.OPD_DIRECTORY);
+        var opd = this.a.createOperand();
 
-        this.a.handle([null, null, "--port", existingDir], function (errors) {
+        this.a.handle([null, null, "--port", "123abc"], function (errors) {
             buster.assert(opt.isSet);
             buster.assert(opt.timesSet, 1);
-            buster.assert.match(opd.value(), {path: existingDir});
+            buster.assert.match(opd.value(), "123abc");
             done();
         });
     },
 
     "test double dash option and operand with operand first": function (done) {
         var opt = this.a.createOption("--port");
-        var opd = this.a.createOperand(busterArgs.OPD_DIRECTORY);
+        var opd = this.a.createOperand();
 
-        this.a.handle([null, null, existingDir, "--port"], function (errors) {
+        this.a.handle([null, null, "123abc", "--port"], function (errors) {
             buster.assert(opt.isSet);
             buster.assert(opt.timesSet, 1);
-            buster.assert.match(opd.value(), {path: existingDir});
+            buster.assert.match(opd.value(), "123abc");
             done();
         });
     },
@@ -639,11 +639,11 @@ buster.testCase("buster-args mix and match", {
     "test double dash option with value and operand": function (done) {
         var opt = this.a.createOption("--port");
         opt.hasValue = true;
-        var opd = this.a.createOperand(busterArgs.OPD_DIRECTORY);
+        var opd = this.a.createOperand();
 
-        this.a.handle([null, null, "--port", existingDir], function (errors) {
+        this.a.handle([null, null, "--port", "123abc"], function (errors) {
             buster.assert(opt.isSet);
-            buster.assert.equals(opt.value(), existingDir);
+            buster.assert.equals(opt.value(), "123abc");
             buster.assert.isFalse(opd.isSet);
             done();
         });
@@ -652,14 +652,14 @@ buster.testCase("buster-args mix and match", {
     "test double dash option with value and operand without assigning value": function (done) {
         var opt = this.a.createOption("--port");
         opt.hasValue = true;
-        var opd = this.a.createOperand(busterArgs.OPD_DIRECTORY);
+        var opd = this.a.createOperand();
 
-        this.a.handle([null, null, existingDir, "--port"], function (errors) {
+        this.a.handle([null, null, "123abc", "--port"], function (errors) {
             buster.assert(opt.isSet);
             buster.assert.isUndefined(opt.value());
 
             buster.assert(opd.isSet);
-            buster.assert.match(opd.value(), {path: existingDir});
+            buster.assert.match(opd.value(), "123abc");
             done();
         });
     }
@@ -671,7 +671,8 @@ buster.testCase("buster-args file and directory operands", {
     },
 
     "test gets stat info as value": function (done) {
-        var opd = this.a.createOperand(busterArgs.OPD_DIRECTORY);
+        var opd = this.a.createOperand();
+        opd.addValidator(busterArgs.validators.directory());
         this.a.handle([null, null, existingDir], function (errors) {
             buster.assert("stat" in opd.value());
 
@@ -684,7 +685,8 @@ buster.testCase("buster-args file and directory operands", {
 
     "directory option": {
         setUp: function () {
-            this.o = this.a.createOperand(busterArgs.OPD_DIRECTORY);
+            this.o = this.a.createOperand();
+            this.o.addValidator(busterArgs.validators.directory());
         },
 
         "test on existing directory": function (done) {
@@ -722,7 +724,8 @@ buster.testCase("buster-args file and directory operands", {
 
     "file option": {
         setUp: function () {
-            this.o = this.a.createOperand(busterArgs.OPD_FILE);
+            this.o = this.a.createOperand();
+            this.o.addValidator(busterArgs.validators.file());
         },
 
         "test on existing directory": function (done) {
@@ -760,7 +763,8 @@ buster.testCase("buster-args file and directory operands", {
 
     "file and directory option": {
         setUp: function () {
-            this.o = this.a.createOperand(busterArgs.OPD_FILE | busterArgs.OPD_DIRECTORY);
+            this.o = this.a.createOperand();
+            this.o.addValidator(busterArgs.validators.fileOrDirectory());
         },
 
         "test on existing directory": function (done) {
@@ -795,34 +799,14 @@ buster.testCase("buster-args file and directory operands", {
         }
     },
 
-    "operand with required validator": {
-        setUp: function () {
-            this.o = this.a.createOperand(busterArgs.OPD_DIRECTORY);
-            this.o.addValidator(busterArgs.validators.required());
-        },
+    "test not setting operand with required validator": function (done) {
+        var opd = this.a.createOperand();
+        opd.addValidator(busterArgs.validators.required());
 
-        "test setting to existing directory": function (done) {
-            this.a.handle([null, null, existingDir], function (errors) {
-                buster.assert.isUndefined(errors);
-                done();
-            });
-        },
-
-        "test setting to none existing directory": function (done) {
-            this.a.handle([null, null, missingDirOrFile], function (errors) {
-                buster.assert.isNotUndefined(errors);
-                buster.assert.match(errors[0], "no such file or directory");
-                done();
-            });
-        },
-
-        "test not setting": function (done) {
-            var self = this;
-            this.a.handle([null, null], function (errors) {
-                buster.assert.isNotUndefined(errors);
-                buster.assert.equals(errors.length, 1);
-                done();
-            });
-        }
+        this.a.handle([null, null], function (errors) {
+            buster.assert.isNotUndefined(errors);
+            buster.assert.equals(errors.length, 1);
+            done();
+        });
     }
 });
