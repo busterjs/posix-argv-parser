@@ -1,6 +1,7 @@
 var buster = require("buster");
 var busterArgs = require("./../lib/buster-args");
 var path = require("path");
+var net = require("net");
 
 var fixtureDir = path.normalize(__dirname + "/fixtures");
 var existingDir = fixtureDir;
@@ -381,6 +382,16 @@ buster.testCase("buster-args built in validators", {
 
             "test no value": function (done) {
                 this.a.handle([null, null], function (errors) {
+                    done();
+                });
+            },
+
+            "test with existing item that isn't file or directory": function (done) {
+                // TODO: don't depend on /dev/sda being available.
+                this.a.handle([null, null, "/dev/sda"], function (errors) {
+                    buster.assert.equals(errors.length, 1);
+                    buster.assert.match(errors[0], /not a file or directory/i);
+                    buster.assert.match(errors[0], "/dev/sda");
                     done();
                 });
             }
