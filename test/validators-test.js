@@ -23,7 +23,7 @@ buster.testCase("buster-args built in validators", {
             return buster.promise.create().reject(actualError);
         });
 
-        this.a.handle([null, null, "-p"], function (errors) {
+        this.a.handle(["-p"], function (errors) {
             buster.assert.equals(errors.length, 1);
             buster.assert.equals(errors[0], actualError);
             done();
@@ -36,7 +36,7 @@ buster.testCase("buster-args built in validators", {
             return buster.promise.create().resolve();
         });
 
-        this.a.handle([null, null, "-p"], function (errors) {
+        this.a.handle(["-p"], function (errors) {
             buster.assert.isUndefined(errors);
             done();
         });
@@ -49,7 +49,7 @@ buster.testCase("buster-args built in validators", {
             return buster.promise.create().reject(this.value() + " is crazy.");
         });
 
-        this.a.handle([null, null, "-p1234"], function (errors) {
+        this.a.handle(["-p1234"], function (errors) {
             buster.assert.equals(errors.length, 1);
             buster.assert.equals(errors[0], "1234 is crazy.");
             done();
@@ -62,7 +62,7 @@ buster.testCase("buster-args built in validators", {
             return "This is an error message.";
         });
 
-        this.a.handle([null, null, "-p"], function (errors) {
+        this.a.handle(["-p"], function (errors) {
             buster.assert.equals(errors.length, 1);
             buster.assert.equals(errors[0], "This is an error message.");
             done();
@@ -86,7 +86,7 @@ buster.testCase("buster-args built in validators", {
         var opt = this.a.createOption("-p");
         opt.addValidator(function () {});
 
-        this.a.handle([null, null, "-p"], function (errors) {
+        this.a.handle(["-p"], function (errors) {
             buster.assert.isUndefined(errors);
             buster.assert(opt.isSet);
             done();
@@ -102,7 +102,7 @@ buster.testCase("buster-args built in validators", {
 
         "test passing integer": function (done) {
             var self = this;
-            this.a.handle([null, null, "-p123"], function (errors) {
+            this.a.handle(["-p123"], function (errors) {
                 buster.assert.isUndefined(errors);
                 buster.assert.same(self.opt.value(), 123);
                 done();
@@ -110,7 +110,7 @@ buster.testCase("buster-args built in validators", {
         },
 
         "test passing string": function (done) {
-            this.a.handle([null, null, "-pabc"], function (errors) {
+            this.a.handle(["-pabc"], function (errors) {
                 buster.assert.equals(errors.length, 1);
                 buster.assert.match(errors[0], "abc");
                 buster.assert.match(errors[0], /not an integer/);
@@ -119,7 +119,7 @@ buster.testCase("buster-args built in validators", {
         },
 
         "test passing comma float": function (done) {
-            this.a.handle([null, null, "-p123,4"], function (errors) {
+            this.a.handle(["-p123,4"], function (errors) {
                 buster.assert.equals(errors.length, 1);
                 buster.assert.match(errors[0], "123,4");
                 buster.assert.match(errors[0], /not an integer/);
@@ -128,7 +128,7 @@ buster.testCase("buster-args built in validators", {
         },
 
         "test passing dot float": function (done) {
-            this.a.handle([null, null, "-p123.4"], function (errors) {
+            this.a.handle(["-p123.4"], function (errors) {
                 buster.assert.equals(errors.length, 1);
                 buster.assert.match(errors[0], "123.4");
                 buster.assert.match(errors[0], /not an integer/);
@@ -146,7 +146,7 @@ buster.testCase("buster-args built in validators", {
 
         "test passing integer": function (done) {
             var self = this;
-            this.a.handle([null, null, "-p123"], function (errors) {
+            this.a.handle(["-p123"], function (errors) {
                 buster.assert.isUndefined(errors);
                 buster.assert.same(self.opt.value(), 123);
                 done();
@@ -154,7 +154,7 @@ buster.testCase("buster-args built in validators", {
         },
 
         "test passing string": function (done) {
-            this.a.handle([null, null, "-pabc"], function (errors) {
+            this.a.handle(["-pabc"], function (errors) {
                 buster.assert.equals(errors.length, 1);
                 buster.assert.match(errors[0], "abc");
                 buster.assert.match(errors[0], /not a number/);
@@ -163,7 +163,7 @@ buster.testCase("buster-args built in validators", {
         },
 
         "test passing comma float": function (done) {
-            this.a.handle([null, null, "-p123,4"], function (errors) {
+            this.a.handle(["-p123,4"], function (errors) {
                 buster.assert.equals(errors.length, 1);
                 buster.assert.match(errors[0], "123,4");
                 buster.assert.match(errors[0], /not a number/);
@@ -173,7 +173,7 @@ buster.testCase("buster-args built in validators", {
 
         "test passing dot float": function (done) {
             var self = this;
-            this.a.handle([null, null, "-p123.4"], function (errors) {
+            this.a.handle(["-p123.4"], function (errors) {
                 buster.assert.isUndefined(errors);
                 buster.assert.same(self.opt.value(), 123.4);
                 done();
@@ -193,14 +193,14 @@ buster.testCase("buster-args built in validators", {
             },
 
             "test setting option with value": function (done) {
-                this.a.handle([null, null, "-pfoo"], function (errors) {
+                this.a.handle(["-pfoo"], function (errors) {
                     buster.assert.isUndefined(errors);
                     done();
                 });
             },
 
             "test setting option without value": function (done) {
-                this.a.handle([null, null, "-p"], function (errors) {
+                this.a.handle(["-p"], function (errors) {
                     buster.assert.equals(errors.length, 1);
                     buster.assert.match(errors[0], "-p");
                     buster.assert.match(errors[0], /is required/);
@@ -209,7 +209,7 @@ buster.testCase("buster-args built in validators", {
             },
 
             "test not setting option": function (done) {
-                this.a.handle([null, null], function (errors) {
+                this.a.handle([], function (errors) {
                     buster.assert.equals(errors.length, 1);
                     buster.assert.match(errors[0], "-p");
                     buster.assert.match(errors[0], /is required/);
@@ -220,14 +220,14 @@ buster.testCase("buster-args built in validators", {
 
         "for option without value": {
             "test setting option": function (done) {
-                this.a.handle([null, null, "-p"], function (errors) {
+                this.a.handle(["-p"], function (errors) {
                     buster.assert.isUndefined(errors);
                     done();
                 });
             },
 
             "test not setting option": function (done) {
-                this.a.handle([null, null], function (errors) {
+                this.a.handle([], function (errors) {
                     buster.assert.equals(errors.length, 1);
                     buster.assert.match(errors[0], "-p");
                     buster.assert.match(errors[0], /is required/);
@@ -241,7 +241,7 @@ buster.testCase("buster-args built in validators", {
         "test gets stat info as value": function (done) {
             var opd = this.a.createOperand();
             opd.addValidator(busterArgs.validators.directory());
-            this.a.handle([null, null, existingDir], function (errors) {
+            this.a.handle([existingDir], function (errors) {
                 buster.assert("stat" in opd.value());
 
                 require("fs").stat(existingDir, function (err, stat) {
@@ -259,7 +259,7 @@ buster.testCase("buster-args built in validators", {
 
             "test on existing directory": function (done) {
                 var self = this;
-                this.a.handle([null, null, existingDir], function (errors) {
+                this.a.handle([existingDir], function (errors) {
                     buster.assert.isUndefined(errors);
                     buster.assert.match(self.o.value(), {path: existingDir});
                     buster.assert(self.o.isSet);
@@ -269,7 +269,7 @@ buster.testCase("buster-args built in validators", {
 
             "test on existing file": function (done) {
                 var self = this;
-                this.a.handle([null, null, existingFile], function (errors) {
+                this.a.handle([existingFile], function (errors) {
                     buster.assert.equals(errors.length, 1);
                     buster.assert.match(errors[0], /is not a directory/i);
                     buster.assert.match(errors[0], existingFile);
@@ -280,7 +280,7 @@ buster.testCase("buster-args built in validators", {
 
             "test on none existing file/directory": function (done) {
                 var self = this;
-                this.a.handle([null, null, missingDirOrFile], function (errors) {
+                this.a.handle([missingDirOrFile], function (errors) {
                     buster.assert.equals(errors.length, 1);
                     buster.assert.match(errors[0], /no such file or directory/i);
                     buster.assert.match(errors[0], missingDirOrFile);
@@ -306,7 +306,7 @@ buster.testCase("buster-args built in validators", {
 
             "test on existing directory": function (done) {
                 var self = this;
-                this.a.handle([null, null, existingDir], function (errors) {
+                this.a.handle([existingDir], function (errors) {
                     buster.assert.equals(errors.length, 1);
                     buster.assert.match(errors[0], /is not a file/i);
                     buster.assert.match(errors[0], existingDir);
@@ -317,7 +317,7 @@ buster.testCase("buster-args built in validators", {
 
             "test on existing file": function (done) {
                 var self = this;
-                this.a.handle([null, null, existingFile], function (errors) {
+                this.a.handle([existingFile], function (errors) {
                     buster.assert.isUndefined(errors);
                     buster.assert.match(self.o.value(), {path: existingFile});
                     buster.assert(self.o.isSet);
@@ -327,7 +327,7 @@ buster.testCase("buster-args built in validators", {
 
             "test on none existing file/directory": function (done) {
                 var self = this;
-                this.a.handle([null, null, missingDirOrFile], function (errors) {
+                this.a.handle([missingDirOrFile], function (errors) {
                     buster.assert.equals(errors.length, 1);
                     buster.assert.match(errors[0], /no such file or directory/i);
                     buster.assert.match(errors[0], missingDirOrFile);
@@ -353,7 +353,7 @@ buster.testCase("buster-args built in validators", {
 
             "test on existing directory": function (done) {
                 var self = this;
-                this.a.handle([null, null, existingDir], function (errors) {
+                this.a.handle([existingDir], function (errors) {
                     buster.assert.isUndefined(errors);
                     buster.assert.match(self.o.value(), {path: existingDir});
                     buster.assert(self.o.isSet);
@@ -363,7 +363,7 @@ buster.testCase("buster-args built in validators", {
 
             "test on existing file": function (done) {
                 var self = this;
-                this.a.handle([null, null, existingFile], function (errors) {
+                this.a.handle([existingFile], function (errors) {
                     buster.assert.isUndefined(errors);
                     buster.assert.match(self.o.value(), {path: existingFile});
                     buster.assert(self.o.isSet);
@@ -373,7 +373,7 @@ buster.testCase("buster-args built in validators", {
 
             "test on none existing file/directory": function (done) {
                 var self = this;
-                this.a.handle([null, null, missingDirOrFile], function (errors) {
+                this.a.handle([missingDirOrFile], function (errors) {
                     buster.assert.equals(errors.length, 1);
                     buster.assert.match(errors[0], /no such file or directory/i);
                     buster.assert.match(errors[0], missingDirOrFile);
@@ -389,7 +389,7 @@ buster.testCase("buster-args built in validators", {
             },
 
             "test with existing item that isn't file or directory": function (done) {
-                this.a.handle([null, null, notFileOrDirButExists], function (errors) {
+                this.a.handle([notFileOrDirButExists], function (errors) {
                     buster.assert.equals(errors.length, 1);
                     buster.assert.match(errors[0], /not a file or directory/i);
                     buster.assert.match(errors[0], notFileOrDirButExists);
@@ -407,7 +407,7 @@ buster.testCase("buster-args built in validators", {
 
         "test integer": function (done) {
             this.o.addValidator(busterArgs.validators.integer("I love ${1}!"));
-            this.a.handle([null, null, "-p", "not a number"], function (errors) {
+            this.a.handle(["-p", "not a number"], function (errors) {
                 buster.assert.equals(errors[0], "I love not a number!");
                 done();
             });
@@ -415,7 +415,7 @@ buster.testCase("buster-args built in validators", {
 
         "test integer with signature": function (done) {
             this.o.addValidator(busterArgs.validators.integer("I love ${1} and ${2}!"));
-            this.a.handle([null, null, "-p", "not a number"], function (errors) {
+            this.a.handle(["-p", "not a number"], function (errors) {
                 buster.assert.equals(errors[0], "I love not a number and -p!");
                 done();
             });
@@ -423,7 +423,7 @@ buster.testCase("buster-args built in validators", {
 
         "test number": function (done) {
             this.o.addValidator(busterArgs.validators.number("I love ${1}!"));
-            this.a.handle([null, null, "-p", "not a number"], function (errors) {
+            this.a.handle(["-p", "not a number"], function (errors) {
                 buster.assert.equals(errors[0], "I love not a number!");
                 done();
             });
@@ -431,7 +431,7 @@ buster.testCase("buster-args built in validators", {
 
         "test number with signature": function (done) {
             this.o.addValidator(busterArgs.validators.number("I love ${1} and ${2}!"));
-            this.a.handle([null, null, "-p", "not a number"], function (errors) {
+            this.a.handle(["-p", "not a number"], function (errors) {
                 buster.assert.equals(errors[0], "I love not a number and -p!");
                 done();
             });
@@ -439,7 +439,7 @@ buster.testCase("buster-args built in validators", {
 
         "test required": function (done) {
             this.o.addValidator(busterArgs.validators.required("I love ${1}!"));
-            this.a.handle([null, null], function (errors) {
+            this.a.handle([], function (errors) {
                 buster.assert.equals(errors[0], "I love -p!");
                 done();
             });
@@ -447,7 +447,7 @@ buster.testCase("buster-args built in validators", {
 
         "test file with no such file or dir": function (done) {
             this.o.addValidator(busterArgs.validators.file("foo", "Foo ${1}"));
-            this.a.handle([null, null, "-p", missingDirOrFile], function (errors) {
+            this.a.handle(["-p", missingDirOrFile], function (errors) {
                 buster.assert.equals(errors[0], "Foo " + missingDirOrFile);
                 done();
             });
@@ -455,7 +455,7 @@ buster.testCase("buster-args built in validators", {
 
         "test file with directory": function (done) {
             this.o.addValidator(busterArgs.validators.file("Foo ${1}", "foo"));
-            this.a.handle([null, null, "-p", existingDir], function (errors) {
+            this.a.handle(["-p", existingDir], function (errors) {
                 buster.assert.equals(errors[0], "Foo " + existingDir);
                 done();
             });
@@ -463,7 +463,7 @@ buster.testCase("buster-args built in validators", {
 
         "test dir with no such file or dir": function (done) {
             this.o.addValidator(busterArgs.validators.directory("foo", "Foo ${1}"));
-            this.a.handle([null, null, "-p", missingDirOrFile], function (errors) {
+            this.a.handle(["-p", missingDirOrFile], function (errors) {
                 buster.assert.equals(errors[0], "Foo " + missingDirOrFile);
                 done();
             });
@@ -471,7 +471,7 @@ buster.testCase("buster-args built in validators", {
 
         "test dir with file": function (done) {
             this.o.addValidator(busterArgs.validators.directory("Foo ${1}", "foo"));
-            this.a.handle([null, null, "-p", existingFile], function (errors) {
+            this.a.handle(["-p", existingFile], function (errors) {
                 buster.assert.equals(errors[0], "Foo " + existingFile);
                 done();
             });
@@ -479,7 +479,7 @@ buster.testCase("buster-args built in validators", {
 
         "test fileOrDir with no such file or dir": function (done) {
             this.o.addValidator(busterArgs.validators.fileOrDirectory("foo", "Foo ${1}"));
-            this.a.handle([null, null, "-p", missingDirOrFile], function (errors) {
+            this.a.handle(["-p", missingDirOrFile], function (errors) {
                 buster.assert.equals(errors[0], "Foo " + missingDirOrFile);
                 done();
             }); 
@@ -487,7 +487,7 @@ buster.testCase("buster-args built in validators", {
 
         "test fileOrDir with existing but not file or dir": function (done) {
             this.o.addValidator(busterArgs.validators.fileOrDirectory("Foo ${1}", "foo"));
-            this.a.handle([null, null, "-p", notFileOrDirButExists], function (errors) {
+            this.a.handle(["-p", notFileOrDirButExists], function (errors) {
                 buster.assert.equals(errors[0], "Foo " + notFileOrDirButExists);
                 done();
             }); 

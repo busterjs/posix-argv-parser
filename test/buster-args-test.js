@@ -8,7 +8,7 @@ buster.testCase("buster-args single dash option", {
 
     "test one option": function (done) {
         var opt = this.a.createOption("-p");
-        this.a.handle([null, null, "-p"], function (errors) {
+        this.a.handle(["-p"], function (errors) {
             buster.assert(opt.isSet);
             buster.assert.equals(opt.timesSet, 1);
             done();
@@ -37,7 +37,7 @@ buster.testCase("buster-args single dash option", {
 
     "test one option twice as separate options": function (done) {
         var opt = this.a.createOption("-p");
-        this.a.handle([null, null, "-p", "-p"], function (errors) {
+        this.a.handle(["-p", "-p"], function (errors) {
             buster.assert(opt.isSet);
             buster.assert.equals(opt.timesSet, 2);
             done();
@@ -46,7 +46,7 @@ buster.testCase("buster-args single dash option", {
 
     "test one option thrice as separate options": function (done) {
         var opt = this.a.createOption("-p");
-        this.a.handle([null, null, "-p", "-p", "-p"], function (errors) {
+        this.a.handle(["-p", "-p", "-p"], function (errors) {
             buster.assert(opt.isSet);
             buster.assert.equals(opt.timesSet, 3);
             done();
@@ -55,7 +55,7 @@ buster.testCase("buster-args single dash option", {
 
     "test one option twice as one grouped option": function (done) {
         var opt = this.a.createOption("-p");
-        this.a.handle([null, null, "-pp"], function (errors) {
+        this.a.handle(["-pp"], function (errors) {
             buster.assert(opt.isSet);
             buster.assert.equals(opt.timesSet, 2);
             done();
@@ -64,7 +64,7 @@ buster.testCase("buster-args single dash option", {
 
     "test one option thrice as one grouped option": function (done) {
         var opt = this.a.createOption("-p");
-        this.a.handle([null, null, "-ppp"], function (errors) {
+        this.a.handle(["-ppp"], function (errors) {
             buster.assert(opt.isSet);
             buster.assert.equals(opt.timesSet, 3);
             done();
@@ -73,7 +73,7 @@ buster.testCase("buster-args single dash option", {
 
     "test one option thrice as bith grouped and separate": function (done) {
         var opt = this.a.createOption("-p");
-        this.a.handle([null, null, "-pp", "-p"], function (errors) {
+        this.a.handle(["-pp", "-p"], function (errors) {
             buster.assert(opt.isSet);
             buster.assert.equals(opt.timesSet, 3);
             done();
@@ -84,7 +84,7 @@ buster.testCase("buster-args single dash option", {
         var opt1 = this.a.createOption("-p");
         var opt2 = this.a.createOption("-z");
 
-        this.a.handle([null, null, "-p", "-z"], function (errors) {
+        this.a.handle(["-p", "-z"], function (errors) {
             buster.assert(opt1.isSet);
             buster.assert.equals(opt1.timesSet, 1);
 
@@ -99,7 +99,7 @@ buster.testCase("buster-args single dash option", {
         var opt1 = this.a.createOption("-p");
         var opt2 = this.a.createOption("-z");
 
-        this.a.handle([null, null, "-pz"], function (errors) {
+        this.a.handle(["-pz"], function (errors) {
             buster.assert(opt1.isSet);
             buster.assert.equals(opt1.timesSet, 1);
 
@@ -114,7 +114,7 @@ buster.testCase("buster-args single dash option", {
         var opt1 = this.a.createOption("-p");
         var opt2 = this.a.createOption("-z");
 
-        this.a.handle([null, null, "-pp", "-zz"], function (errors) {
+        this.a.handle(["-pp", "-zz"], function (errors) {
             buster.assert(opt1.isSet);
             buster.assert.equals(opt1.timesSet, 2);
 
@@ -129,7 +129,7 @@ buster.testCase("buster-args single dash option", {
         var opt1 = this.a.createOption("-p");
         var opt2 = this.a.createOption("-z");
 
-        this.a.handle([null, null, "-pz", "-zp"], function (errors) {
+        this.a.handle(["-pz", "-zp"], function (errors) {
             buster.assert(opt1.isSet);
             buster.assert.equals(opt1.timesSet, 2);
 
@@ -144,7 +144,7 @@ buster.testCase("buster-args single dash option", {
         var opt1 = this.a.createOption("-p");
         var opt2 = this.a.createOption("-z");
 
-        this.a.handle([null, null, "-p"], function (errors) {
+        this.a.handle(["-p"], function (errors) {
             buster.assert(opt1.isSet);
             buster.assert.equals(opt1.timesSet, 1);
 
@@ -158,7 +158,7 @@ buster.testCase("buster-args single dash option", {
         var opt1 = this.a.createOption("-p");
         var opt2 = this.a.createOption("-z");
 
-        this.a.handle([null, null, "-pzz", "-ppz"], function (errors) {
+        this.a.handle(["-pzz", "-ppz"], function (errors) {
             buster.assert(opt1.isSet);
             buster.assert.equals(opt1.timesSet, 3);
 
@@ -173,7 +173,7 @@ buster.testCase("buster-args single dash option", {
         var opt = this.a.createOption("-p");
         opt.hasValue = true;
 
-        this.a.handle([null, null, "-pfoo"], function (errors) {
+        this.a.handle(["-pfoo"], function (errors) {
             buster.assert(opt.isSet);
             buster.assert.equals(opt.value(), "foo");
             done();
@@ -184,7 +184,7 @@ buster.testCase("buster-args single dash option", {
         var opt = this.a.createOption("-p");
         opt.hasValue = true;
 
-        this.a.handle([null, null, "-p"], function (errors) {
+        this.a.handle(["-p"], function (errors) {
             buster.assert(opt.isSet);
             buster.assert.isUndefined(opt.value());
             done();
@@ -196,7 +196,7 @@ buster.testCase("buster-args single dash option", {
         opt.hasValue = true;
         opt.defaultValue = "bar";
 
-        this.a.handle([null, null, "-pfoo"], function (errors) {
+        this.a.handle(["-pfoo"], function (errors) {
             buster.assert(opt.isSet);
             buster.assert.equals(opt.value(), "foo");
             done();
@@ -208,7 +208,7 @@ buster.testCase("buster-args single dash option", {
         opt.hasValue = true;
         opt.defaultValue = "bar";
 
-        this.a.handle([null, null, "-p"], function (errors) {
+        this.a.handle(["-p"], function (errors) {
             buster.assert(opt.isSet);
             buster.assert.equals(opt.value(), "bar");
             done();
@@ -220,7 +220,7 @@ buster.testCase("buster-args single dash option", {
         opt1.hasValue = true;
         var opt2 = this.a.createOption("-z");
 
-        this.a.handle([null, null, "-pz"], function (errors) {
+        this.a.handle(["-pz"], function (errors) {
             buster.assert(opt1.isSet);
             buster.assert.equals(opt1.value(), "z");
 
@@ -235,7 +235,7 @@ buster.testCase("buster-args single dash option", {
         opt1.hasValue = true;
         var opt2 = this.a.createOption("-z");
 
-        this.a.handle([null, null, "-pz", "-z"], function (errors) {
+        this.a.handle(["-pz", "-z"], function (errors) {
             buster.assert(opt1.isSet);
             buster.assert.equals(opt1.value(), "z");
 
@@ -249,7 +249,7 @@ buster.testCase("buster-args single dash option", {
         var opt = this.a.createOption("-p");
         opt.hasValue = true;
 
-        this.a.handle([null, null, "-p", "foo"], function (errors) {
+        this.a.handle(["-p", "foo"], function (errors) {
             buster.assert.isUndefined(errors);
             buster.assert(opt.isSet);
             buster.assert.equals(opt.value(), "foo");
@@ -260,7 +260,7 @@ buster.testCase("buster-args single dash option", {
     "test passing value to option without value with space between option and value": function (done) {
         var opt = this.a.createOption("-p");
 
-        this.a.handle([null, null, "-p", "foo"], function (errors) {
+        this.a.handle(["-p", "foo"], function (errors) {
             buster.assert.match(errors[0], /unknown argument/i);
             buster.assert.match(errors[0], "foo");
             done();
@@ -271,7 +271,7 @@ buster.testCase("buster-args single dash option", {
         var opt = this.a.createOption("-p");
         opt.hasValue = true;
 
-        this.a.handle([null, null, "-p=foo"], function (errors) {
+        this.a.handle(["-p=foo"], function (errors) {
             buster.assert.isUndefined(errors);
             buster.assert(opt.isSet);
             buster.assert.equals(opt.value(), "foo");
@@ -282,7 +282,7 @@ buster.testCase("buster-args single dash option", {
     "test passing value to option without value using equals": function (done) {
         var opt = this.a.createOption("-p");
 
-        this.a.handle([null, null, "-p=foo"], function (errors) {
+        this.a.handle(["-p=foo"], function (errors) {
             buster.assert.match(errors[0], /does not have a value/i);
             buster.assert.match(errors[0], "-p");
             done();
@@ -293,7 +293,7 @@ buster.testCase("buster-args single dash option", {
         var opt = this.a.createOption("-p");
         opt.hasValue = true;
 
-        this.a.handle([null, null, "-p", "=", "123"], function (errors) {
+        this.a.handle(["-p", "=", "123"], function (errors) {
             buster.assert.equals(opt.value(), "=");
             buster.assert.match(errors[0], /unknown argument/i);
             buster.assert.match(errors[0], "123");
@@ -309,7 +309,7 @@ buster.testCase("buster-args double dash option", {
 
     "test one option": function (done) {
         var opt = this.a.createOption("--port");
-        this.a.handle([null, null, "--port"], function (errors) {
+        this.a.handle(["--port"], function (errors) {
             buster.assert(opt.isSet);
             buster.assert.equals(opt.timesSet, 1);
             done();
@@ -330,7 +330,7 @@ buster.testCase("buster-args double dash option", {
 
     "test one option twice as separate options": function (done) {
         var opt = this.a.createOption("--port");
-        this.a.handle([null, null, "--port", "--port"], function (errors) {
+        this.a.handle(["--port", "--port"], function (errors) {
             buster.assert(opt.isSet);
             buster.assert.equals(opt.timesSet, 2);
             done();
@@ -339,7 +339,7 @@ buster.testCase("buster-args double dash option", {
 
     "test one option thrice as separate options": function (done) {
         var opt = this.a.createOption("--port");
-        this.a.handle([null, null, "--port", "--port", "--port"], function (errors) {
+        this.a.handle(["--port", "--port", "--port"], function (errors) {
             buster.assert(opt.isSet);
             buster.assert.equals(opt.timesSet, 3);
             done();
@@ -350,7 +350,7 @@ buster.testCase("buster-args double dash option", {
         var opt1 = this.a.createOption("--port");
         var opt2 = this.a.createOption("--zap");
 
-        this.a.handle([null, null, "--port", "--zap"], function (errors) {
+        this.a.handle(["--port", "--zap"], function (errors) {
             buster.assert(opt1.isSet);
             buster.assert.equals(opt1.timesSet, 1);
 
@@ -364,7 +364,7 @@ buster.testCase("buster-args double dash option", {
     "test option with value": function (done) {
         var opt = this.a.createOption("--port");
         opt.hasValue = true;
-        this.a.handle([null, null, "--port", "foo"], function (errors) {
+        this.a.handle(["--port", "foo"], function (errors) {
             buster.assert(opt.isSet);
             buster.assert.equals(opt.value(), "foo");
             done();
@@ -375,7 +375,7 @@ buster.testCase("buster-args double dash option", {
         var opt = this.a.createOption("--port");
         opt.hasValue = true;
 
-        this.a.handle([null, null, "--port"], function (errors) {
+        this.a.handle(["--port"], function (errors) {
             buster.assert(opt.isSet);
             buster.assert.isUndefined(opt.value());
             done();
@@ -387,7 +387,7 @@ buster.testCase("buster-args double dash option", {
         opt.hasValue = true;
         opt.defaultValue = "bar";
 
-        this.a.handle([null, null, "--port", "foo"], function (errors) {
+        this.a.handle(["--port", "foo"], function (errors) {
             buster.assert(opt.isSet);
             buster.assert.equals(opt.value(), "foo");
             done();
@@ -399,7 +399,7 @@ buster.testCase("buster-args double dash option", {
         opt.hasValue = true;
         opt.defaultValue = "bar";
 
-        this.a.handle([null, null, "--port"], function (errors) {
+        this.a.handle(["--port"], function (errors) {
             buster.assert(opt.isSet);
             buster.assert.equals(opt.value(), "bar");
             done();
@@ -411,7 +411,7 @@ buster.testCase("buster-args double dash option", {
         opt1.hasValue = true;
         var opt2 = this.a.createOption("--zap");
 
-        this.a.handle([null, null, "--port", "--zap"], function (errors) {
+        this.a.handle(["--port", "--zap"], function (errors) {
             buster.assert(opt1.isSet);
             buster.assert.isUndefined(opt1.value());
 
@@ -425,7 +425,7 @@ buster.testCase("buster-args double dash option", {
         var opt = this.a.createOption("--port");
         opt.hasValue = true;
 
-        this.a.handle([null, null, "--port=foo"], function (errors) {
+        this.a.handle(["--port=foo"], function (errors) {
             buster.assert.isUndefined(errors);
             buster.assert(opt.isSet);
             buster.assert.equals(opt.value(), "foo");
@@ -436,7 +436,7 @@ buster.testCase("buster-args double dash option", {
     "test passing value to option without value using equals": function (done) {
         var opt = this.a.createOption("--port");
 
-        this.a.handle([null, null, "--port=foo"], function (errors) {
+        this.a.handle(["--port=foo"], function (errors) {
             buster.assert.match(errors[0], /does not have a value/i);
             buster.assert.match(errors[0], "--port");
             done();
@@ -447,7 +447,7 @@ buster.testCase("buster-args double dash option", {
         var opt = this.a.createOption("--port");
         opt.hasValue = true;
 
-        this.a.handle([null, null, "--port", "=", "123"], function (errors) {
+        this.a.handle(["--port", "=", "123"], function (errors) {
             buster.assert.equals(opt.value(), "=");
             buster.assert.match(errors[0], /unknown argument/i);
             buster.assert.match(errors[0], "123");
@@ -470,7 +470,7 @@ buster.testCase("buster-args mix and match", {
 
     "test handling none existing option errors": function (done) {
         this.a.createOption("-p");
-        this.a.handle([null, null, "-z"], function (errors) {
+        this.a.handle(["-z"], function (errors) {
             buster.assert.equals(errors.length, 1);
             buster.assert.match(errors[0], /unknown argument/i)
             buster.assert.match(errors[0], "-z")
@@ -483,7 +483,7 @@ buster.testCase("buster-args mix and match", {
         var opt1 = this.a.createOption("-p");
         var opt2 = this.a.createOption("--port");
 
-        this.a.handle([null, null, "-p", "--port"], function (errors) {
+        this.a.handle(["-p", "--port"], function (errors) {
             buster.assert(opt1.isSet);
             buster.assert.equals(opt1.timesSet, 1);
             buster.assert(opt2.isSet);
@@ -497,7 +497,7 @@ buster.testCase("buster-args mix and match", {
         var opt1 = this.a.createOption("-p");
         var opt2 = this.a.createOption("--port");
 
-        this.a.handle([null, null, "--port", "-p"], function (errors) {
+        this.a.handle(["--port", "-p"], function (errors) {
             buster.assert(opt1.isSet);
             buster.assert.equals(opt1.timesSet, 1);
             buster.assert(opt2.isSet);
@@ -511,7 +511,7 @@ buster.testCase("buster-args mix and match", {
         var opt1 = this.a.createOption("-p");
         var opt2 = this.a.createOption("--port");
 
-        this.a.handle([null, null, "--port"], function (errors) {
+        this.a.handle(["--port"], function (errors) {
             buster.assert.isFalse(opt1.isSet);
 
             buster.assert(opt2.isSet);
@@ -525,7 +525,7 @@ buster.testCase("buster-args mix and match", {
         var opt1 = this.a.createOption("-p");
         var opt2 = this.a.createOption("--port");
 
-        this.a.handle([null, null, "-p"], function (errors) {
+        this.a.handle(["-p"], function (errors) {
             buster.assert(opt1.isSet);
             buster.assert.equals(opt1.timesSet, 1);
 
@@ -571,7 +571,7 @@ buster.testCase("buster-args file and directory operands", {
     "test plain operand": function (done) {
         var opd = this.a.createOperand();
 
-        this.a.handle([null, null, "123abc"], function (errors) {
+        this.a.handle(["123abc"], function (errors) {
             buster.assert(opd.isSet);
             buster.assert.equals(opd.value(), "123abc");
             done();
@@ -582,7 +582,7 @@ buster.testCase("buster-args file and directory operands", {
         var opt = this.a.createOption("-p");
         var opd = this.a.createOperand();
 
-        this.a.handle([null, null, "-p", "123abc"], function (errors) {
+        this.a.handle(["-p", "123abc"], function (errors) {
             buster.assert(opt.isSet);
             buster.assert(opt.timesSet, 1);
             buster.assert.match(opd.value(), "123abc");
@@ -594,7 +594,7 @@ buster.testCase("buster-args file and directory operands", {
         var opt = this.a.createOption("-p");
         var opd = this.a.createOperand();
 
-        this.a.handle([null, null, "123abc", "-p"], function (errors) {
+        this.a.handle(["123abc", "-p"], function (errors) {
             buster.assert(opt.isSet);
             buster.assert(opt.timesSet, 1);
             buster.assert.match(opd.value(), "123abc");
@@ -607,7 +607,7 @@ buster.testCase("buster-args file and directory operands", {
         opt.hasValue = true;
         var opd = this.a.createOperand();
 
-        this.a.handle([null, null, "-p", "123abc"], function (errors) {
+        this.a.handle(["-p", "123abc"], function (errors) {
             buster.assert.equals(opt.value(), "123abc");
             buster.assert.isFalse(opd.isSet);
             done();
@@ -619,7 +619,7 @@ buster.testCase("buster-args file and directory operands", {
         opt.hasValue = true;
         var opd = this.a.createOperand();
 
-        this.a.handle([null, null, "123abc", "-p"], function (errors) {
+        this.a.handle(["123abc", "-p"], function (errors) {
             buster.assert(opt.isSet);
             buster.assert.isUndefined(opt.value());
 
@@ -633,7 +633,7 @@ buster.testCase("buster-args file and directory operands", {
         var opt = this.a.createOption("--port");
         var opd = this.a.createOperand();
 
-        this.a.handle([null, null, "--port", "123abc"], function (errors) {
+        this.a.handle(["--port", "123abc"], function (errors) {
             buster.assert(opt.isSet);
             buster.assert(opt.timesSet, 1);
             buster.assert.match(opd.value(), "123abc");
@@ -645,7 +645,7 @@ buster.testCase("buster-args file and directory operands", {
         var opt = this.a.createOption("--port");
         var opd = this.a.createOperand();
 
-        this.a.handle([null, null, "123abc", "--port"], function (errors) {
+        this.a.handle(["123abc", "--port"], function (errors) {
             buster.assert(opt.isSet);
             buster.assert(opt.timesSet, 1);
             buster.assert.match(opd.value(), "123abc");
@@ -658,7 +658,7 @@ buster.testCase("buster-args file and directory operands", {
         opt.hasValue = true;
         var opd = this.a.createOperand();
 
-        this.a.handle([null, null, "--port", "123abc"], function (errors) {
+        this.a.handle(["--port", "123abc"], function (errors) {
             buster.assert(opt.isSet);
             buster.assert.equals(opt.value(), "123abc");
             buster.assert.isFalse(opd.isSet);
@@ -671,7 +671,7 @@ buster.testCase("buster-args file and directory operands", {
         opt.hasValue = true;
         var opd = this.a.createOperand();
 
-        this.a.handle([null, null, "123abc", "--port"], function (errors) {
+        this.a.handle(["123abc", "--port"], function (errors) {
             buster.assert(opt.isSet);
             buster.assert.isUndefined(opt.value());
 
