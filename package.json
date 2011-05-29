@@ -1,3 +1,13 @@
 {
-    "main": "./lib/buster-args"
+    "name": "buster-args",
+    "version": "0.1.0",
+    "description": "Parser for CLI arguments.",
+    "homepage": "http://busterjs.org/docs/buster-args",
+    "author": "August Lilleaas <august@augustl.com>",
+    "main": "./lib/buster-args",
+    "repository": "http://gitorious.org/buster/buster-args",
+    "license": {
+        "type": "BSD",
+        "url": "http://gitorious.org/buster/buster-args/blobs/master/LICENSE"
+    }
 }
