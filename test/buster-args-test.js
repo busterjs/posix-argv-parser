@@ -685,7 +685,7 @@ buster.testCase("buster-args file and directory operands", {
         var opd = this.a.createOperand();
         opd.addValidator(busterArgs.validators.required());
 
-        this.a.handle([null, null], function (errors) {
+        this.a.handle([], function (errors) {
             buster.assert.isNotUndefined(errors);
             buster.assert.equals(errors.length, 1);
             done();

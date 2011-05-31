@@ -75,7 +75,7 @@ buster.testCase("buster-args built in validators", {
             return "This is an error message.";
         });
 
-        this.a.handle([null, null], function (errors) {
+        this.a.handle([], function (errors) {
             buster.assert.equals(errors.length, 1);
             buster.assert.equals(errors[0], "This is an error message.");
             done();
@@ -290,7 +290,7 @@ buster.testCase("buster-args built in validators", {
             },
 
             "test no value": function (done) {
-                this.a.handle([null, null], function (errors) {
+                this.a.handle([], function (errors) {
                     done();
                 });
             }
@@ -337,7 +337,7 @@ buster.testCase("buster-args built in validators", {
             },
 
             "test no value": function (done) {
-                this.a.handle([null, null], function (errors) {
+                this.a.handle([], function (errors) {
                     done();
                 });
             }
@@ -383,7 +383,7 @@ buster.testCase("buster-args built in validators", {
             },
 
             "test no value": function (done) {
-                this.a.handle([null, null], function (errors) {
+                this.a.handle([], function (errors) {
                     done();
                 });
             },
