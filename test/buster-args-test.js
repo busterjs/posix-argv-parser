@@ -321,6 +321,26 @@ buster.testCase("buster-args single dash option", {
             buster.assert.isNotUndefined(errors);
             done();
         });
+    },
+
+    "test failing validation resets": function (done) {
+        var self = this;
+        var opt = this.a.createOption("-p");
+        opt.hasValue = true
+
+        this.a.handle(["-p", "foo"], function () {
+            buster.assert(opt.isSet);
+            buster.assert.equals(opt.value(), "foo");
+
+            opt.addValidator(function () { return "an error"; });
+
+            self.a.handle(["-p", "bar"], function (errors) {
+                buster.assert.isNotUndefined(errors);
+                buster.assert(!opt.isSet);
+                buster.assert(!opt.value());
+                done();
+            });
+        });
     }
 });
 
@@ -474,6 +494,26 @@ buster.testCase("buster-args double dash option", {
             buster.assert.match(errors[0], /unknown argument/i);
             buster.assert.match(errors[0], "123");
             done();
+        });
+    },
+
+    "test failing validation resets": function (done) {
+        var self = this;
+        var opt = this.a.createOption("--port");
+        opt.hasValue = true
+
+        this.a.handle(["--port", "foo"], function () {
+            buster.assert(opt.isSet);
+            buster.assert.equals(opt.value(), "foo");
+
+            opt.addValidator(function () { return "an error"; });
+
+            self.a.handle(["--port", "bar"], function (errors) {
+                buster.assert.isNotUndefined(errors);
+                buster.assert(!opt.isSet);
+                buster.assert(!opt.value());
+                done();
+            });
         });
     }
 });
@@ -789,6 +829,25 @@ buster.testCase("buster-args operands", {
             buster.assert.equals(opd2.value(), "--bar");
 
             done();
+        });
+    },
+
+    "test failing validation resets": function (done) {
+        var self = this;
+        var opd = this.a.createOperand();
+
+        this.a.handle(["foo"], function () {
+            buster.assert(opd.isSet);
+            buster.assert.equals(opd.value(), "foo");
+
+            opd.addValidator(function () { return "an error"; });
+
+            self.a.handle(["bar"], function (errors) {
+                buster.assert.isNotUndefined(errors);
+                buster.assert(!opd.isSet);
+                buster.assert(!opd.value());
+                done();
+            });
         });
     }
 });
