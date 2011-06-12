@@ -563,7 +563,7 @@ buster.testCase("buster-args mix and match", {
     }
 });
 
-buster.testCase("buster-args file and directory operands", {
+buster.testCase("buster-args operands", {
     setUp: function () {
         this.a = Object.create(busterArgs);
     },
