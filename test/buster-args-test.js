@@ -299,6 +299,19 @@ buster.testCase("buster-args single dash option", {
             buster.assert.match(errors[0], "123");
             done();
         });
+    },
+
+    "test multiple operands": function (done) {
+        var opd1 = this.a.createOperand();
+        var opd2 = this.a.createOperand();
+        var opd3 = this.a.createOperand();
+
+        this.a.handle(["foo", "bar", "baz"], function (errors) {
+            buster.assert.equals(opd1.value(), "foo");
+            buster.assert.equals(opd2.value(), "bar");
+            buster.assert.equals(opd3.value(), "baz");
+            done();
+        });
     }
 });
 
