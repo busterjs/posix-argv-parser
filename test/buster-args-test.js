@@ -303,6 +303,48 @@ buster.testCase("buster-args single dash option", {
             buster.assert.match(errors[0], "123");
             done();
         });
+    },
+
+    "test multiple operands": function (done) {
+        var opd1 = this.a.createOperand();
+        var opd2 = this.a.createOperand();
+        var opd3 = this.a.createOperand();
+
+        this.a.handle(["foo", "bar", "baz"], function (errors) {
+            buster.assert.equals(opd1.value(), "foo");
+            buster.assert.equals(opd2.value(), "bar");
+            buster.assert.equals(opd3.value(), "baz");
+            done();
+        });
+    },
+
+    "test after operand separator": function (done) {
+        var opt = this.a.createOption("-p");
+
+        this.a.handle(["--", "-p"], function (errors) {
+            buster.assert.isNotUndefined(errors);
+            done();
+        });
+    },
+
+    "test failing validation resets": function (done) {
+        var self = this;
+        var opt = this.a.createOption("-p");
+        opt.hasValue = true
+
+        this.a.handle(["-p", "foo"], function () {
+            buster.assert(opt.isSet);
+            buster.assert.equals(opt.value(), "foo");
+
+            opt.addValidator(function () { return "an error"; });
+
+            self.a.handle(["-p", "bar"], function (errors) {
+                buster.assert.isNotUndefined(errors);
+                buster.assert(!opt.isSet);
+                buster.assert(!opt.value());
+                done();
+            });
+        });
     }
 });
 
@@ -465,6 +507,26 @@ buster.testCase("buster-args double dash option", {
             buster.assert.match(errors[0], "123");
             done();
         });
+    },
+
+    "test failing validation resets": function (done) {
+        var self = this;
+        var opt = this.a.createOption("--port");
+        opt.hasValue = true
+
+        this.a.handle(["--port", "foo"], function () {
+            buster.assert(opt.isSet);
+            buster.assert.equals(opt.value(), "foo");
+
+            opt.addValidator(function () { return "an error"; });
+
+            self.a.handle(["--port", "bar"], function (errors) {
+                buster.assert.isNotUndefined(errors);
+                buster.assert(!opt.isSet);
+                buster.assert(!opt.value());
+                done();
+            });
+        });
     }
 });
 
@@ -572,10 +634,19 @@ buster.testCase("buster-args mix and match", {
         buster.assert.exception(function () {
             self.a.createOption("--port");
         });
+    },
+
+    "test after operand separator": function (done) {
+        var opt = this.a.createOption("--port");
+
+        this.a.handle(["--", "--port"], function (errors) {
+            buster.assert.isNotUndefined(errors);
+            done();
+        });
     }
 });
 
-buster.testCase("buster-args file and directory operands", {
+buster.testCase("buster-args operands", {
     setUp: function () {
         this.a = Object.create(busterArgs);
     },
@@ -711,7 +782,86 @@ buster.testCase("buster-args file and directory operands", {
         buster.assert.noException(function () {
             self.a.createOption("-p");
         });
-   }
+   },
+
+    "test specifying operand after double dash": function (done) {
+        var opt = this.a.createOption("-p");
+        var opd = this.a.createOperand();
+
+        this.a.handle(["-p", "--", "gocha"], function (errors) {
+            buster.assert(opt.isSet);
+            buster.assert(opd.isSet);
+            buster.assert.equals(opd.value(), "gocha");
+            done();
+        });
+    },
+
+    "test specifying operand starting with dash after double dash": function (done) {
+        var opt = this.a.createOption("-p");
+        var opd = this.a.createOperand();
+
+        this.a.handle(["-p", "--", "-gocha"], function (errors) {
+            buster.assert(opt.isSet);
+            buster.assert(opd.isSet);
+            buster.assert.equals(opd.value(), "-gocha");
+            done();
+        });
+    },
+
+    "test specifying multiple operands after double dash": function (done) {
+        var opt = this.a.createOption("-p");
+        var opd1 = this.a.createOperand();
+        var opd2 = this.a.createOperand();
+
+        this.a.handle(["-p", "--", "foo", "bar"], function (errors) {
+            buster.assert(opt.isSet);
+
+            buster.assert(opd1.isSet);
+            buster.assert.equals(opd1.value(), "foo");
+
+            buster.assert(opd2.isSet);
+            buster.assert.equals(opd2.value(), "bar");
+
+            done();
+        });
+    },
+
+    "test multiple operands starting with a dash": function (done) {
+        var opt = this.a.createOption("-p");
+        var opd1 = this.a.createOperand();
+        var opd2 = this.a.createOperand();
+
+        this.a.handle(["-p", "--", "-foo", "--bar"], function (errors) {
+            buster.assert(opt.isSet);
+
+            buster.assert(opd1.isSet);
+            buster.assert.equals(opd1.value(), "-foo");
+
+            buster.assert(opd2.isSet);
+            buster.assert.equals(opd2.value(), "--bar");
+
+            done();
+        });
+    },
+
+    "test failing validation resets": function (done) {
+        var self = this;
+        var opd = this.a.createOperand();
+
+        this.a.handle(["foo"], function () {
+            buster.assert(opd.isSet);
+            buster.assert.equals(opd.value(), "foo");
+
+            opd.addValidator(function () { return "an error"; });
+
+            self.a.handle(["bar"], function (errors) {
+                buster.assert.isNotUndefined(errors);
+                buster.assert(!opd.isSet);
+                buster.assert(!opd.value());
+                done();
+            });
+        });
+    }
 });
 
 buster.testCase("buster-args shorthands", {

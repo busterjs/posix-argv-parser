@@ -7,8 +7,8 @@ var fixtureDir = path.normalize(__dirname + "/fixtures");
 var existingDir = fixtureDir;
 var existingFile = fixtureDir + "/a_file.txt";
 var missingDirOrFile = "/tmp/buster/roflmao/does-not-exist";
-// TODO: don't depend on /dev/sda being available.
-var notFileOrDirButExists = "/dev/sda";
+// TODO: don't depend on /dev/null being available.
+var notFileOrDirButExists = "/dev/null";
 
 buster.testCase("buster-args built in validators", {
     setUp: function () {
