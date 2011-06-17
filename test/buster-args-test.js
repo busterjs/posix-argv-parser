@@ -31,6 +31,10 @@ buster.testCase("buster-args single dash option", {
         });
 
         buster.assert.exception(function () {
+            self.a.createOption("-p-f");
+        });
+
+        buster.assert.exception(function () {
             self.a.createOption("-p", "-pfff");
         });
     },
@@ -316,15 +320,23 @@ buster.testCase("buster-args double dash option", {
         });
     },
 
-    "test containing a dash": function () {
-        var self = this;
-
-        buster.assert.exception(function () {
-            self.a.createOption("--te-st");
+    "test containing a dash": function (done) {
+        var opt = this.a.createOption("--port-it");
+        this.a.handle(["--port-it"], function (errors) {
+            buster.assert(opt.isSet);
+            buster.assert.equals(opt.timesSet, 1);
+            done();
         });
+    },
 
-        buster.assert.exception(function () {
-            self.a.createOption("---");
+    "test containing a dash and has value": function (done) {
+        var opt = this.a.createOption("--port-it");
+        opt.hasValue = true;
+
+        this.a.handle(["--port-it", "1234"], function (errors) {
+            buster.assert(opt.isSet);
+            buster.assert.equals(opt.value(), "1234");
+            done();
         });
     },
 
