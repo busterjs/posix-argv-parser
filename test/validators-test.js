@@ -399,6 +399,43 @@ buster.testCase("buster-args built in validators", {
         }
     },
 
+    "inEnum": {
+        "operand": {
+            setUp: function () {
+                this.o = this.a.createOperand();
+                this.o.addValidator(busterArgs.validators.inEnum(["1", "2"]));
+            },
+
+            "should pass when operand is in enum": function (done) {
+                this.a.handle(["1"], function (errors) {
+                    buster.assert.isUndefined(errors);
+                    done();
+                });
+            },
+
+            "should fail when operand is not in enum": function (done) {
+                this.a.handle(["3"], function (errors) {
+                    buster.assert.isArray(errors);
+                    done();
+                });
+            },
+
+            "should fail with readable message": function (done) {
+                this.a.handle(["3"], function (errors) {
+                    buster.assert.match(errors[0], "expected one of [1, 2], got 3");
+                    done();
+                });
+            },
+
+            "should pass when there's no argument": function (done) {
+                this.a.handle([], function (errors) {
+                    buster.assert.isUndefined(errors);
+                    done();
+                });
+            }
+        }
+    },
+
     "custom error messages": {
         setUp: function () {
             this.o = this.a.createOption("-p");
