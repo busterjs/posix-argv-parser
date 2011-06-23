@@ -861,6 +861,179 @@ buster.testCase("buster-args operands", {
                 done();
             });
         });
+    },
+
+    "test greedy operand with no value": function (done) {
+        var opd = this.a.createOperand();
+        opd.greedy = true;
+
+        this.a.handle([], function () {
+            buster.assert.isFalse(opd.isSet);
+            buster.assert.equals(opd.value(), []);
+            done();
+        });
+    },
+
+    "test greedy operand with one value": function (done) {
+        var opd = this.a.createOperand();
+        opd.greedy = true;
+
+        this.a.handle(["foo"], function () {
+            buster.assert(opd.isSet);
+            buster.assert.equals(opd.value(), ["foo"]);
+            done();
+        });
+    },
+
+    "test greedy operand with multiple values": function (done) {
+        var opd = this.a.createOperand();
+        opd.greedy = true;
+
+        this.a.handle(["foo", "bar", "baz"], function () {
+            buster.assert(opd.isSet);
+            buster.assert.equals(opd.value(), ["foo", "bar", "baz"]);
+            done();
+        });
+    },
+
+    "test greedy operand with operand values before and after double dash": function (done) {
+        var opd = this.a.createOperand();
+        opd.greedy = true;
+
+        this.a.handle(["foo", "bar", "--", "baz"], function () {
+            buster.assert(opd.isSet);
+            buster.assert.equals(opd.value(), ["foo", "bar", "baz"]);
+            done();
+        });
+    },
+
+    "test greedy operand preceded by option": function (done) {
+        var opt = this.a.createOption("-p");
+
+        var opd = this.a.createOperand();
+        opd.greedy = true;
+
+        this.a.handle(["-p", "foo", "bar"], function () {
+            buster.assert(opt.isSet);
+
+            buster.assert(opd.isSet);
+            buster.assert.equals(opd.value(), ["foo", "bar"]);
+            done();
+        });
+    },
+
+    "test greedy operand followed by option": function (done) {
+        var opt = this.a.createOption("-p");
+
+        var opd = this.a.createOperand();
+        opd.greedy = true;
+
+        this.a.handle(["foo", "bar", "-p"], function () {
+            buster.assert(opt.isSet);
+
+            buster.assert(opd.isSet);
+            buster.assert.equals(opd.value(), ["foo", "bar"]);
+            done();
+        });
+    },
+
+    "test greedy operand with option in between": function (done) {
+        var opt = this.a.createOption("-p");
+
+        var opd = this.a.createOperand();
+        opd.greedy = true;
+
+        this.a.handle(["foo", "-p", "bar"], function () {
+            buster.assert(opt.isSet);
+
+            buster.assert(opd.isSet);
+            buster.assert.equals(opd.value(), ["foo", "bar"]);
+            done();
+        });
+    },
+
+    "test greedy operand preceded by option with value": function (done) {
+        var opt = this.a.createOption("-p");
+        opt.hasValue = true;
+
+        var opd = this.a.createOperand();
+        opd.greedy = true;
+
+        this.a.handle(["-p", "1234", "foo", "bar"], function () {
+            buster.assert(opt.isSet);
+            buster.assert.equals(opt.value(), "1234");
+
+            buster.assert(opd.isSet);
+            buster.assert.equals(opd.value(), ["foo", "bar"]);
+            done();
+        });
+    },
+
+    "test greedy operand followed by option": function (done) {
+        var opt = this.a.createOption("-p");
+        opt.hasValue = true;
+
+        var opd = this.a.createOperand();
+        opd.greedy = true;
+
+        this.a.handle(["foo", "bar", "-p", "1234"], function () {
+            buster.assert(opt.isSet);
+            buster.assert.equals(opt.value(), "1234");
+
+            buster.assert(opd.isSet);
+            buster.assert.equals(opd.value(), ["foo", "bar"]);
+            done();
+        });
+    },
+
+    "test greedy operand with option in between": function (done) {
+        var opt = this.a.createOption("-p");
+        opt.hasValue = true;
+
+        var opd = this.a.createOperand();
+        opd.greedy = true;
+
+        this.a.handle(["foo", "-p", "1234", "bar"], function () {
+            buster.assert(opt.isSet);
+            buster.assert.equals(opt.value(), "1234");
+
+            buster.assert(opd.isSet);
+            buster.assert.equals(opd.value(), ["foo", "bar"]);
+            done();
+        });
+    },
+
+    "test greedy operand preceded by none-greedy operand": function (done) {
+        var opd1 = this.a.createOperand();
+
+        var opd2 = this.a.createOperand();
+        opd2.greedy = true;
+
+        this.a.handle(["foo", "bar", "baz"], function () {
+            buster.assert(opd1.isSet);
+            buster.assert.equals(opd1.value(), "foo");
+
+            buster.assert(opd2.isSet);
+            buster.assert.equals(opd2.value(), ["bar", "baz"]);
+
+            done();
+        });
+    },
+
+    "test greedy operand followed by none-greedy operand": function (done) {
+        var opd1 = this.a.createOperand();
+        opd1.greedy = true;
+
+        var opd2 = this.a.createOperand();
+
+        this.a.handle(["foo", "bar", "baz"], function () {
+            buster.assert(opd1.isSet);
+            buster.assert.equals(opd1.value(), ["foo", "bar", "baz"]);
+
+            buster.assert.isFalse(opd2.isSet);
+
+            done();
+        });
     }
 });
 
