@@ -9,5 +9,8 @@
     "license": {
         "type": "BSD",
         "url": "http://gitorious.org/buster/buster-args/blobs/master/LICENSE"
+    },
+    "dependencies": {
+        "buster-promise": "*"
     }
 }
