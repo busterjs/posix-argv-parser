@@ -322,7 +322,7 @@ buster.testCase("buster-args single dash option", {
         var opt = this.a.createOption("-p");
 
         this.a.handle(["--", "-p"], function (errors) {
-            buster.assert.isNotUndefined(errors);
+            buster.refute.isUndefined(errors);
             done();
         });
     },
@@ -339,7 +339,7 @@ buster.testCase("buster-args single dash option", {
             opt.addValidator(function () { return "an error"; });
 
             self.a.handle(["-p", "bar"], function (errors) {
-                buster.assert.isNotUndefined(errors);
+                buster.refute.isUndefined(errors);
                 buster.assert(!opt.isSet);
                 buster.assert(!opt.value());
                 done();
@@ -521,7 +521,7 @@ buster.testCase("buster-args double dash option", {
             opt.addValidator(function () { return "an error"; });
 
             self.a.handle(["--port", "bar"], function (errors) {
-                buster.assert.isNotUndefined(errors);
+                buster.refute.isUndefined(errors);
                 buster.assert(!opt.isSet);
                 buster.assert(!opt.value());
                 done();
@@ -640,7 +640,7 @@ buster.testCase("buster-args mix and match", {
         var opt = this.a.createOption("--port");
 
         this.a.handle(["--", "--port"], function (errors) {
-            buster.assert.isNotUndefined(errors);
+            buster.refute.isUndefined(errors);
             done();
         });
     }
@@ -769,7 +769,7 @@ buster.testCase("buster-args operands", {
         opd.addValidator(busterArgs.validators.required());
 
         this.a.handle([], function (errors) {
-            buster.assert.isNotUndefined(errors);
+            buster.refute.isUndefined(errors);
             buster.assert.equals(errors.length, 1);
             done();
         });
@@ -779,7 +779,7 @@ buster.testCase("buster-args operands", {
         var self = this;
         this.a.createOperand(busterArgs.OPD_DIRECTORY);
 
-        buster.assert.noException(function () {
+        buster.refute.exception(function () {
             self.a.createOption("-p");
         });
    },
@@ -855,7 +855,7 @@ buster.testCase("buster-args operands", {
             opd.addValidator(function () { return "an error"; });
 
             self.a.handle(["bar"], function (errors) {
-                buster.assert.isNotUndefined(errors);
+                buster.refute.isUndefined(errors);
                 buster.assert(!opd.isSet);
                 buster.assert(!opd.value());
                 done();
@@ -1083,7 +1083,7 @@ buster.testCase("buster-args shorthands", {
         this.a.addShorthand("-p", ["--port"]);
 
         this.a.handle(["-p"], function (errors) {
-            buster.assert.isNotUndefined(errors);
+            buster.refute.isUndefined(errors);
             buster.assert.match(errors[0], /unknown argument/i);
             done();
         });
