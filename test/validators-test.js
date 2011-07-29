@@ -291,6 +291,7 @@ buster.testCase("buster-args built in validators", {
 
             "test no value": function (done) {
                 this.a.handle([], function (errors) {
+                    buster.assert(true);
                     done();
                 });
             }
@@ -338,6 +339,7 @@ buster.testCase("buster-args built in validators", {
 
             "test no value": function (done) {
                 this.a.handle([], function (errors) {
+                    buster.assert(true);
                     done();
                 });
             }
@@ -384,6 +386,7 @@ buster.testCase("buster-args built in validators", {
 
             "test no value": function (done) {
                 this.a.handle([], function (errors) {
+                    buster.assert(true);
                     done();
                 });
             },
