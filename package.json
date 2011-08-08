@@ -1,16 +1,25 @@
 {
     "name": "buster-args",
-    "version": "0.1.0",
+    "version": "0.2.0",
     "description": "Parser for CLI arguments.",
     "homepage": "http://busterjs.org/docs/buster-args",
-    "author": "August Lilleaas <august@augustl.com>",
+    "author": { "name": "August Lilleaas and Christian Johansen" },
+    "contributors": [{
+        "name": "Christian Johansen",
+        "email": "christian@cjohansen.no",
+        "url": "http://cjohansen.no"
+    }, {
+        "name": "August Lilleaas",
+        "email": "august.lilleaas@gmail.com",
+        "url": "http://augustl.com"
+    }],
     "main": "./lib/buster-args",
-    "repository": "http://gitorious.org/buster/buster-args",
+    "repository": "git://gitorious.org/buster/buster-args",
     "license": {
         "type": "BSD",
         "url": "http://gitorious.org/buster/buster-args/blobs/master/LICENSE"
     },
     "dependencies": {
-        "buster-promise": "*"
+        "buster-promise": "~>0.3"
     }
 }
