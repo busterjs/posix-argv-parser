@@ -20,6 +20,7 @@
         "url": "http://gitorious.org/buster/buster-args/blobs/master/LICENSE"
     },
     "dependencies": {
+        "buster-core": "*",
         "buster-promise": "~>0.3"
     }
 }
