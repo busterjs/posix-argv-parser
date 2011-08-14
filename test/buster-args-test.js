@@ -1078,14 +1078,15 @@ buster.testCase("buster-args shorthands", {
     "test shorthand for option with value not setting value": function (done) {
         var opt = this.a.createOption("--port");
         opt.hasValue = true;
-        try {
-            this.a.addShorthand("-p", ["--port"]);
-        } catch(e) {
-            // TODO: This should fail.
-        }
+        this.a.addShorthand("-p", ["--port"]);
 
-        buster.assert(true);
-        done();
+        this.a.handle(["-p"], function (errors) {
+            buster.refute.isUndefined(errors);
+            buster.assert.match(errors[0], /no value specified/i);
+            buster.assert.match(errors[0], "--port");
+            buster.refute(opt.isSet);
+            done();
+        });
     },
 
     "test shorthand expanding to none existing options": function (done) {
