@@ -223,6 +223,19 @@ buster.testCase("buster-args single dash option", {
         });
     },
 
+    "test option having value and accepting not getting one passed": function (done) {
+        var opt = this.a.createOption("-p");
+        opt.hasValue = true;
+        opt.acceptsValueAbsence = true;
+
+        this.a.handle(["-p"], function (errors) {
+            buster.assert.isUndefined(errors);
+            buster.assert(opt.isSet);
+            buster.refute(opt.value());
+            done();
+        });
+    },
+
     "test passing value matching other option": function (done) {
         var opt1 = this.a.createOption("-p");
         opt1.hasValue = true;
@@ -464,6 +477,19 @@ buster.testCase("buster-args double dash option", {
             buster.assert.match(errors[0], /no value specified/i);
             buster.assert.match(errors[0], "--port");
             buster.refute(opt.isSet);
+            done();
+        });
+    },
+
+    "test option having value and accepting not getting one passed": function (done) {
+        var opt = this.a.createOption("--port");
+        opt.hasValue = true;
+        opt.acceptsValueAbsence = true;
+
+        this.a.handle(["--port"], function (errors) {
+            buster.assert.isUndefined(errors);
+            buster.assert(opt.isSet);
+            buster.refute(opt.value());
             done();
         });
     },
