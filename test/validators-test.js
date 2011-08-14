@@ -199,15 +199,6 @@ buster.testCase("buster-args built in validators", {
                 });
             },
 
-            "test setting option without value": function (done) {
-                this.a.handle(["-p"], function (errors) {
-                    buster.assert.equals(errors.length, 1);
-                    buster.assert.match(errors[0], "-p");
-                    buster.assert.match(errors[0], /is required/);
-                    done();
-                });
-            },
-
             "test not setting option": function (done) {
                 this.a.handle([], function (errors) {
                     buster.assert.equals(errors.length, 1);
