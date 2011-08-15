@@ -1231,5 +1231,38 @@ buster.testCase("Operations", {
                 done();
             });
         }
+    },
+
+    "on operands": {
+        setUp: function () {
+            this.opd = this.a.createOperand();
+        },
+
+        "should set value when successful": function (done) {
+            var self = this;
+            this.opd.operation = function (promise) {
+                promise.resolve("The value");
+            };
+
+            this.a.handle(["doing it"], function (errors) {
+                buster.assert.isUndefined(errors);
+                buster.assert.equals(self.opd.value(), "The value");
+                done();
+            });
+        },
+
+        "should set error when failing": function (done) {
+            var self = this;
+            this.opd.operation = function (promise) {
+                promise.reject("The error");
+            };
+
+            this.a.handle(["allright"], function (errors) {
+                buster.refute.isUndefined(errors);
+                buster.assert.match(errors, "The error");
+                buster.assert.isUndefined(self.opd.value());
+                done();
+            });
+        }
     }
 });
