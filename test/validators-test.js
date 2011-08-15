@@ -273,7 +273,7 @@ buster.testCase("buster-args built in validators", {
                 var self = this;
                 this.a.handle([missingDirOrFile], function (errors) {
                     buster.assert.equals(errors.length, 1);
-                    buster.assert.match(errors[0], /no such file or directory/i);
+                    buster.assert.match(errors[0], /is not a directory/i);
                     buster.assert.match(errors[0], missingDirOrFile);
                     buster.assert.isFalse(self.o.isSet);
                     done();
@@ -321,7 +321,7 @@ buster.testCase("buster-args built in validators", {
                 var self = this;
                 this.a.handle([missingDirOrFile], function (errors) {
                     buster.assert.equals(errors.length, 1);
-                    buster.assert.match(errors[0], /no such file or directory/i);
+                    buster.assert.match(errors[0], /is not a file/i);
                     buster.assert.match(errors[0], missingDirOrFile);
                     buster.assert.isFalse(self.o.isSet);
                     done();
@@ -368,7 +368,7 @@ buster.testCase("buster-args built in validators", {
                 var self = this;
                 this.a.handle([missingDirOrFile], function (errors) {
                     buster.assert.equals(errors.length, 1);
-                    buster.assert.match(errors[0], /no such file or directory/i);
+                    buster.assert.match(errors[0], /not a file or directory/i);
                     buster.assert.match(errors[0], missingDirOrFile);
                     buster.assert.isFalse(self.o.isSet);
                     done();
@@ -477,7 +477,7 @@ buster.testCase("buster-args built in validators", {
         },
 
         "test file with no such file or dir": function (done) {
-            this.o.addValidator(busterArgs.validators.file("foo", "Foo ${1}"));
+            this.o.addValidator(busterArgs.validators.file("Foo ${1}"));
             this.a.handle(["-p", missingDirOrFile], function (errors) {
                 buster.assert.equals(errors[0], "Foo " + missingDirOrFile);
                 done();
@@ -485,7 +485,7 @@ buster.testCase("buster-args built in validators", {
         },
 
         "test file with directory": function (done) {
-            this.o.addValidator(busterArgs.validators.file("Foo ${1}", "foo"));
+            this.o.addValidator(busterArgs.validators.file("Foo ${1}"));
             this.a.handle(["-p", existingDir], function (errors) {
                 buster.assert.equals(errors[0], "Foo " + existingDir);
                 done();
@@ -493,7 +493,7 @@ buster.testCase("buster-args built in validators", {
         },
 
         "test dir with no such file or dir": function (done) {
-            this.o.addValidator(busterArgs.validators.directory("foo", "Foo ${1}"));
+            this.o.addValidator(busterArgs.validators.directory("Foo ${1}"));
             this.a.handle(["-p", missingDirOrFile], function (errors) {
                 buster.assert.equals(errors[0], "Foo " + missingDirOrFile);
                 done();
@@ -501,7 +501,7 @@ buster.testCase("buster-args built in validators", {
         },
 
         "test dir with file": function (done) {
-            this.o.addValidator(busterArgs.validators.directory("Foo ${1}", "foo"));
+            this.o.addValidator(busterArgs.validators.directory("Foo ${1}"));
             this.a.handle(["-p", existingFile], function (errors) {
                 buster.assert.equals(errors[0], "Foo " + existingFile);
                 done();
@@ -509,7 +509,7 @@ buster.testCase("buster-args built in validators", {
         },
 
         "test fileOrDir with no such file or dir": function (done) {
-            this.o.addValidator(busterArgs.validators.fileOrDirectory("foo", "Foo ${1}"));
+            this.o.addValidator(busterArgs.validators.fileOrDirectory("Foo ${1}"));
             this.a.handle(["-p", missingDirOrFile], function (errors) {
                 buster.assert.equals(errors[0], "Foo " + missingDirOrFile);
                 done();
@@ -517,7 +517,7 @@ buster.testCase("buster-args built in validators", {
         },
 
         "test fileOrDir with existing but not file or dir": function (done) {
-            this.o.addValidator(busterArgs.validators.fileOrDirectory("Foo ${1}", "foo"));
+            this.o.addValidator(busterArgs.validators.fileOrDirectory("Foo ${1}"));
             this.a.handle(["-p", notFileOrDirButExists], function (errors) {
                 buster.assert.equals(errors[0], "Foo " + notFileOrDirButExists);
                 done();
