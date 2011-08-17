@@ -1,7 +1,7 @@
 var buster = require("buster");
 var busterArgs = require("./../lib/buster-args");
 
-buster.testCase("buster-args single dash option", {
+buster.testCase("Single dash option", {
     setUp: function () {
         this.a = Object.create(busterArgs);
     },
@@ -365,7 +365,7 @@ buster.testCase("buster-args single dash option", {
     }
 });
 
-buster.testCase("buster-args double dash option", {
+buster.testCase("Double dash option", {
     setUp: function () {
         this.a = Object.create(busterArgs);
     },
@@ -565,7 +565,7 @@ buster.testCase("buster-args double dash option", {
     }
 });
 
-buster.testCase("buster-args mix and match", {
+buster.testCase("buster-args", {
     setUp: function () {
         this.a = Object.create(busterArgs);
     },
@@ -681,7 +681,7 @@ buster.testCase("buster-args mix and match", {
     }
 });
 
-buster.testCase("buster-args operands", {
+buster.testCase("Operands", {
     setUp: function () {
         this.a = Object.create(busterArgs);
     },
@@ -1072,7 +1072,7 @@ buster.testCase("buster-args operands", {
     }
 });
 
-buster.testCase("buster-args shorthands", {
+buster.testCase("Shorthands", {
     setUp: function () {
         this.a = Object.create(busterArgs);
     },

@@ -10,7 +10,7 @@ var missingDirOrFile = "/tmp/buster/roflmao/does-not-exist";
 // TODO: don't depend on /dev/null being available.
 var notFileOrDirButExists = "/dev/null";
 
-buster.testCase("buster-args built in validators", {
+buster.testCase("Built in validator", {
     setUp: function () {
         this.a = Object.create(busterArgs);
     },
