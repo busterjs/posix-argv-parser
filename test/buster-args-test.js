@@ -1178,7 +1178,7 @@ buster.testCase("buster-args shorthands", {
     }
 });
 
-buster.testCase("Operations", {
+buster.testCase("Mutators", {
     setUp: function () {
         this.a = Object.create(busterArgs);
     },
@@ -1190,7 +1190,7 @@ buster.testCase("Operations", {
 
         "should set value when successful": function (done) {
             var self = this;
-            this.opt.operation = function (promise) {
+            this.opt.mutator = function (promise) {
                 promise.resolve("The value");
             };
 
@@ -1203,7 +1203,7 @@ buster.testCase("Operations", {
 
         "should set error when failing": function (done) {
             var self = this;
-            this.opt.operation = function (promise) {
+            this.opt.mutator = function (promise) {
                 promise.reject("The error");
             };
 
@@ -1218,7 +1218,7 @@ buster.testCase("Operations", {
         "should leave value intact when resolving with no argument": function (done) {
             var self = this;
             var spy = this.spy();
-            this.opt.operation = function (promise) {
+            this.opt.mutator = function (promise) {
                 spy();
                 promise.resolve();
             };
@@ -1240,7 +1240,7 @@ buster.testCase("Operations", {
 
         "should set value when successful": function (done) {
             var self = this;
-            this.opd.operation = function (promise) {
+            this.opd.mutator = function (promise) {
                 promise.resolve("The value");
             };
 
@@ -1253,7 +1253,7 @@ buster.testCase("Operations", {
 
         "should set error when failing": function (done) {
             var self = this;
-            this.opd.operation = function (promise) {
+            this.opd.mutator = function (promise) {
                 promise.reject("The error");
             };
 
