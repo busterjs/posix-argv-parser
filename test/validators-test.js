@@ -45,8 +45,8 @@ buster.testCase("Built in validator", {
     "test adding validator that uses the value of the option": function (done) {
         var opt = this.a.createOption("-p");
         opt.hasValue = true;
-        opt.addValidator(function () {
-            return buster.promise.create().reject(this.value + " is crazy.");
+        opt.addValidator(function (opt) {
+            return buster.promise.create().reject(opt.value + " is crazy.");
         });
 
         this.a.handle(["-p1234"], function (errors) {
