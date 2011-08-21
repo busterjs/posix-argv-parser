@@ -496,3 +496,27 @@ buster.testCase("Built in validator", {
         }
     }
 });
+
+buster.testCase("Validators", {
+    setUp: function () {
+        this.a = Object.create(busterArgs);
+    },
+    
+    "should not be able to mutate argument": function (done) {
+        var opt = this.a.createOption("-p");
+        opt.addValidator(function (o) {
+            o.isSet = false;
+            o.actualValue = "test";
+            o.whatever = 123;
+            return buster.promise.create().resolve();
+        });
+
+        this.a.handle(["-p"], function (errors) {
+            buster.assert.isUndefined(errors);
+            buster.assert(opt.isSet);
+            buster.refute(opt.value);
+            buster.refute("whatever" in opt);
+            done();
+        });
+    }
+});
