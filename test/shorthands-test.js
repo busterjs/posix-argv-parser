@@ -25,7 +25,7 @@ buster.testCase("Shorthands", {
         this.a.handle(["-p"], function (errors) {
             buster.assert.isUndefined(errors);
             buster.assert(opt.isSet);
-            buster.assert.equals(opt.value(), "1234");
+            buster.assert.equals(opt.value, "1234");
             done();
         });
     },

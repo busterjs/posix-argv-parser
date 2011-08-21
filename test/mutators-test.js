@@ -19,7 +19,7 @@ buster.testCase("Mutators", {
 
             this.a.handle(["-p"], function (errors) {
                 buster.assert.isUndefined(errors);
-                buster.assert.equals(self.opt.value(), "The value");
+                buster.assert.equals(self.opt.value, "The value");
                 done();
             });
         },
@@ -33,7 +33,7 @@ buster.testCase("Mutators", {
             this.a.handle(["-p"], function (errors) {
                 buster.refute.isUndefined(errors);
                 buster.assert.match(errors, "The error");
-                buster.assert.isUndefined(self.opt.value());
+                buster.assert.isUndefined(self.opt.value);
                 done();
             });
         },
@@ -49,7 +49,7 @@ buster.testCase("Mutators", {
 
             this.a.handle(["-p", "1234"], function (errors) {
                 buster.assert.isUndefined(errors);
-                buster.assert.equals(self.opt.value(), "1234");
+                buster.assert.equals(self.opt.value, "1234");
                 buster.assert(spy.calledOnce);
                 done();
             });
@@ -69,7 +69,7 @@ buster.testCase("Mutators", {
 
             this.a.handle(["doing it"], function (errors) {
                 buster.assert.isUndefined(errors);
-                buster.assert.equals(self.opd.value(), "The value");
+                buster.assert.equals(self.opd.value, "The value");
                 done();
             });
         },
@@ -83,7 +83,7 @@ buster.testCase("Mutators", {
             this.a.handle(["allright"], function (errors) {
                 buster.refute.isUndefined(errors);
                 buster.assert.match(errors, "The error");
-                buster.assert.isUndefined(self.opd.value());
+                buster.assert.isUndefined(self.opd.value);
                 done();
             });
         }

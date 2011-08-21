@@ -46,7 +46,7 @@ buster.testCase("Built in validator", {
         var opt = this.a.createOption("-p");
         opt.hasValue = true;
         opt.addValidator(function () {
-            return buster.promise.create().reject(this.value() + " is crazy.");
+            return buster.promise.create().reject(this.value + " is crazy.");
         });
 
         this.a.handle(["-p1234"], function (errors) {
@@ -104,7 +104,7 @@ buster.testCase("Built in validator", {
             var self = this;
             this.a.handle(["-p123"], function (errors) {
                 buster.assert.isUndefined(errors);
-                buster.assert.same(self.opt.value(), 123);
+                buster.assert.same(self.opt.value, 123);
                 done();
             });
         },
@@ -148,7 +148,7 @@ buster.testCase("Built in validator", {
             var self = this;
             this.a.handle(["-p123"], function (errors) {
                 buster.assert.isUndefined(errors);
-                buster.assert.same(self.opt.value(), 123);
+                buster.assert.same(self.opt.value, 123);
                 done();
             });
         },
@@ -175,7 +175,7 @@ buster.testCase("Built in validator", {
             var self = this;
             this.a.handle(["-p123.4"], function (errors) {
                 buster.assert.isUndefined(errors);
-                buster.assert.same(self.opt.value(), 123.4);
+                buster.assert.same(self.opt.value, 123.4);
                 done();
             });
         }
@@ -233,10 +233,10 @@ buster.testCase("Built in validator", {
             var opd = this.a.createOperand();
             opd.addValidator(busterArgs.validators.directory());
             this.a.handle([existingDir], function (errors) {
-                buster.assert("stat" in opd.value());
+                buster.assert("stat" in opd.value);
 
                 require("fs").stat(existingDir, function (err, stat) {
-                    buster.assert.equals(opd.value().stat, stat);
+                    buster.assert.equals(opd.value.stat, stat);
                     done();
                 });
             });
@@ -252,7 +252,7 @@ buster.testCase("Built in validator", {
                 var self = this;
                 this.a.handle([existingDir], function (errors) {
                     buster.assert.isUndefined(errors);
-                    buster.assert.match(self.o.value(), {path: existingDir});
+                    buster.assert.match(self.o.value, {path: existingDir});
                     buster.assert(self.o.isSet);
                     done();
                 });
@@ -311,7 +311,7 @@ buster.testCase("Built in validator", {
                 var self = this;
                 this.a.handle([existingFile], function (errors) {
                     buster.assert.isUndefined(errors);
-                    buster.assert.match(self.o.value(), {path: existingFile});
+                    buster.assert.match(self.o.value, {path: existingFile});
                     buster.assert(self.o.isSet);
                     done();
                 });
@@ -348,7 +348,7 @@ buster.testCase("Built in validator", {
                 var self = this;
                 this.a.handle([existingDir], function (errors) {
                     buster.assert.isUndefined(errors);
-                    buster.assert.match(self.o.value(), {path: existingDir});
+                    buster.assert.match(self.o.value, {path: existingDir});
                     buster.assert(self.o.isSet);
                     done();
                 });
@@ -358,7 +358,7 @@ buster.testCase("Built in validator", {
                 var self = this;
                 this.a.handle([existingFile], function (errors) {
                     buster.assert.isUndefined(errors);
-                    buster.assert.match(self.o.value(), {path: existingFile});
+                    buster.assert.match(self.o.value, {path: existingFile});
                     buster.assert(self.o.isSet);
                     done();
                 });
