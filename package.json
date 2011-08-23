@@ -1,6 +1,6 @@
 {
     "name": "buster-args",
-    "version": "0.2.0",
+    "version": "0.2.1",
     "description": "Parser for CLI arguments.",
     "homepage": "http://busterjs.org/docs/buster-args",
     "author": { "name": "August Lilleaas and Christian Johansen" },
@@ -21,6 +21,6 @@
     },
     "dependencies": {
         "buster-core": "*",
-        "buster-promise": "~>0.3"
+        "buster-promise": "~0.3"
     }
 }
