@@ -207,7 +207,7 @@ buster.testCase("Operands", {
             buster.assert(opd.isSet);
             buster.assert.equals(opd.value, "foo");
 
-            opd.addValidator(function () { return "an error"; });
+            opd.addValidator(function (arg, promise) { promise.reject("an error") });
 
             self.a.handle(["bar"], function (errors) {
                 buster.refute.isUndefined(errors);

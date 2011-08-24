@@ -353,7 +353,7 @@ buster.testCase("Single dash option", {
             buster.assert(opt.isSet);
             buster.assert.equals(opt.value, "foo");
 
-            opt.addValidator(function () { return "an error"; });
+            opt.addValidator(function (arg, promise) { promise.reject("an error"); });
 
             self.a.handle(["-p", "bar"], function (errors) {
                 buster.refute.isUndefined(errors);
@@ -553,7 +553,7 @@ buster.testCase("Double dash option", {
             buster.assert(opt.isSet);
             buster.assert.equals(opt.value, "foo");
 
-            opt.addValidator(function () { return "an error"; });
+            opt.addValidator(function (arg, promise) { promise.reject("an error"); });
 
             self.a.handle(["--port", "bar"], function (errors) {
                 buster.refute.isUndefined(errors);

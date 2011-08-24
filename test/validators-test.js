@@ -19,8 +19,8 @@ buster.testCase("Built in validator", {
         var actualError = "An error message";
 
         var opt = this.a.createOption("-p");
-        opt.addValidator(function () {
-            return buster.promise.create().reject(actualError);
+        opt.addValidator(function (opt, promise) {
+            promise.reject(actualError);
         });
 
         this.a.handle(["-p"], function (errors) {
@@ -32,8 +32,8 @@ buster.testCase("Built in validator", {
 
     "test basic validator without error": function (done) {
         var opt = this.a.createOption("-p");
-        opt.addValidator(function () {
-            return buster.promise.create().resolve();
+        opt.addValidator(function (opt, promise) {
+            promise.resolve();
         });
 
         this.a.handle(["-p"], function (errors) {
@@ -45,50 +45,13 @@ buster.testCase("Built in validator", {
     "test adding validator that uses the value of the option": function (done) {
         var opt = this.a.createOption("-p");
         opt.hasValue = true;
-        opt.addValidator(function (opt) {
-            return buster.promise.create().reject(opt.value + " is crazy.");
+        opt.addValidator(function (opt, promise) {
+            promise.reject(opt.value + " is crazy.");
         });
 
         this.a.handle(["-p1234"], function (errors) {
             buster.assert.equals(errors.length, 1);
             buster.assert.equals(errors[0], "1234 is crazy.");
-            done();
-        });
-    },
-
-    "test option validator returning a string instead of a promise": function (done) {
-        var opt = this.a.createOption("-p");
-        opt.addValidator(function () {
-            return "This is an error message.";
-        });
-
-        this.a.handle(["-p"], function (errors) {
-            buster.assert.equals(errors.length, 1);
-            buster.assert.equals(errors[0], "This is an error message.");
-            done();
-        });
-    },
-
-    "test operand validator returning a string instead of a promise": function (done) {
-        var opt = this.a.createOperand();
-        opt.addValidator(function () {
-            return "This is an error message.";
-        });
-
-        this.a.handle([], function (errors) {
-            buster.assert.equals(errors.length, 1);
-            buster.assert.equals(errors[0], "This is an error message.");
-            done();
-        });
-    },
-
-    "test validator returning nothing is considered valid": function (done) {
-        var opt = this.a.createOption("-p");
-        opt.addValidator(function () {});
-
-        this.a.handle(["-p"], function (errors) {
-            buster.assert.isUndefined(errors);
-            buster.assert(opt.isSet);
             done();
         });
     },
@@ -504,11 +467,11 @@ buster.testCase("Validators", {
     
     "should not be able to mutate argument": function (done) {
         var opt = this.a.createOption("-p");
-        opt.addValidator(function (o) {
+        opt.addValidator(function (o, promise) {
             o.isSet = false;
             o.actualValue = "test";
             o.whatever = 123;
-            return buster.promise.create().resolve();
+            promise.resolve();
         });
 
         this.a.handle(["-p"], function (errors) {
