@@ -1,5 +1,7 @@
 var buster = require("buster");
 var busterArgs = require("./../lib/buster-args");
+var assert = buster.assert;
+var refute = buster.refute;
 
 buster.testCase("buster-args", {
     setUp: function () {
@@ -8,7 +10,7 @@ buster.testCase("buster-args", {
 
     "test not passing any options": function () {
         var self = this;
-        buster.assert.exception(function () {
+        assert.exception(function () {
             self.a.createOption();
         });
     },
@@ -16,9 +18,9 @@ buster.testCase("buster-args", {
     "test handling none existing option errors": function (done) {
         this.a.createOption("-p");
         this.a.handle(["-z"], function (errors) {
-            buster.assert.equals(errors.length, 1);
-            buster.assert.match(errors[0], /unknown argument/i)
-            buster.assert.match(errors[0], "-z")
+            assert.equals(errors.length, 1);
+            assert.match(errors[0], /unknown argument/i)
+            assert.match(errors[0], "-z")
 
             done();
         });
@@ -29,10 +31,10 @@ buster.testCase("buster-args", {
         var opt2 = this.a.createOption("--port");
 
         this.a.handle(["-p", "--port"], function (errors) {
-            buster.assert(opt1.isSet);
-            buster.assert.equals(opt1.timesSet, 1);
-            buster.assert(opt2.isSet);
-            buster.assert.equals(opt2.timesSet, 1);
+            assert(opt1.isSet);
+            assert.equals(opt1.timesSet, 1);
+            assert(opt2.isSet);
+            assert.equals(opt2.timesSet, 1);
 
             done();
         });
@@ -43,13 +45,13 @@ buster.testCase("buster-args", {
         var opt2 = this.a.createOption("--port");
 
         this.a.handle(["--port", "-p"], function (errors) {
-            buster.assert(opt1.isSet);
-            buster.assert.equals(opt1.timesSet, 1);
-            buster.assert(opt2.isSet);
-            buster.assert.equals(opt2.timesSet, 1);
+            assert(opt1.isSet);
+            assert.equals(opt1.timesSet, 1);
+            assert(opt2.isSet);
+            assert.equals(opt2.timesSet, 1);
 
             done();
-        }); 
+        });
     },
 
     "test one and two dash option with only double dash passed": function (done) {
@@ -57,13 +59,13 @@ buster.testCase("buster-args", {
         var opt2 = this.a.createOption("--port");
 
         this.a.handle(["--port"], function (errors) {
-            buster.assert.isFalse(opt1.isSet);
+            assert.isFalse(opt1.isSet);
 
-            buster.assert(opt2.isSet);
-            buster.assert.equals(opt2.timesSet, 1);
+            assert(opt2.isSet);
+            assert.equals(opt2.timesSet, 1);
 
             done();
-        }); 
+        });
     },
 
     "test one and two dash option with only single dash passed": function (done) {
@@ -71,23 +73,23 @@ buster.testCase("buster-args", {
         var opt2 = this.a.createOption("--port");
 
         this.a.handle(["-p"], function (errors) {
-            buster.assert(opt1.isSet);
-            buster.assert.equals(opt1.timesSet, 1);
+            assert(opt1.isSet);
+            assert.equals(opt1.timesSet, 1);
 
-            buster.assert.isFalse(opt2.isSet);
+            assert.isFalse(opt2.isSet);
 
             done();
-        }); 
+        });
     },
 
     "test same option specified twice in one option": function () {
         var self = this;
 
-        buster.assert.exception(function () {
+        assert.exception(function () {
             self.a.createOption("-p", "-p");
         });
 
-        buster.assert.exception(function () {
+        assert.exception(function () {
             self.a.createOption("--port", "--port");
         });
     },
@@ -96,13 +98,13 @@ buster.testCase("buster-args", {
         var self = this;
         this.a.createOption("-p");
 
-        buster.assert.exception(function () {
+        assert.exception(function () {
             self.a.createOption("-p");
         });
 
         this.a.createOption("--port");
 
-        buster.assert.exception(function () {
+        assert.exception(function () {
             self.a.createOption("--port");
         });
     },
@@ -111,7 +113,7 @@ buster.testCase("buster-args", {
         var opt = this.a.createOption("--port");
 
         this.a.handle(["--", "--port"], function (errors) {
-            buster.refute.isUndefined(errors);
+            assert.defined(errors);
             done();
         });
     }

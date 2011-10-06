@@ -1,5 +1,7 @@
 var buster = require("buster");
 var busterArgs = require("./../lib/buster-args");
+var assert = buster.assert;
+var refute = buster.refute;
 
 buster.testCase("Single dash option", {
     setUp: function () {
@@ -9,8 +11,8 @@ buster.testCase("Single dash option", {
     "test one option": function (done) {
         var opt = this.a.createOption("-p");
         this.a.handle(["-p"], function (errors) {
-            buster.assert(opt.isSet);
-            buster.assert.equals(opt.timesSet, 1);
+            assert(opt.isSet);
+            assert.equals(opt.timesSet, 1);
             done();
         });
     },
@@ -18,23 +20,23 @@ buster.testCase("Single dash option", {
     "test with multiple characters": function () {
         var self = this;
 
-        buster.assert.exception(function () {
+        assert.exception(function () {
             self.a.createOption("-pf");
         });
 
-        buster.assert.exception(function () {
+        assert.exception(function () {
             self.a.createOption("--");
         });
 
-        buster.assert.exception(function () {
+        assert.exception(function () {
             self.a.createOption("-pff");
         });
 
-        buster.assert.exception(function () {
+        assert.exception(function () {
             self.a.createOption("-p-f");
         });
 
-        buster.assert.exception(function () {
+        assert.exception(function () {
             self.a.createOption("-p", "-pfff");
         });
     },
@@ -42,8 +44,8 @@ buster.testCase("Single dash option", {
     "test one option twice as separate options": function (done) {
         var opt = this.a.createOption("-p");
         this.a.handle(["-p", "-p"], function (errors) {
-            buster.assert(opt.isSet);
-            buster.assert.equals(opt.timesSet, 2);
+            assert(opt.isSet);
+            assert.equals(opt.timesSet, 2);
             done();
         });
     },
@@ -51,8 +53,8 @@ buster.testCase("Single dash option", {
     "test one option thrice as separate options": function (done) {
         var opt = this.a.createOption("-p");
         this.a.handle(["-p", "-p", "-p"], function (errors) {
-            buster.assert(opt.isSet);
-            buster.assert.equals(opt.timesSet, 3);
+            assert(opt.isSet);
+            assert.equals(opt.timesSet, 3);
             done();
         });
     },
@@ -60,8 +62,8 @@ buster.testCase("Single dash option", {
     "test one option twice as one grouped option": function (done) {
         var opt = this.a.createOption("-p");
         this.a.handle(["-pp"], function (errors) {
-            buster.assert(opt.isSet);
-            buster.assert.equals(opt.timesSet, 2);
+            assert(opt.isSet);
+            assert.equals(opt.timesSet, 2);
             done();
         });
     },
@@ -69,8 +71,8 @@ buster.testCase("Single dash option", {
     "test one option thrice as one grouped option": function (done) {
         var opt = this.a.createOption("-p");
         this.a.handle(["-ppp"], function (errors) {
-            buster.assert(opt.isSet);
-            buster.assert.equals(opt.timesSet, 3);
+            assert(opt.isSet);
+            assert.equals(opt.timesSet, 3);
             done();
         });
     },
@@ -78,8 +80,8 @@ buster.testCase("Single dash option", {
     "test one option thrice as bith grouped and separate": function (done) {
         var opt = this.a.createOption("-p");
         this.a.handle(["-pp", "-p"], function (errors) {
-            buster.assert(opt.isSet);
-            buster.assert.equals(opt.timesSet, 3);
+            assert(opt.isSet);
+            assert.equals(opt.timesSet, 3);
             done();
         });
     },
@@ -89,11 +91,11 @@ buster.testCase("Single dash option", {
         var opt2 = this.a.createOption("-z");
 
         this.a.handle(["-p", "-z"], function (errors) {
-            buster.assert(opt1.isSet);
-            buster.assert.equals(opt1.timesSet, 1);
+            assert(opt1.isSet);
+            assert.equals(opt1.timesSet, 1);
 
-            buster.assert(opt2.isSet);
-            buster.assert.equals(opt2.timesSet, 1);
+            assert(opt2.isSet);
+            assert.equals(opt2.timesSet, 1);
 
             done();
         });
@@ -104,11 +106,11 @@ buster.testCase("Single dash option", {
         var opt2 = this.a.createOption("-z");
 
         this.a.handle(["-pz"], function (errors) {
-            buster.assert(opt1.isSet);
-            buster.assert.equals(opt1.timesSet, 1);
+            assert(opt1.isSet);
+            assert.equals(opt1.timesSet, 1);
 
-            buster.assert(opt2.isSet);
-            buster.assert.equals(opt2.timesSet, 1);
+            assert(opt2.isSet);
+            assert.equals(opt2.timesSet, 1);
 
             done();
         });
@@ -119,11 +121,11 @@ buster.testCase("Single dash option", {
         var opt2 = this.a.createOption("-z");
 
         this.a.handle(["-pp", "-zz"], function (errors) {
-            buster.assert(opt1.isSet);
-            buster.assert.equals(opt1.timesSet, 2);
+            assert(opt1.isSet);
+            assert.equals(opt1.timesSet, 2);
 
-            buster.assert(opt2.isSet);
-            buster.assert.equals(opt2.timesSet, 2);
+            assert(opt2.isSet);
+            assert.equals(opt2.timesSet, 2);
 
             done();
         });
@@ -134,11 +136,11 @@ buster.testCase("Single dash option", {
         var opt2 = this.a.createOption("-z");
 
         this.a.handle(["-pz", "-zp"], function (errors) {
-            buster.assert(opt1.isSet);
-            buster.assert.equals(opt1.timesSet, 2);
+            assert(opt1.isSet);
+            assert.equals(opt1.timesSet, 2);
 
-            buster.assert(opt2.isSet);
-            buster.assert.equals(opt2.timesSet, 2);
+            assert(opt2.isSet);
+            assert.equals(opt2.timesSet, 2);
 
             done();
         });
@@ -149,10 +151,10 @@ buster.testCase("Single dash option", {
         var opt2 = this.a.createOption("-z");
 
         this.a.handle(["-p"], function (errors) {
-            buster.assert(opt1.isSet);
-            buster.assert.equals(opt1.timesSet, 1);
+            assert(opt1.isSet);
+            assert.equals(opt1.timesSet, 1);
 
-            buster.assert.isFalse(opt2.isSet);
+            assert.isFalse(opt2.isSet);
 
             done();
         });
@@ -163,11 +165,11 @@ buster.testCase("Single dash option", {
         var opt2 = this.a.createOption("-z");
 
         this.a.handle(["-pzz", "-ppz"], function (errors) {
-            buster.assert(opt1.isSet);
-            buster.assert.equals(opt1.timesSet, 3);
+            assert(opt1.isSet);
+            assert.equals(opt1.timesSet, 3);
 
-            buster.assert(opt2.isSet);
-            buster.assert.equals(opt2.timesSet, 3);
+            assert(opt2.isSet);
+            assert.equals(opt2.timesSet, 3);
 
             done();
         });
@@ -178,8 +180,8 @@ buster.testCase("Single dash option", {
         opt.hasValue = true;
 
         this.a.handle(["-pfoo"], function (errors) {
-            buster.assert(opt.isSet);
-            buster.assert.equals(opt.value, "foo");
+            assert(opt.isSet);
+            assert.equals(opt.value, "foo");
             done();
         });
     },
@@ -189,10 +191,10 @@ buster.testCase("Single dash option", {
         opt.hasValue = true;
 
         this.a.handle(["-p"], function (errors) {
-            buster.refute.isUndefined(errors);
-            buster.assert.match(errors[0], /no value specified/i);
-            buster.assert.match(errors[0], "-p");
-            buster.refute(opt.isSet);
+            assert.defined(errors);
+            assert.match(errors[0], /no value specified/i);
+            assert.match(errors[0], "-p");
+            refute(opt.isSet);
             done();
         });
     },
@@ -203,8 +205,8 @@ buster.testCase("Single dash option", {
         opt.defaultValue = "bar";
 
         this.a.handle(["-pfoo"], function (errors) {
-            buster.assert(opt.isSet);
-            buster.assert.equals(opt.value, "foo");
+            assert(opt.isSet);
+            assert.equals(opt.value, "foo");
             done();
         });
     },
@@ -215,10 +217,10 @@ buster.testCase("Single dash option", {
         opt.defaultValue = "bar";
 
         this.a.handle(["-p"], function (errors) {
-            buster.refute.isUndefined(errors);
-            buster.assert.match(errors[0], /no value specified/i);
-            buster.assert.match(errors[0], "-p");
-            buster.refute(opt.isSet);
+            assert.defined(errors);
+            assert.match(errors[0], /no value specified/i);
+            assert.match(errors[0], "-p");
+            refute(opt.isSet);
             done();
         });
     },
@@ -229,9 +231,9 @@ buster.testCase("Single dash option", {
         opt.acceptsValueAbsence = true;
 
         this.a.handle(["-p"], function (errors) {
-            buster.assert.isUndefined(errors);
-            buster.assert(opt.isSet);
-            buster.refute(opt.value);
+            refute.defined(errors);
+            assert(opt.isSet);
+            refute(opt.value);
             done();
         });
     },
@@ -242,10 +244,10 @@ buster.testCase("Single dash option", {
         var opt2 = this.a.createOption("-z");
 
         this.a.handle(["-pz"], function (errors) {
-            buster.assert(opt1.isSet);
-            buster.assert.equals(opt1.value, "z");
+            assert(opt1.isSet);
+            assert.equals(opt1.value, "z");
 
-            buster.assert.isFalse(opt2.isSet);
+            assert.isFalse(opt2.isSet);
 
             done();
         });
@@ -257,10 +259,10 @@ buster.testCase("Single dash option", {
         var opt2 = this.a.createOption("-z");
 
         this.a.handle(["-pz", "-z"], function (errors) {
-            buster.assert(opt1.isSet);
-            buster.assert.equals(opt1.value, "z");
+            assert(opt1.isSet);
+            assert.equals(opt1.value, "z");
 
-            buster.assert(opt2.isSet);
+            assert(opt2.isSet);
 
             done();
         });
@@ -271,9 +273,9 @@ buster.testCase("Single dash option", {
         opt.hasValue = true;
 
         this.a.handle(["-p", "foo"], function (errors) {
-            buster.assert.isUndefined(errors);
-            buster.assert(opt.isSet);
-            buster.assert.equals(opt.value, "foo");
+            refute.defined(errors);
+            assert(opt.isSet);
+            assert.equals(opt.value, "foo");
             done();
         });
     },
@@ -282,8 +284,8 @@ buster.testCase("Single dash option", {
         var opt = this.a.createOption("-p");
 
         this.a.handle(["-p", "foo"], function (errors) {
-            buster.assert.match(errors[0], /unknown argument/i);
-            buster.assert.match(errors[0], "foo");
+            assert.match(errors[0], /unknown argument/i);
+            assert.match(errors[0], "foo");
             done();
         });
     },
@@ -293,9 +295,9 @@ buster.testCase("Single dash option", {
         opt.hasValue = true;
 
         this.a.handle(["-p=foo"], function (errors) {
-            buster.assert.isUndefined(errors);
-            buster.assert(opt.isSet);
-            buster.assert.equals(opt.value, "foo");
+            refute.defined(errors);
+            assert(opt.isSet);
+            assert.equals(opt.value, "foo");
             done();
         });
     },
@@ -304,8 +306,8 @@ buster.testCase("Single dash option", {
         var opt = this.a.createOption("-p");
 
         this.a.handle(["-p=foo"], function (errors) {
-            buster.assert.match(errors[0], /does not have a value/i);
-            buster.assert.match(errors[0], "-p");
+            assert.match(errors[0], /does not have a value/i);
+            assert.match(errors[0], "-p");
             done();
         });
     },
@@ -315,9 +317,9 @@ buster.testCase("Single dash option", {
         opt.hasValue = true;
 
         this.a.handle(["-p", "=", "123"], function (errors) {
-            buster.assert.equals(opt.value, "=");
-            buster.assert.match(errors[0], /unknown argument/i);
-            buster.assert.match(errors[0], "123");
+            assert.equals(opt.value, "=");
+            assert.match(errors[0], /unknown argument/i);
+            assert.match(errors[0], "123");
             done();
         });
     },
@@ -328,9 +330,9 @@ buster.testCase("Single dash option", {
         var opd3 = this.a.createOperand();
 
         this.a.handle(["foo", "bar", "baz"], function (errors) {
-            buster.assert.equals(opd1.value, "foo");
-            buster.assert.equals(opd2.value, "bar");
-            buster.assert.equals(opd3.value, "baz");
+            assert.equals(opd1.value, "foo");
+            assert.equals(opd2.value, "bar");
+            assert.equals(opd3.value, "baz");
             done();
         });
     },
@@ -339,7 +341,7 @@ buster.testCase("Single dash option", {
         var opt = this.a.createOption("-p");
 
         this.a.handle(["--", "-p"], function (errors) {
-            buster.refute.isUndefined(errors);
+            assert.defined(errors);
             done();
         });
     },
@@ -350,15 +352,15 @@ buster.testCase("Single dash option", {
         opt.hasValue = true
 
         this.a.handle(["-p", "foo"], function () {
-            buster.assert(opt.isSet);
-            buster.assert.equals(opt.value, "foo");
+            assert(opt.isSet);
+            assert.equals(opt.value, "foo");
 
             opt.addValidator(function (arg, promise) { promise.reject("an error"); });
 
             self.a.handle(["-p", "bar"], function (errors) {
-                buster.refute.isUndefined(errors);
-                buster.assert(!opt.isSet);
-                buster.assert(!opt.value);
+                assert.defined(errors);
+                assert(!opt.isSet);
+                assert(!opt.value);
                 done();
             });
         });
@@ -373,8 +375,8 @@ buster.testCase("Double dash option", {
     "test one option": function (done) {
         var opt = this.a.createOption("--port");
         this.a.handle(["--port"], function (errors) {
-            buster.assert(opt.isSet);
-            buster.assert.equals(opt.timesSet, 1);
+            assert(opt.isSet);
+            assert.equals(opt.timesSet, 1);
             done();
         });
     },
@@ -382,8 +384,8 @@ buster.testCase("Double dash option", {
     "test containing a dash": function (done) {
         var opt = this.a.createOption("--port-it");
         this.a.handle(["--port-it"], function (errors) {
-            buster.assert(opt.isSet);
-            buster.assert.equals(opt.timesSet, 1);
+            assert(opt.isSet);
+            assert.equals(opt.timesSet, 1);
             done();
         });
     },
@@ -393,8 +395,8 @@ buster.testCase("Double dash option", {
         opt.hasValue = true;
 
         this.a.handle(["--port-it", "1234"], function (errors) {
-            buster.assert(opt.isSet);
-            buster.assert.equals(opt.value, "1234");
+            assert(opt.isSet);
+            assert.equals(opt.value, "1234");
             done();
         });
     },
@@ -402,8 +404,8 @@ buster.testCase("Double dash option", {
     "test one option twice as separate options": function (done) {
         var opt = this.a.createOption("--port");
         this.a.handle(["--port", "--port"], function (errors) {
-            buster.assert(opt.isSet);
-            buster.assert.equals(opt.timesSet, 2);
+            assert(opt.isSet);
+            assert.equals(opt.timesSet, 2);
             done();
         });
     },
@@ -411,8 +413,8 @@ buster.testCase("Double dash option", {
     "test one option thrice as separate options": function (done) {
         var opt = this.a.createOption("--port");
         this.a.handle(["--port", "--port", "--port"], function (errors) {
-            buster.assert(opt.isSet);
-            buster.assert.equals(opt.timesSet, 3);
+            assert(opt.isSet);
+            assert.equals(opt.timesSet, 3);
             done();
         });
     },
@@ -422,11 +424,11 @@ buster.testCase("Double dash option", {
         var opt2 = this.a.createOption("--zap");
 
         this.a.handle(["--port", "--zap"], function (errors) {
-            buster.assert(opt1.isSet);
-            buster.assert.equals(opt1.timesSet, 1);
+            assert(opt1.isSet);
+            assert.equals(opt1.timesSet, 1);
 
-            buster.assert(opt2.isSet);
-            buster.assert.equals(opt2.timesSet, 1);
+            assert(opt2.isSet);
+            assert.equals(opt2.timesSet, 1);
 
             done();
         });
@@ -436,8 +438,8 @@ buster.testCase("Double dash option", {
         var opt = this.a.createOption("--port");
         opt.hasValue = true;
         this.a.handle(["--port", "foo"], function (errors) {
-            buster.assert(opt.isSet);
-            buster.assert.equals(opt.value, "foo");
+            assert(opt.isSet);
+            assert.equals(opt.value, "foo");
             done();
         });
     },
@@ -447,10 +449,10 @@ buster.testCase("Double dash option", {
         opt.hasValue = true;
 
         this.a.handle(["--port"], function (errors) {
-            buster.refute.isUndefined(errors);
-            buster.assert.match(errors[0], /no value specified/i);
-            buster.assert.match(errors[0], "--port");
-            buster.refute(opt.isSet);
+            assert.defined(errors);
+            assert.match(errors[0], /no value specified/i);
+            assert.match(errors[0], "--port");
+            refute(opt.isSet);
             done();
         });
     },
@@ -461,8 +463,8 @@ buster.testCase("Double dash option", {
         opt.defaultValue = "bar";
 
         this.a.handle(["--port", "foo"], function (errors) {
-            buster.assert(opt.isSet);
-            buster.assert.equals(opt.value, "foo");
+            assert(opt.isSet);
+            assert.equals(opt.value, "foo");
             done();
         });
     },
@@ -473,10 +475,10 @@ buster.testCase("Double dash option", {
         opt.defaultValue = "bar";
 
         this.a.handle(["--port"], function (errors) {
-            buster.refute.isUndefined(errors);
-            buster.assert.match(errors[0], /no value specified/i);
-            buster.assert.match(errors[0], "--port");
-            buster.refute(opt.isSet);
+            assert.defined(errors);
+            assert.match(errors[0], /no value specified/i);
+            assert.match(errors[0], "--port");
+            refute(opt.isSet);
             done();
         });
     },
@@ -487,9 +489,9 @@ buster.testCase("Double dash option", {
         opt.acceptsValueAbsence = true;
 
         this.a.handle(["--port"], function (errors) {
-            buster.assert.isUndefined(errors);
-            buster.assert(opt.isSet);
-            buster.refute(opt.value);
+            refute.defined(errors);
+            assert(opt.isSet);
+            refute(opt.value);
             done();
         });
     },
@@ -500,11 +502,11 @@ buster.testCase("Double dash option", {
         var opt2 = this.a.createOption("--zap");
 
         this.a.handle(["--port", "--zap"], function (errors) {
-            buster.refute.isUndefined(errors);
-            buster.assert.match(errors[0], /no value specified/i);
-            buster.assert.match(errors[0], "--port");
+            assert.defined(errors);
+            assert.match(errors[0], /no value specified/i);
+            assert.match(errors[0], "--port");
 
-            buster.refute(opt2.isSet);
+            refute(opt2.isSet);
 
             done();
         });
@@ -515,9 +517,9 @@ buster.testCase("Double dash option", {
         opt.hasValue = true;
 
         this.a.handle(["--port=foo"], function (errors) {
-            buster.assert.isUndefined(errors);
-            buster.assert(opt.isSet);
-            buster.assert.equals(opt.value, "foo");
+            refute.defined(errors);
+            assert(opt.isSet);
+            assert.equals(opt.value, "foo");
             done();
         });
     },
@@ -526,8 +528,8 @@ buster.testCase("Double dash option", {
         var opt = this.a.createOption("--port");
 
         this.a.handle(["--port=foo"], function (errors) {
-            buster.assert.match(errors[0], /does not have a value/i);
-            buster.assert.match(errors[0], "--port");
+            assert.match(errors[0], /does not have a value/i);
+            assert.match(errors[0], "--port");
             done();
         });
     },
@@ -537,9 +539,9 @@ buster.testCase("Double dash option", {
         opt.hasValue = true;
 
         this.a.handle(["--port", "=", "123"], function (errors) {
-            buster.assert.equals(opt.value, "=");
-            buster.assert.match(errors[0], /unknown argument/i);
-            buster.assert.match(errors[0], "123");
+            assert.equals(opt.value, "=");
+            assert.match(errors[0], /unknown argument/i);
+            assert.match(errors[0], "123");
             done();
         });
     },
@@ -550,15 +552,15 @@ buster.testCase("Double dash option", {
         opt.hasValue = true
 
         this.a.handle(["--port", "foo"], function () {
-            buster.assert(opt.isSet);
-            buster.assert.equals(opt.value, "foo");
+            assert(opt.isSet);
+            assert.equals(opt.value, "foo");
 
             opt.addValidator(function (arg, promise) { promise.reject("an error"); });
 
             self.a.handle(["--port", "bar"], function (errors) {
-                buster.refute.isUndefined(errors);
-                buster.assert(!opt.isSet);
-                buster.assert(!opt.value);
+                assert.defined(errors);
+                assert(!opt.isSet);
+                assert(!opt.value);
                 done();
             });
         });
