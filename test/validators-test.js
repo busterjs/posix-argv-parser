@@ -345,7 +345,7 @@ buster.testCase("Built in validator", {
 
             "should fail when operand is not in enum": function (done) {
                 this.a.handle(["3"], function (errors) {
-                    assert.isArray(errors);
+                    assert(errors instanceof Array);
                     done();
                 });
             },

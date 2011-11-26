@@ -154,7 +154,7 @@ buster.testCase("Single dash option", {
             assert(opt1.isSet);
             assert.equals(opt1.timesSet, 1);
 
-            assert.isFalse(opt2.isSet);
+            refute(opt2.isSet);
 
             done();
         });
@@ -247,7 +247,7 @@ buster.testCase("Single dash option", {
             assert(opt1.isSet);
             assert.equals(opt1.value, "z");
 
-            assert.isFalse(opt2.isSet);
+            refute(opt2.isSet);
 
             done();
         });

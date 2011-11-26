@@ -49,7 +49,7 @@ buster.testCase("Operands", {
 
         this.a.handle(["-p", "123abc"], function (errors) {
             assert.equals(opt.value, "123abc");
-            assert.isFalse(opd.isSet);
+            refute(opd.isSet);
             done();
         });
     },
@@ -101,7 +101,7 @@ buster.testCase("Operands", {
         this.a.handle(["--port", "123abc"], function (errors) {
             assert(opt.isSet);
             assert.equals(opt.value, "123abc");
-            assert.isFalse(opd.isSet);
+            refute(opd.isSet);
             done();
         });
     },
@@ -225,7 +225,7 @@ buster.testCase("Operands", {
         opd.greedy = true;
 
         this.a.handle([], function () {
-            assert.isFalse(opd.isSet);
+            refute(opd.isSet);
             assert.equals(opd.value, []);
             done();
         });
@@ -387,7 +387,7 @@ buster.testCase("Operands", {
             assert(opd1.isSet);
             assert.equals(opd1.value, ["foo", "bar", "baz"]);
 
-            assert.isFalse(opd2.isSet);
+            refute(opd2.isSet);
 
             done();
         });

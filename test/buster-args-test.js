@@ -59,7 +59,7 @@ buster.testCase("buster-args", {
         var opt2 = this.a.createOption("--port");
 
         this.a.handle(["--port"], function (errors) {
-            assert.isFalse(opt1.isSet);
+            refute(opt1.isSet);
 
             assert(opt2.isSet);
             assert.equals(opt2.timesSet, 1);
@@ -76,7 +76,7 @@ buster.testCase("buster-args", {
             assert(opt1.isSet);
             assert.equals(opt1.timesSet, 1);
 
-            assert.isFalse(opt2.isSet);
+            refute(opt2.isSet);
 
             done();
         });
