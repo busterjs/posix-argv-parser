@@ -22,5 +22,8 @@
     "dependencies": {
         "buster-core": "*",
         "buster-promise": "~0.3"
+    },
+    "devDependencies": {
+        "buster": ""
     }
 }
