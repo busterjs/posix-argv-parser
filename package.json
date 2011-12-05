@@ -1,6 +1,6 @@
 {
     "name": "buster-args",
-    "version": "0.2.2",
+    "version": "0.3.0",
     "description": "Parser for CLI arguments.",
     "homepage": "http://busterjs.org/docs/buster-args",
     "author": { "name": "August Lilleaas and Christian Johansen" },
@@ -20,8 +20,8 @@
         "url": "http://gitorious.org/buster/buster-args/blobs/master/LICENSE"
     },
     "dependencies": {
-        "buster-core": "*",
-        "buster-promise": "~0.3"
+        "buster-core": "~0.5",
+        "buster-promise": "~0.4"
     },
     "devDependencies": {
         "buster": ""
