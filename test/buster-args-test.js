@@ -15,7 +15,7 @@ buster.testCase("buster-args", {
         });
     },
 
-    "handling non-existing option errors": function (done) {
+    "handling non-existent option errors": function (done) {
         this.a.createOption("-p");
         this.a.handle(["-z"], function (errors) {
             assert.equals(errors.length, 1);
