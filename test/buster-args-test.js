@@ -8,14 +8,14 @@ buster.testCase("buster-args", {
         this.a = Object.create(busterArgs);
     },
 
-    "test not passing any options": function () {
+    "not passing any options": function () {
         var self = this;
         assert.exception(function () {
             self.a.createOption();
         });
     },
 
-    "test handling none existing option errors": function (done) {
+    "handling non-existing option errors": function (done) {
         this.a.createOption("-p");
         this.a.handle(["-z"], function (errors) {
             assert.equals(errors.length, 1);
@@ -26,7 +26,7 @@ buster.testCase("buster-args", {
         });
     },
 
-    "test one and two dash option with both passed, single dash first": function (done) {
+    "one and two dash option with both passed, single dash first": function (done) {
         var opt1 = this.a.createOption("-p");
         var opt2 = this.a.createOption("--port");
 
@@ -40,7 +40,7 @@ buster.testCase("buster-args", {
         });
     },
 
-    "test one and two dash option with both passed, double dash first": function (done) {
+    "one and two dash option with both passed, double dash first": function (done) {
         var opt1 = this.a.createOption("-p");
         var opt2 = this.a.createOption("--port");
 
@@ -54,7 +54,7 @@ buster.testCase("buster-args", {
         });
     },
 
-    "test one and two dash option with only double dash passed": function (done) {
+    "one and two dash option with only double dash passed": function (done) {
         var opt1 = this.a.createOption("-p");
         var opt2 = this.a.createOption("--port");
 
@@ -68,7 +68,7 @@ buster.testCase("buster-args", {
         });
     },
 
-    "test one and two dash option with only single dash passed": function (done) {
+    "one and two dash option with only single dash passed": function (done) {
         var opt1 = this.a.createOption("-p");
         var opt2 = this.a.createOption("--port");
 
@@ -82,7 +82,7 @@ buster.testCase("buster-args", {
         });
     },
 
-    "test same option specified twice in one option": function () {
+    "same option specified twice in one option": function () {
         var self = this;
 
         assert.exception(function () {
@@ -94,7 +94,7 @@ buster.testCase("buster-args", {
         });
     },
 
-    "test same option specified in a different option": function () {
+    "same option specified in a different option": function () {
         var self = this;
         this.a.createOption("-p");
 
@@ -109,7 +109,7 @@ buster.testCase("buster-args", {
         });
     },
 
-    "test after operand separator": function (done) {
+    "after operand separator": function (done) {
         var opt = this.a.createOption("--port");
 
         this.a.handle(["--", "--port"], function (errors) {
