@@ -32,6 +32,19 @@ buster.testCase("Built in validator", {
         });
     },
 
+    "skips validator if option is not set": function (done) {
+        var opt = this.a.createOption("-p");
+        opt.addValidator(function (opt, promise) {
+            promise.reject("Ouch");
+        });
+
+        this.a.createOption("-s");
+
+        this.a.handle(["-s"], done(function (errors) {
+            refute.defined(errors);
+        }));
+    },
+
     "test basic validator without error": function (done) {
         var opt = this.a.createOption("-p");
         opt.addValidator(function (opt, promise) {
