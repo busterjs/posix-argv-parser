@@ -106,5 +106,20 @@ buster.testCase("Shorthands", {
             assert.match(e.message, /needs to be an array/i);
             done();
         }
+    },
+
+    "test operand and shorthand integration": function (done) {
+        var env = this.a.createOption("-e");
+        env.hasValue = true;
+        var anOpd = this.a.createOperand();
+        this.a.addShorthand("--node", ["-e", "node"]);
+
+        var argv = ["--node", "foo"];
+        this.a.handle(argv, done(function (errors) {
+            refute.defined(errors);
+
+            assert.equals(env.value, "node");
+            assert.equals(anOpd.value, "foo");
+        }));
     }
 });

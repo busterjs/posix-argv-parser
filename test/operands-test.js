@@ -391,5 +391,18 @@ buster.testCase("Operands", {
 
             done();
         });
+    },
+
+    "test double dash option with value before operand": function (done) {
+        var opd = this.a.createOperand();
+
+        var opt = this.a.createOption("--port");
+        opt.hasValue = true;
+
+        this.a.handle(["--port", "4224", "foo"], done(function (err) {
+            refute.defined(err);
+            assert.equals(opt.value, "4224");
+            assert.equals(opd.value, "foo");
+        }));
     }
 });
