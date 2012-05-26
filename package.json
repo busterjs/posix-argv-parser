@@ -19,6 +19,9 @@
         "type": "BSD",
         "url": "http://gitorious.org/buster/buster-args/blobs/master/LICENSE"
     },
+    "scripts": {
+        "test": "./node_modules/buster/bin/buster-test"
+    },
     "dependencies": {
         "buster-core": "~0.6",
         "when": "https://github.com/cujojs/when/tarball/1.0.2"
