@@ -2,4 +2,4 @@ language: node_js
 node_js:
   - 0.6
 before_script:
-  - cd node_modules/buster/node_modules/buster-test-cli/ && npm install
+  - cd node_modules/buster/node_modules/buster-test-cli/ && npm install && cd ../../../../
