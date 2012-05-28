@@ -1,3 +1,4 @@
 language: node_js
 node_js:
   - 0.6
+after_install: "cd node_modules/buster/node_modules/buster-test-cli/ && npm install"
