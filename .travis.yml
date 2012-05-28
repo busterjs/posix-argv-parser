@@ -1,5 +1,5 @@
 language: node_js
 node_js:
   - 0.6
-after_install:
-  - ln -s `pwd` node_modules/buster/node_modules/buster-test-cli/node_modules/buster-args
+before_script:
+  - cd node_modules/buster/node_modules/buster-test-cli/ && npm install
