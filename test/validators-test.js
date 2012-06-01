@@ -1,3 +1,4 @@
+/*jslint maxlen: 100 */
 var buster = require("buster");
 var busterArgs = require("./../lib/buster-args");
 var path = require("path");
@@ -25,11 +26,10 @@ buster.testCase("Built in validator", {
             promise.reject(actualError);
         });
 
-        this.a.handle(["-p"], function (errors) {
+        this.a.handle(["-p"], done(function (errors) {
             assert.equals(errors.length, 1);
             assert.equals(errors[0], actualError);
-            done();
-        });
+        }));
     },
 
     "skips validator if option is not set": function (done) {
@@ -51,10 +51,9 @@ buster.testCase("Built in validator", {
             promise.resolve();
         });
 
-        this.a.handle(["-p"], function (errors) {
+        this.a.handle(["-p"], done(function (errors) {
             refute.defined(errors);
-            done();
-        });
+        }));
     },
 
     "test adding validator that uses the value of the option": function (done) {
@@ -64,11 +63,10 @@ buster.testCase("Built in validator", {
             promise.reject(opt.value + " is crazy.");
         });
 
-        this.a.handle(["-p1234"], function (errors) {
+        this.a.handle(["-p1234"], done(function (errors) {
             assert.equals(errors.length, 1);
             assert.equals(errors[0], "1234 is crazy.");
-            done();
-        });
+        }));
     },
 
     "integer": {
@@ -80,37 +78,33 @@ buster.testCase("Built in validator", {
 
         "test passing integer": function (done) {
             var self = this;
-            this.a.handle(["-p123"], function (errors) {
+            this.a.handle(["-p123"], done(function (errors) {
                 refute.defined(errors);
-                done();
-            });
+            }));
         },
 
         "test passing string": function (done) {
-            this.a.handle(["-pabc"], function (errors) {
+            this.a.handle(["-pabc"], done(function (errors) {
                 assert.equals(errors.length, 1);
                 assert.match(errors[0], "abc");
                 assert.match(errors[0], /not an integer/);
-                done();
-            });
+            }));
         },
 
         "test passing comma float": function (done) {
-            this.a.handle(["-p123,4"], function (errors) {
+            this.a.handle(["-p123,4"], done(function (errors) {
                 assert.equals(errors.length, 1);
                 assert.match(errors[0], "123,4");
                 assert.match(errors[0], /not an integer/);
-                done();
-            });
+            }));
         },
 
         "test passing dot float": function (done) {
-            this.a.handle(["-p123.4"], function (errors) {
+            this.a.handle(["-p123.4"], done(function (errors) {
                 assert.equals(errors.length, 1);
                 assert.match(errors[0], "123.4");
                 assert.match(errors[0], /not an integer/);
-                done();
-            });
+            }));
         },
     },
 
@@ -123,36 +117,32 @@ buster.testCase("Built in validator", {
 
         "test passing integer": function (done) {
             var self = this;
-            this.a.handle(["-p123"], function (errors) {
+            this.a.handle(["-p123"], done(function (errors) {
                 refute.defined(errors);
-                done();
-            });
+            }));
         },
 
         "test passing string": function (done) {
-            this.a.handle(["-pabc"], function (errors) {
+            this.a.handle(["-pabc"], done(function (errors) {
                 assert.equals(errors.length, 1);
                 assert.match(errors[0], "abc");
                 assert.match(errors[0], /not a number/);
-                done();
-            });
+            }));
         },
 
         "test passing comma float": function (done) {
-            this.a.handle(["-p123,4"], function (errors) {
+            this.a.handle(["-p123,4"], done(function (errors) {
                 assert.equals(errors.length, 1);
                 assert.match(errors[0], "123,4");
                 assert.match(errors[0], /not a number/);
-                done();
-            });
+            }));
         },
 
         "test passing dot float": function (done) {
             var self = this;
-            this.a.handle(["-p123.4"], function (errors) {
+            this.a.handle(["-p123.4"], done(function (errors) {
                 refute.defined(errors);
-                done();
-            });
+            }));
         }
     },
 
@@ -168,37 +158,33 @@ buster.testCase("Built in validator", {
             },
 
             "test setting option with value": function (done) {
-                this.a.handle(["-pfoo"], function (errors) {
+                this.a.handle(["-pfoo"], done(function (errors) {
                     refute.defined(errors);
-                    done();
-                });
+                }));
             },
 
             "test not setting option": function (done) {
-                this.a.handle([], function (errors) {
+                this.a.handle([], done(function (errors) {
                     assert.equals(errors.length, 1);
                     assert.match(errors[0], "-p");
                     assert.match(errors[0], /is required/);
-                    done();
-                });
+                }));
             }
         },
 
         "for option without value": {
             "test setting option": function (done) {
-                this.a.handle(["-p"], function (errors) {
+                this.a.handle(["-p"], done(function (errors) {
                     refute.defined(errors);
-                    done();
-                });
+                }));
             },
 
             "test not setting option": function (done) {
-                this.a.handle([], function (errors) {
+                this.a.handle([], done(function (errors) {
                     assert.equals(errors.length, 1);
                     assert.match(errors[0], "-p");
                     assert.match(errors[0], /is required/);
-                    done();
-                });
+                }));
             }
         }
     },
@@ -212,37 +198,33 @@ buster.testCase("Built in validator", {
 
             "test on existing directory": function (done) {
                 var self = this;
-                this.a.handle([existingDir], function (errors) {
+                this.a.handle([existingDir], done(function (errors) {
                     refute.defined(errors);
-                    done();
-                });
+                }));
             },
 
             "test on existing file": function (done) {
                 var self = this;
-                this.a.handle([existingFile], function (errors) {
+                this.a.handle([existingFile], done(function (errors) {
                     assert.equals(errors.length, 1);
                     assert.match(errors[0], /is not a directory/i);
                     assert.match(errors[0], existingFile);
-                    done();
-                });
+                }));
             },
 
             "test on none existing file/directory": function (done) {
                 var self = this;
-                this.a.handle([missingDirOrFile], function (errors) {
+                this.a.handle([missingDirOrFile], done(function (errors) {
                     assert.equals(errors.length, 1);
                     assert.match(errors[0], /is not a directory/i);
                     assert.match(errors[0], missingDirOrFile);
-                    done();
-                });
+                }));
             },
 
             "test no value": function (done) {
-                this.a.handle([], function (errors) {
+                this.a.handle([], done(function (errors) {
                     assert(true);
-                    done();
-                });
+                }));
             }
         }
     },
@@ -256,37 +238,33 @@ buster.testCase("Built in validator", {
 
             "test on existing directory": function (done) {
                 var self = this;
-                this.a.handle([existingDir], function (errors) {
+                this.a.handle([existingDir], done(function (errors) {
                     assert.equals(errors.length, 1);
                     assert.match(errors[0], /is not a file/i);
                     assert.match(errors[0], existingDir);
-                    done();
-                });
+                }));
             },
 
             "test on existing file": function (done) {
                 var self = this;
-                this.a.handle([existingFile], function (errors) {
+                this.a.handle([existingFile], done(function (errors) {
                     refute.defined(errors);
-                    done();
-                });
+                }));
             },
 
             "test on none existing file/directory": function (done) {
                 var self = this;
-                this.a.handle([missingDirOrFile], function (errors) {
+                this.a.handle([missingDirOrFile], done(function (errors) {
                     assert.equals(errors.length, 1);
                     assert.match(errors[0], /is not a file/i);
                     assert.match(errors[0], missingDirOrFile);
-                    done();
-                });
+                }));
             },
 
             "test no value": function (done) {
-                this.a.handle([], function (errors) {
+                this.a.handle([], done(function (errors) {
                     assert(true);
-                    done();
-                });
+                }));
             }
         }
     },
@@ -300,44 +278,39 @@ buster.testCase("Built in validator", {
 
             "test on existing directory": function (done) {
                 var self = this;
-                this.a.handle([existingDir], function (errors) {
+                this.a.handle([existingDir], done(function (errors) {
                     refute.defined(errors);
-                    done();
-                });
+                }));
             },
 
             "test on existing file": function (done) {
                 var self = this;
-                this.a.handle([existingFile], function (errors) {
+                this.a.handle([existingFile], done(function (errors) {
                     refute.defined(errors);
-                    done();
-                });
+                }));
             },
 
             "test on none existing file/directory": function (done) {
                 var self = this;
-                this.a.handle([missingDirOrFile], function (errors) {
+                this.a.handle([missingDirOrFile], done(function (errors) {
                     assert.equals(errors.length, 1);
                     assert.match(errors[0], /not a file or directory/i);
                     assert.match(errors[0], missingDirOrFile);
-                    done();
-                });
+                }));
             },
 
             "test no value": function (done) {
-                this.a.handle([], function (errors) {
+                this.a.handle([], done(function (errors) {
                     assert(true);
-                    done();
-                });
+                }));
             },
 
             "test with existing item that isn't file or directory": function (done) {
-                this.a.handle([notFileOrDirButExists], function (errors) {
+                this.a.handle([notFileOrDirButExists], done(function (errors) {
                     assert.equals(errors.length, 1);
                     assert.match(errors[0], /not a file or directory/i);
                     assert.match(errors[0], notFileOrDirButExists);
-                    done();
-                });
+                }));
             }
         }
     },
@@ -350,31 +323,27 @@ buster.testCase("Built in validator", {
             },
 
             "should pass when operand is in enum": function (done) {
-                this.a.handle(["1"], function (errors) {
+                this.a.handle(["1"], done(function (errors) {
                     refute.defined(errors);
-                    done();
-                });
+                }));
             },
 
             "should fail when operand is not in enum": function (done) {
-                this.a.handle(["3"], function (errors) {
+                this.a.handle(["3"], done(function (errors) {
                     assert(errors instanceof Array);
-                    done();
-                });
+                }));
             },
 
             "should fail with readable message": function (done) {
-                this.a.handle(["3"], function (errors) {
+                this.a.handle(["3"], done(function (errors) {
                     assert.match(errors[0], "expected one of [1, 2], got 3");
-                    done();
-                });
+                }));
             },
 
             "should pass when there's no argument": function (done) {
-                this.a.handle([], function (errors) {
+                this.a.handle([], done(function (errors) {
                     refute.defined(errors);
-                    done();
-                });
+                }));
             }
         }
     },
@@ -387,90 +356,79 @@ buster.testCase("Built in validator", {
 
         "test integer": function (done) {
             this.o.addValidator(busterArgs.validators.integer("I love ${1}!"));
-            this.a.handle(["-p", "not a number"], function (errors) {
+            this.a.handle(["-p", "not a number"], done(function (errors) {
                 assert.equals(errors[0], "I love not a number!");
-                done();
-            });
+            }));
         },
 
         "test integer with signature": function (done) {
             this.o.addValidator(busterArgs.validators.integer("I love ${1} and ${2}!"));
-            this.a.handle(["-p", "not a number"], function (errors) {
+            this.a.handle(["-p", "not a number"], done(function (errors) {
                 assert.equals(errors[0], "I love not a number and -p!");
-                done();
-            });
+            }));
         },
 
         "test number": function (done) {
             this.o.addValidator(busterArgs.validators.number("I love ${1}!"));
-            this.a.handle(["-p", "not a number"], function (errors) {
+            this.a.handle(["-p", "not a number"], done(function (errors) {
                 assert.equals(errors[0], "I love not a number!");
-                done();
-            });
+            }));
         },
 
         "test number with signature": function (done) {
             this.o.addValidator(busterArgs.validators.number("I love ${1} and ${2}!"));
-            this.a.handle(["-p", "not a number"], function (errors) {
+            this.a.handle(["-p", "not a number"], done(function (errors) {
                 assert.equals(errors[0], "I love not a number and -p!");
-                done();
-            });
+            }));
         },
 
         "test required": function (done) {
             this.o.addValidator(busterArgs.validators.required("I love ${1}!"));
-            this.a.handle([], function (errors) {
+            this.a.handle([], done(function (errors) {
                 assert.equals(errors[0], "I love -p!");
-                done();
-            });
+            }));
         },
 
         "test file with no such file or dir": function (done) {
             this.o.addValidator(busterArgs.validators.file("Foo ${1}"));
-            this.a.handle(["-p", missingDirOrFile], function (errors) {
+            this.a.handle(["-p", missingDirOrFile], done(function (errors) {
                 assert.equals(errors[0], "Foo " + missingDirOrFile);
-                done();
-            });
+            }));
         },
 
         "test file with directory": function (done) {
             this.o.addValidator(busterArgs.validators.file("Foo ${1}"));
-            this.a.handle(["-p", existingDir], function (errors) {
+            this.a.handle(["-p", existingDir], done(function (errors) {
                 assert.equals(errors[0], "Foo " + existingDir);
-                done();
-            });
+            }));
         },
 
         "test dir with no such file or dir": function (done) {
             this.o.addValidator(busterArgs.validators.directory("Foo ${1}"));
-            this.a.handle(["-p", missingDirOrFile], function (errors) {
+            this.a.handle(["-p", missingDirOrFile], done(function (errors) {
                 assert.equals(errors[0], "Foo " + missingDirOrFile);
-                done();
-            });
+            }));
         },
 
         "test dir with file": function (done) {
             this.o.addValidator(busterArgs.validators.directory("Foo ${1}"));
-            this.a.handle(["-p", existingFile], function (errors) {
+            this.a.handle(["-p", existingFile], done(function (errors) {
                 assert.equals(errors[0], "Foo " + existingFile);
-                done();
-            });
+            }));
         },
 
         "test fileOrDir with no such file or dir": function (done) {
             this.o.addValidator(busterArgs.validators.fileOrDirectory("Foo ${1}"));
-            this.a.handle(["-p", missingDirOrFile], function (errors) {
+            this.a.handle(["-p", missingDirOrFile], done(function (errors) {
                 assert.equals(errors[0], "Foo " + missingDirOrFile);
-                done();
-            });
+            }));
         },
 
         "test fileOrDir with existing but not file or dir": function (done) {
             this.o.addValidator(busterArgs.validators.fileOrDirectory("Foo ${1}"));
-            this.a.handle(["-p", notFileOrDirButExists], function (errors) {
+            this.a.handle(["-p", notFileOrDirButExists], done(function (errors) {
                 assert.equals(errors[0], "Foo " + notFileOrDirButExists);
-                done();
-            });
+            }));
         }
     }
 });
@@ -489,12 +447,11 @@ buster.testCase("Validators", {
             promise.resolve();
         });
 
-        this.a.handle(["-p"], function (errors) {
+        this.a.handle(["-p"], done(function (errors) {
             refute.defined(errors);
             assert(opt.isSet);
             refute(opt.value);
-            refute("whatever" in opt);
-            done();
-        });
+            refute(opt.hasOwnProperty("whatever"));
+        }));
     }
 });

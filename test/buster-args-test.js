@@ -17,69 +17,57 @@ buster.testCase("buster-args", {
 
     "handling non-existent option errors": function (done) {
         this.a.createOption("-p");
-        this.a.handle(["-z"], function (errors) {
+        this.a.handle(["-z"], done(function (errors) {
             assert.equals(errors.length, 1);
-            assert.match(errors[0], /unknown argument/i)
-            assert.match(errors[0], "-z")
-
-            done();
-        });
+            assert.match(errors[0], /unknown argument/i);
+            assert.match(errors[0], "-z");
+        }));
     },
 
-    "one and two dash option with both passed, single dash first": function (done) {
+    "one and two dash option with both passed, single first": function (done) {
         var opt1 = this.a.createOption("-p");
         var opt2 = this.a.createOption("--port");
 
-        this.a.handle(["-p", "--port"], function (errors) {
+        this.a.handle(["-p", "--port"], done(function (errors) {
             assert(opt1.isSet);
             assert.equals(opt1.timesSet, 1);
             assert(opt2.isSet);
             assert.equals(opt2.timesSet, 1);
-
-            done();
-        });
+        }));
     },
 
-    "one and two dash option with both passed, double dash first": function (done) {
+    "one and two dash option with both passed, double first": function (done) {
         var opt1 = this.a.createOption("-p");
         var opt2 = this.a.createOption("--port");
 
-        this.a.handle(["--port", "-p"], function (errors) {
+        this.a.handle(["--port", "-p"], done(function (errors) {
             assert(opt1.isSet);
             assert.equals(opt1.timesSet, 1);
             assert(opt2.isSet);
             assert.equals(opt2.timesSet, 1);
-
-            done();
-        });
+        }));
     },
 
     "one and two dash option with only double dash passed": function (done) {
         var opt1 = this.a.createOption("-p");
         var opt2 = this.a.createOption("--port");
 
-        this.a.handle(["--port"], function (errors) {
+        this.a.handle(["--port"], done(function (errors) {
             refute(opt1.isSet);
-
             assert(opt2.isSet);
             assert.equals(opt2.timesSet, 1);
-
-            done();
-        });
+        }));
     },
 
     "one and two dash option with only single dash passed": function (done) {
         var opt1 = this.a.createOption("-p");
         var opt2 = this.a.createOption("--port");
 
-        this.a.handle(["-p"], function (errors) {
+        this.a.handle(["-p"], done(function (errors) {
             assert(opt1.isSet);
             assert.equals(opt1.timesSet, 1);
-
             refute(opt2.isSet);
-
-            done();
-        });
+        }));
     },
 
     "same option specified twice in one option": function () {
@@ -112,9 +100,8 @@ buster.testCase("buster-args", {
     "after operand separator": function (done) {
         var opt = this.a.createOption("--port");
 
-        this.a.handle(["--", "--port"], function (errors) {
+        this.a.handle(["--", "--port"], done(function (errors) {
             assert.defined(errors);
-            done();
-        });
+        }));
     }
 });

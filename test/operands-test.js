@@ -1,3 +1,4 @@
+/*jslint maxlen: 100*/
 var buster = require("buster");
 var busterArgs = require("./../lib/buster-args");
 var assert = buster.assert;
@@ -11,35 +12,32 @@ buster.testCase("Operands", {
     "test plain operand": function (done) {
         var opd = this.a.createOperand();
 
-        this.a.handle(["123abc"], function (errors) {
+        this.a.handle(["123abc"], done(function (errors) {
             assert(opd.isSet);
             assert.equals(opd.value, "123abc");
-            done();
-        });
+        }));
     },
 
     "test single dash option and operand with option first": function (done) {
         var opt = this.a.createOption("-p");
         var opd = this.a.createOperand();
 
-        this.a.handle(["-p", "123abc"], function (errors) {
+        this.a.handle(["-p", "123abc"], done(function (errors) {
             assert(opt.isSet);
             assert(opt.timesSet, 1);
             assert.match(opd.value, "123abc");
-            done();
-        });
+        }));
     },
 
     "test single dash option and operand with operand first": function (done) {
         var opt = this.a.createOption("-p");
         var opd = this.a.createOperand();
 
-        this.a.handle(["123abc", "-p"], function (errors) {
+        this.a.handle(["123abc", "-p"], done(function (errors) {
             assert(opt.isSet);
             assert(opt.timesSet, 1);
             assert.match(opd.value, "123abc");
-            done();
-        });
+        }));
     },
 
     "test single dash option with value and operand": function (done) {
@@ -47,11 +45,10 @@ buster.testCase("Operands", {
         opt.hasValue = true;
         var opd = this.a.createOperand();
 
-        this.a.handle(["-p", "123abc"], function (errors) {
+        this.a.handle(["-p", "123abc"], done(function (errors) {
             assert.equals(opt.value, "123abc");
             refute(opd.isSet);
-            done();
-        });
+        }));
     },
 
     "test single dash option with value and operand without option after operand": function (done) {
@@ -59,38 +56,35 @@ buster.testCase("Operands", {
         opt.hasValue = true;
         var opd = this.a.createOperand();
 
-        this.a.handle(["123abc", "-p", "test"], function (errors) {
+        this.a.handle(["123abc", "-p", "test"], done(function (errors) {
             assert(opt.isSet);
             assert.equals(opt.value, "test");
 
             assert(opd.isSet);
             assert.match(opd.value, "123abc");
-            done();
-        });
+        }));
     },
 
     "test double dash option and operand with option first": function (done) {
         var opt = this.a.createOption("--port");
         var opd = this.a.createOperand();
 
-        this.a.handle(["--port", "123abc"], function (errors) {
+        this.a.handle(["--port", "123abc"], done(function (errors) {
             assert(opt.isSet);
             assert(opt.timesSet, 1);
             assert.match(opd.value, "123abc");
-            done();
-        });
+        }));
     },
 
     "test double dash option and operand with operand first": function (done) {
         var opt = this.a.createOption("--port");
         var opd = this.a.createOperand();
 
-        this.a.handle(["123abc", "--port"], function (errors) {
+        this.a.handle(["123abc", "--port"], done(function (errors) {
             assert(opt.isSet);
             assert(opt.timesSet, 1);
             assert.match(opd.value, "123abc");
-            done();
-        });
+        }));
     },
 
     "test double dash option with value and operand": function (done) {
@@ -98,12 +92,11 @@ buster.testCase("Operands", {
         opt.hasValue = true;
         var opd = this.a.createOperand();
 
-        this.a.handle(["--port", "123abc"], function (errors) {
+        this.a.handle(["--port", "123abc"], done(function (errors) {
             assert(opt.isSet);
             assert.equals(opt.value, "123abc");
             refute(opd.isSet);
-            done();
-        });
+        }));
     },
 
     "test double dash option with value and operand with option after operand": function (done) {
@@ -111,58 +104,53 @@ buster.testCase("Operands", {
         opt.hasValue = true;
         var opd = this.a.createOperand();
 
-        this.a.handle(["123abc", "--port", "test"], function (errors) {
+        this.a.handle(["123abc", "--port", "test"], done(function (errors) {
             assert(opt.isSet);
             assert.equals(opt.value, "test");
-
             assert(opd.isSet);
             assert.match(opd.value, "123abc");
-            done();
-        });
+        }));
     },
 
     "test not setting operand with required validator": function (done) {
         var opd = this.a.createOperand();
         opd.addValidator(busterArgs.validators.required());
 
-        this.a.handle([], function (errors) {
+        this.a.handle([], done(function (errors) {
             assert.defined(errors);
             assert.equals(errors.length, 1);
-            done();
-        });
+        }));
     },
 
-   "test creating option with operand present": function () {
+    "test creating option with operand present": function () {
         var self = this;
         this.a.createOperand(busterArgs.OPD_DIRECTORY);
 
         refute.exception(function () {
             self.a.createOption("-p");
         });
-   },
+    },
 
     "test specifying operand after double dash": function (done) {
         var opt = this.a.createOption("-p");
         var opd = this.a.createOperand();
 
-        this.a.handle(["-p", "--", "gocha"], function (errors) {
+        this.a.handle(["-p", "--", "gocha"], done(function (errors) {
             assert(opt.isSet);
             assert(opd.isSet);
             assert.equals(opd.value, "gocha");
-            done();
-        });
+        }));
     },
 
     "test specifying operand starting with dash after double dash": function (done) {
         var opt = this.a.createOption("-p");
         var opd = this.a.createOperand();
 
-        this.a.handle(["-p", "--", "-gocha"], function (errors) {
+        this.a.handle(["-p", "--", "-gocha"], done(function (errors) {
             assert(opt.isSet);
             assert(opd.isSet);
             assert.equals(opd.value, "-gocha");
-            done();
-        });
+        }));
     },
 
     "test specifying multiple operands after double dash": function (done) {
@@ -170,17 +158,13 @@ buster.testCase("Operands", {
         var opd1 = this.a.createOperand();
         var opd2 = this.a.createOperand();
 
-        this.a.handle(["-p", "--", "foo", "bar"], function (errors) {
+        this.a.handle(["-p", "--", "foo", "bar"], done(function (errors) {
             assert(opt.isSet);
-
             assert(opd1.isSet);
             assert.equals(opd1.value, "foo");
-
             assert(opd2.isSet);
             assert.equals(opd2.value, "bar");
-
-            done();
-        });
+        }));
     },
 
     "test multiple operands starting with a dash": function (done) {
@@ -188,17 +172,13 @@ buster.testCase("Operands", {
         var opd1 = this.a.createOperand();
         var opd2 = this.a.createOperand();
 
-        this.a.handle(["-p", "--", "-foo", "--bar"], function (errors) {
+        this.a.handle(["-p", "--", "-foo", "--bar"], done(function (errors) {
             assert(opt.isSet);
-
             assert(opd1.isSet);
             assert.equals(opd1.value, "-foo");
-
             assert(opd2.isSet);
             assert.equals(opd2.value, "--bar");
-
-            done();
-        });
+        }));
     },
 
     "test failing validation resets": function (done) {
@@ -209,14 +189,13 @@ buster.testCase("Operands", {
             assert(opd.isSet);
             assert.equals(opd.value, "foo");
 
-            opd.addValidator(function (arg, promise) { promise.reject("an error") });
+            opd.addValidator(function (arg, promise) { promise.reject("an error"); });
 
-            self.a.handle(["bar"], function (errors) {
+            self.a.handle(["bar"], done(function (errors) {
                 assert.defined(errors);
                 assert(!opd.isSet);
                 assert(!opd.value);
-                done();
-            });
+            }));
         });
     },
 
@@ -224,44 +203,40 @@ buster.testCase("Operands", {
         var opd = this.a.createOperand();
         opd.greedy = true;
 
-        this.a.handle([], function () {
+        this.a.handle([], done(function () {
             refute(opd.isSet);
             assert.equals(opd.value, []);
-            done();
-        });
+        }));
     },
 
     "test greedy operand with one value": function (done) {
         var opd = this.a.createOperand();
         opd.greedy = true;
 
-        this.a.handle(["foo"], function () {
+        this.a.handle(["foo"], done(function () {
             assert(opd.isSet);
             assert.equals(opd.value, ["foo"]);
-            done();
-        });
+        }));
     },
 
     "test greedy operand with multiple values": function (done) {
         var opd = this.a.createOperand();
         opd.greedy = true;
 
-        this.a.handle(["foo", "bar", "baz"], function () {
+        this.a.handle(["foo", "bar", "baz"], done(function () {
             assert(opd.isSet);
             assert.equals(opd.value, ["foo", "bar", "baz"]);
-            done();
-        });
+        }));
     },
 
     "test greedy operand with operand values before and after double dash": function (done) {
         var opd = this.a.createOperand();
         opd.greedy = true;
 
-        this.a.handle(["foo", "bar", "--", "baz"], function () {
+        this.a.handle(["foo", "bar", "--", "baz"], done(function () {
             assert(opd.isSet);
             assert.equals(opd.value, ["foo", "bar", "baz"]);
-            done();
-        });
+        }));
     },
 
     "test greedy operand preceded by option": function (done) {
@@ -270,13 +245,11 @@ buster.testCase("Operands", {
         var opd = this.a.createOperand();
         opd.greedy = true;
 
-        this.a.handle(["-p", "foo", "bar"], function () {
+        this.a.handle(["-p", "foo", "bar"], done(function () {
             assert(opt.isSet);
-
             assert(opd.isSet);
             assert.equals(opd.value, ["foo", "bar"]);
-            done();
-        });
+        }));
     },
 
     "test greedy operand followed by option": function (done) {
@@ -285,13 +258,11 @@ buster.testCase("Operands", {
         var opd = this.a.createOperand();
         opd.greedy = true;
 
-        this.a.handle(["foo", "bar", "-p"], function () {
+        this.a.handle(["foo", "bar", "-p"], done(function () {
             assert(opt.isSet);
-
             assert(opd.isSet);
             assert.equals(opd.value, ["foo", "bar"]);
-            done();
-        });
+        }));
     },
 
     "test greedy operand with option in between": function (done) {
@@ -300,13 +271,11 @@ buster.testCase("Operands", {
         var opd = this.a.createOperand();
         opd.greedy = true;
 
-        this.a.handle(["foo", "-p", "bar"], function () {
+        this.a.handle(["foo", "-p", "bar"], done(function () {
             assert(opt.isSet);
-
             assert(opd.isSet);
             assert.equals(opd.value, ["foo", "bar"]);
-            done();
-        });
+        }));
     },
 
     "test greedy operand preceded by option with value": function (done) {
@@ -316,48 +285,42 @@ buster.testCase("Operands", {
         var opd = this.a.createOperand();
         opd.greedy = true;
 
-        this.a.handle(["-p", "1234", "foo", "bar"], function () {
+        this.a.handle(["-p", "1234", "foo", "bar"], done(function () {
             assert(opt.isSet);
             assert.equals(opt.value, "1234");
-
             assert(opd.isSet);
             assert.equals(opd.value, ["foo", "bar"]);
-            done();
-        });
+        }));
     },
 
-    "test greedy operand followed by option": function (done) {
+    "test greedy operand followed by option with value": function (done) {
         var opt = this.a.createOption("-p");
         opt.hasValue = true;
 
         var opd = this.a.createOperand();
         opd.greedy = true;
 
-        this.a.handle(["foo", "bar", "-p", "1234"], function () {
+        this.a.handle(["foo", "bar", "-p", "1234"], done(function () {
             assert(opt.isSet);
             assert.equals(opt.value, "1234");
-
             assert(opd.isSet);
             assert.equals(opd.value, ["foo", "bar"]);
-            done();
-        });
+        }));
     },
 
-    "test greedy operand with option in between": function (done) {
+    "test greedy operand with option with value in between": function (done) {
         var opt = this.a.createOption("-p");
         opt.hasValue = true;
 
         var opd = this.a.createOperand();
         opd.greedy = true;
 
-        this.a.handle(["foo", "-p", "1234", "bar"], function () {
+        this.a.handle(["foo", "-p", "1234", "bar"], done(function () {
             assert(opt.isSet);
             assert.equals(opt.value, "1234");
-
             assert(opd.isSet);
             assert.equals(opd.value, ["foo", "bar"]);
-            done();
-        });
+        }));
     },
 
     "test greedy operand preceded by none-greedy operand": function (done) {
@@ -366,15 +329,12 @@ buster.testCase("Operands", {
         var opd2 = this.a.createOperand();
         opd2.greedy = true;
 
-        this.a.handle(["foo", "bar", "baz"], function () {
+        this.a.handle(["foo", "bar", "baz"], done(function () {
             assert(opd1.isSet);
             assert.equals(opd1.value, "foo");
-
             assert(opd2.isSet);
             assert.equals(opd2.value, ["bar", "baz"]);
-
-            done();
-        });
+        }));
     },
 
     "test greedy operand followed by none-greedy operand": function (done) {
@@ -383,14 +343,11 @@ buster.testCase("Operands", {
 
         var opd2 = this.a.createOperand();
 
-        this.a.handle(["foo", "bar", "baz"], function () {
+        this.a.handle(["foo", "bar", "baz"], done(function () {
             assert(opd1.isSet);
             assert.equals(opd1.value, ["foo", "bar", "baz"]);
-
             refute(opd2.isSet);
-
-            done();
-        });
+        }));
     },
 
     "test double dash option with value before operand": function (done) {
