@@ -1,8 +1,7 @@
 /*jslint maxlen: 100 */
 var buster = require("buster");
 var busterArgs = require("./../lib/buster-args");
-var assert = buster.assert;
-var refute = buster.refute;
+var when = require("when");
 
 buster.testCase("Single dash option", {
     setUp: function () {
@@ -314,7 +313,11 @@ buster.testCase("Single dash option", {
             assert(opt.isSet);
             assert.equals(opt.value, "foo");
 
-            opt.addValidator(function (arg, promise) { promise.reject("an error"); });
+            opt.addValidator(function (arg) {
+                var deferred = when.defer();
+                deferred.reject("an error");
+                return deferred.promise;
+            });
 
             self.a.handle(["-p", "bar"], done(function (errors) {
                 assert.defined(errors);
@@ -494,7 +497,11 @@ buster.testCase("Double dash option", {
             assert(opt.isSet);
             assert.equals(opt.value, "foo");
 
-            opt.addValidator(function (arg, promise) { promise.reject("an error"); });
+            opt.addValidator(function (arg) {
+                var deferred = when.defer();
+                deferred.reject("an error");
+                return deferred.promise;
+            });
 
             self.a.handle(["--port", "bar"], done(function (errors) {
                 assert.defined(errors);

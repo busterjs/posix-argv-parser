@@ -1,8 +1,7 @@
 /*jslint maxlen: 100*/
 var buster = require("buster");
 var busterArgs = require("./../lib/buster-args");
-var assert = buster.assert;
-var refute = buster.refute;
+var when = require("when");
 
 buster.testCase("Operands", {
     setUp: function () {
@@ -189,7 +188,11 @@ buster.testCase("Operands", {
             assert(opd.isSet);
             assert.equals(opd.value, "foo");
 
-            opd.addValidator(function (arg, promise) { promise.reject("an error"); });
+            opd.addValidator(function (arg) {
+                var deferred = when.defer();
+                deferred.reject("an error");
+                return deferred.promise;
+            });
 
             self.a.handle(["bar"], done(function (errors) {
                 assert.defined(errors);

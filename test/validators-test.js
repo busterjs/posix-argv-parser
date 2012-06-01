@@ -3,8 +3,7 @@ var buster = require("buster");
 var busterArgs = require("./../lib/buster-args");
 var path = require("path");
 var net = require("net");
-var assert = buster.assert;
-var refute = buster.refute;
+var when = require("when");
 
 var fixtureDir = path.normalize(__dirname + "/fixtures");
 var existingDir = fixtureDir;
@@ -22,8 +21,10 @@ buster.testCase("Built in validator", {
         var actualError = "An error message";
 
         var opt = this.a.createOption("-p");
-        opt.addValidator(function (opt, promise) {
-            promise.reject(actualError);
+        opt.addValidator(function (opt) {
+            var deferred = when.defer();
+            deferred.reject(actualError);
+            return deferred.promise;
         });
 
         this.a.handle(["-p"], done(function (errors) {
@@ -47,8 +48,8 @@ buster.testCase("Built in validator", {
 
     "test basic validator without error": function (done) {
         var opt = this.a.createOption("-p");
-        opt.addValidator(function (opt, promise) {
-            promise.resolve();
+        opt.addValidator(function (opt) {
+            return when();
         });
 
         this.a.handle(["-p"], done(function (errors) {
@@ -59,8 +60,10 @@ buster.testCase("Built in validator", {
     "test adding validator that uses the value of the option": function (done) {
         var opt = this.a.createOption("-p");
         opt.hasValue = true;
-        opt.addValidator(function (opt, promise) {
-            promise.reject(opt.value + " is crazy.");
+        opt.addValidator(function (opt) {
+            var deferred = when.defer();
+            deferred.reject(opt.value + " is crazy.");
+            return deferred.promise;
         });
 
         this.a.handle(["-p1234"], done(function (errors) {
@@ -440,11 +443,11 @@ buster.testCase("Validators", {
 
     "should not be able to mutate argument": function (done) {
         var opt = this.a.createOption("-p");
-        opt.addValidator(function (o, promise) {
+        opt.addValidator(function (o) {
             o.isSet = false;
             o.actualValue = "test";
             o.whatever = 123;
-            promise.resolve();
+            return when();
         });
 
         this.a.handle(["-p"], done(function (errors) {
