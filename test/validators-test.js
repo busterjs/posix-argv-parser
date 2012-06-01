@@ -35,8 +35,10 @@ buster.testCase("Built-in validator", {
 
     "skips validator if option is not set": function (done) {
         var opt = this.a.createOption("-p");
-        opt.addValidator(function (opt, promise) {
-            promise.reject("Ouch");
+        opt.addValidator(function (opt) {
+            var deferred = when.defer();
+            deferred.reject("Ouch");
+            return deferred;
         });
 
         this.a.createOption("-s");
@@ -69,6 +71,34 @@ buster.testCase("Built-in validator", {
         this.a.handle(["-p1234"], done(function (errors) {
             assert.equals(errors.length, 1);
             assert.equals(errors[0], "1234 is crazy.");
+        }));
+    },
+
+    "passes for non-promise return value from validator": function (done) {
+        var opt = this.a.createOption("-p");
+        opt.addValidator(function (opt) { return 42; });
+
+        this.a.handle(["-p"], done(function (errors) {
+            refute.defined(errors);
+        }));
+    },
+
+    "passes for falsy return value from validator": function (done) {
+        var opt = this.a.createOption("-p");
+        opt.addValidator(function (opt) { return false; });
+
+        this.a.handle(["-p"], done(function (errors) {
+            refute.defined(errors);
+        }));
+    },
+
+    "fails for validator throwing exception": function (done) {
+        var opt = this.a.createOption("-p");
+        opt.addValidator(function (opt) { throw new Error("Oh my jeebus"); });
+
+        this.a.handle(["-p"], done(function (errors) {
+            assert.equals(errors.length, 1);
+            assert.match(errors[0], "Oh my jeebus");
         }));
     },
 
