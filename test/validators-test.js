@@ -12,12 +12,12 @@ var missingDirOrFile = "/tmp/buster/roflmao/does-not-exist";
 // TODO: don't depend on /dev/null being available.
 var notFileOrDirButExists = "/dev/null";
 
-buster.testCase("Built in validator", {
+buster.testCase("Built-in validator", {
     setUp: function () {
         this.a = Object.create(busterArgs);
     },
 
-    "test basic validator with error": function (done) {
+    "basic validator with error": function (done) {
         var actualError = "An error message";
 
         var opt = this.a.createOption("-p");
@@ -46,7 +46,7 @@ buster.testCase("Built in validator", {
         }));
     },
 
-    "test basic validator without error": function (done) {
+    "basic validator without error": function (done) {
         var opt = this.a.createOption("-p");
         opt.addValidator(function (opt) {
             return when();
@@ -57,7 +57,7 @@ buster.testCase("Built in validator", {
         }));
     },
 
-    "test adding validator that uses the value of the option": function (done) {
+    "adds validator that uses the value of the option": function (done) {
         var opt = this.a.createOption("-p");
         opt.hasValue = true;
         opt.addValidator(function (opt) {
