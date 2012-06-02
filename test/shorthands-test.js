@@ -12,7 +12,7 @@ buster.testCase("Shorthands", {
         var opt = this.a.createOption("--port");
         this.a.addShorthand("-p", ["--port"]);
 
-        this.a.handle(["-p"], function (errors) {
+        this.a.parse(["-p"], function (errors) {
             refute.defined(errors);
             assert(opt.isSet);
             done();
@@ -24,7 +24,7 @@ buster.testCase("Shorthands", {
         opt.hasValue = true;
         this.a.addShorthand("-p", ["--port", "1234"]);
 
-        this.a.handle(["-p"], function (errors) {
+        this.a.parse(["-p"], function (errors) {
             refute.defined(errors);
             assert(opt.isSet);
             assert.equals(opt.value, "1234");
@@ -37,7 +37,7 @@ buster.testCase("Shorthands", {
         opt.hasValue = true;
         this.a.addShorthand("-p", ["--port"]);
 
-        this.a.handle(["-p"], function (errors) {
+        this.a.parse(["-p"], function (errors) {
             assert.defined(errors);
             assert.match(errors[0], /no value specified/i);
             assert.match(errors[0], "--port");
@@ -49,7 +49,7 @@ buster.testCase("Shorthands", {
     "test shorthand expanding to none existing options": function (done) {
         this.a.addShorthand("-p", ["--port"]);
 
-        this.a.handle(["-p"], function (errors) {
+        this.a.parse(["-p"], function (errors) {
             assert.defined(errors);
             assert.match(errors[0], /unknown argument/i);
             done();
@@ -115,7 +115,7 @@ buster.testCase("Shorthands", {
         this.a.addShorthand("--node", ["-e", "node"]);
 
         var argv = ["--node", "foo"];
-        this.a.handle(argv, done(function (errors) {
+        this.a.parse(argv, done(function (errors) {
             refute.defined(errors);
 
             assert.equals(env.value, "node");

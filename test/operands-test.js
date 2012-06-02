@@ -11,7 +11,7 @@ buster.testCase("Operands", {
     "test plain operand": function (done) {
         var opd = this.a.createOperand();
 
-        this.a.handle(["123abc"], done(function (errors) {
+        this.a.parse(["123abc"], done(function (errors) {
             assert(opd.isSet);
             assert.equals(opd.value, "123abc");
         }));
@@ -21,7 +21,7 @@ buster.testCase("Operands", {
         var opt = this.a.createOption("-p");
         var opd = this.a.createOperand();
 
-        this.a.handle(["-p", "123abc"], done(function (errors) {
+        this.a.parse(["-p", "123abc"], done(function (errors) {
             assert(opt.isSet);
             assert(opt.timesSet, 1);
             assert.match(opd.value, "123abc");
@@ -32,7 +32,7 @@ buster.testCase("Operands", {
         var opt = this.a.createOption("-p");
         var opd = this.a.createOperand();
 
-        this.a.handle(["123abc", "-p"], done(function (errors) {
+        this.a.parse(["123abc", "-p"], done(function (errors) {
             assert(opt.isSet);
             assert(opt.timesSet, 1);
             assert.match(opd.value, "123abc");
@@ -44,7 +44,7 @@ buster.testCase("Operands", {
         opt.hasValue = true;
         var opd = this.a.createOperand();
 
-        this.a.handle(["-p", "123abc"], done(function (errors) {
+        this.a.parse(["-p", "123abc"], done(function (errors) {
             assert.equals(opt.value, "123abc");
             refute(opd.isSet);
         }));
@@ -55,7 +55,7 @@ buster.testCase("Operands", {
         opt.hasValue = true;
         var opd = this.a.createOperand();
 
-        this.a.handle(["123abc", "-p", "test"], done(function (errors) {
+        this.a.parse(["123abc", "-p", "test"], done(function (errors) {
             assert(opt.isSet);
             assert.equals(opt.value, "test");
 
@@ -68,7 +68,7 @@ buster.testCase("Operands", {
         var opt = this.a.createOption("--port");
         var opd = this.a.createOperand();
 
-        this.a.handle(["--port", "123abc"], done(function (errors) {
+        this.a.parse(["--port", "123abc"], done(function (errors) {
             assert(opt.isSet);
             assert(opt.timesSet, 1);
             assert.match(opd.value, "123abc");
@@ -79,7 +79,7 @@ buster.testCase("Operands", {
         var opt = this.a.createOption("--port");
         var opd = this.a.createOperand();
 
-        this.a.handle(["123abc", "--port"], done(function (errors) {
+        this.a.parse(["123abc", "--port"], done(function (errors) {
             assert(opt.isSet);
             assert(opt.timesSet, 1);
             assert.match(opd.value, "123abc");
@@ -91,7 +91,7 @@ buster.testCase("Operands", {
         opt.hasValue = true;
         var opd = this.a.createOperand();
 
-        this.a.handle(["--port", "123abc"], done(function (errors) {
+        this.a.parse(["--port", "123abc"], done(function (errors) {
             assert(opt.isSet);
             assert.equals(opt.value, "123abc");
             refute(opd.isSet);
@@ -103,7 +103,7 @@ buster.testCase("Operands", {
         opt.hasValue = true;
         var opd = this.a.createOperand();
 
-        this.a.handle(["123abc", "--port", "test"], done(function (errors) {
+        this.a.parse(["123abc", "--port", "test"], done(function (errors) {
             assert(opt.isSet);
             assert.equals(opt.value, "test");
             assert(opd.isSet);
@@ -115,7 +115,7 @@ buster.testCase("Operands", {
         var opd = this.a.createOperand();
         opd.addValidator(busterArgs.validators.required());
 
-        this.a.handle([], done(function (errors) {
+        this.a.parse([], done(function (errors) {
             assert.defined(errors);
             assert.equals(errors.length, 1);
         }));
@@ -134,7 +134,7 @@ buster.testCase("Operands", {
         var opt = this.a.createOption("-p");
         var opd = this.a.createOperand();
 
-        this.a.handle(["-p", "--", "gocha"], done(function (errors) {
+        this.a.parse(["-p", "--", "gocha"], done(function (errors) {
             assert(opt.isSet);
             assert(opd.isSet);
             assert.equals(opd.value, "gocha");
@@ -145,7 +145,7 @@ buster.testCase("Operands", {
         var opt = this.a.createOption("-p");
         var opd = this.a.createOperand();
 
-        this.a.handle(["-p", "--", "-gocha"], done(function (errors) {
+        this.a.parse(["-p", "--", "-gocha"], done(function (errors) {
             assert(opt.isSet);
             assert(opd.isSet);
             assert.equals(opd.value, "-gocha");
@@ -157,7 +157,7 @@ buster.testCase("Operands", {
         var opd1 = this.a.createOperand();
         var opd2 = this.a.createOperand();
 
-        this.a.handle(["-p", "--", "foo", "bar"], done(function (errors) {
+        this.a.parse(["-p", "--", "foo", "bar"], done(function (errors) {
             assert(opt.isSet);
             assert(opd1.isSet);
             assert.equals(opd1.value, "foo");
@@ -171,7 +171,7 @@ buster.testCase("Operands", {
         var opd1 = this.a.createOperand();
         var opd2 = this.a.createOperand();
 
-        this.a.handle(["-p", "--", "-foo", "--bar"], done(function (errors) {
+        this.a.parse(["-p", "--", "-foo", "--bar"], done(function (errors) {
             assert(opt.isSet);
             assert(opd1.isSet);
             assert.equals(opd1.value, "-foo");
@@ -184,7 +184,7 @@ buster.testCase("Operands", {
         var self = this;
         var opd = this.a.createOperand();
 
-        this.a.handle(["foo"], function () {
+        this.a.parse(["foo"], function () {
             assert(opd.isSet);
             assert.equals(opd.value, "foo");
 
@@ -194,7 +194,7 @@ buster.testCase("Operands", {
                 return deferred.promise;
             });
 
-            self.a.handle(["bar"], done(function (errors) {
+            self.a.parse(["bar"], done(function (errors) {
                 assert.defined(errors);
                 assert(!opd.isSet);
                 assert(!opd.value);
@@ -206,7 +206,7 @@ buster.testCase("Operands", {
         var opd = this.a.createOperand();
         opd.greedy = true;
 
-        this.a.handle([], done(function () {
+        this.a.parse([], done(function () {
             refute(opd.isSet);
             assert.equals(opd.value, []);
         }));
@@ -216,7 +216,7 @@ buster.testCase("Operands", {
         var opd = this.a.createOperand();
         opd.greedy = true;
 
-        this.a.handle(["foo"], done(function () {
+        this.a.parse(["foo"], done(function () {
             assert(opd.isSet);
             assert.equals(opd.value, ["foo"]);
         }));
@@ -226,7 +226,7 @@ buster.testCase("Operands", {
         var opd = this.a.createOperand();
         opd.greedy = true;
 
-        this.a.handle(["foo", "bar", "baz"], done(function () {
+        this.a.parse(["foo", "bar", "baz"], done(function () {
             assert(opd.isSet);
             assert.equals(opd.value, ["foo", "bar", "baz"]);
         }));
@@ -236,7 +236,7 @@ buster.testCase("Operands", {
         var opd = this.a.createOperand();
         opd.greedy = true;
 
-        this.a.handle(["foo", "bar", "--", "baz"], done(function () {
+        this.a.parse(["foo", "bar", "--", "baz"], done(function () {
             assert(opd.isSet);
             assert.equals(opd.value, ["foo", "bar", "baz"]);
         }));
@@ -248,7 +248,7 @@ buster.testCase("Operands", {
         var opd = this.a.createOperand();
         opd.greedy = true;
 
-        this.a.handle(["-p", "foo", "bar"], done(function () {
+        this.a.parse(["-p", "foo", "bar"], done(function () {
             assert(opt.isSet);
             assert(opd.isSet);
             assert.equals(opd.value, ["foo", "bar"]);
@@ -261,7 +261,7 @@ buster.testCase("Operands", {
         var opd = this.a.createOperand();
         opd.greedy = true;
 
-        this.a.handle(["foo", "bar", "-p"], done(function () {
+        this.a.parse(["foo", "bar", "-p"], done(function () {
             assert(opt.isSet);
             assert(opd.isSet);
             assert.equals(opd.value, ["foo", "bar"]);
@@ -274,7 +274,7 @@ buster.testCase("Operands", {
         var opd = this.a.createOperand();
         opd.greedy = true;
 
-        this.a.handle(["foo", "-p", "bar"], done(function () {
+        this.a.parse(["foo", "-p", "bar"], done(function () {
             assert(opt.isSet);
             assert(opd.isSet);
             assert.equals(opd.value, ["foo", "bar"]);
@@ -288,7 +288,7 @@ buster.testCase("Operands", {
         var opd = this.a.createOperand();
         opd.greedy = true;
 
-        this.a.handle(["-p", "1234", "foo", "bar"], done(function () {
+        this.a.parse(["-p", "1234", "foo", "bar"], done(function () {
             assert(opt.isSet);
             assert.equals(opt.value, "1234");
             assert(opd.isSet);
@@ -303,7 +303,7 @@ buster.testCase("Operands", {
         var opd = this.a.createOperand();
         opd.greedy = true;
 
-        this.a.handle(["foo", "bar", "-p", "1234"], done(function () {
+        this.a.parse(["foo", "bar", "-p", "1234"], done(function () {
             assert(opt.isSet);
             assert.equals(opt.value, "1234");
             assert(opd.isSet);
@@ -318,7 +318,7 @@ buster.testCase("Operands", {
         var opd = this.a.createOperand();
         opd.greedy = true;
 
-        this.a.handle(["foo", "-p", "1234", "bar"], done(function () {
+        this.a.parse(["foo", "-p", "1234", "bar"], done(function () {
             assert(opt.isSet);
             assert.equals(opt.value, "1234");
             assert(opd.isSet);
@@ -332,7 +332,7 @@ buster.testCase("Operands", {
         var opd2 = this.a.createOperand();
         opd2.greedy = true;
 
-        this.a.handle(["foo", "bar", "baz"], done(function () {
+        this.a.parse(["foo", "bar", "baz"], done(function () {
             assert(opd1.isSet);
             assert.equals(opd1.value, "foo");
             assert(opd2.isSet);
@@ -346,7 +346,7 @@ buster.testCase("Operands", {
 
         var opd2 = this.a.createOperand();
 
-        this.a.handle(["foo", "bar", "baz"], done(function () {
+        this.a.parse(["foo", "bar", "baz"], done(function () {
             assert(opd1.isSet);
             assert.equals(opd1.value, ["foo", "bar", "baz"]);
             refute(opd2.isSet);
@@ -359,7 +359,7 @@ buster.testCase("Operands", {
         var opt = this.a.createOption("--port");
         opt.hasValue = true;
 
-        this.a.handle(["--port", "4224", "foo"], done(function (err) {
+        this.a.parse(["--port", "4224", "foo"], done(function (err) {
             refute.defined(err);
             assert.equals(opt.value, "4224");
             assert.equals(opd.value, "foo");

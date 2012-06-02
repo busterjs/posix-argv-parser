@@ -17,7 +17,7 @@ buster.testCase("buster-args", {
 
     "handling non-existent option errors": function (done) {
         this.a.createOption("-p");
-        this.a.handle(["-z"], done(function (errors) {
+        this.a.parse(["-z"], done(function (errors) {
             assert.equals(errors.length, 1);
             assert.match(errors[0], /unknown argument/i);
             assert.match(errors[0], "-z");
@@ -28,7 +28,7 @@ buster.testCase("buster-args", {
         var opt1 = this.a.createOption("-p");
         var opt2 = this.a.createOption("--port");
 
-        this.a.handle(["-p", "--port"], done(function (errors) {
+        this.a.parse(["-p", "--port"], done(function (errors) {
             assert(opt1.isSet);
             assert.equals(opt1.timesSet, 1);
             assert(opt2.isSet);
@@ -40,7 +40,7 @@ buster.testCase("buster-args", {
         var opt1 = this.a.createOption("-p");
         var opt2 = this.a.createOption("--port");
 
-        this.a.handle(["--port", "-p"], done(function (errors) {
+        this.a.parse(["--port", "-p"], done(function (errors) {
             assert(opt1.isSet);
             assert.equals(opt1.timesSet, 1);
             assert(opt2.isSet);
@@ -52,7 +52,7 @@ buster.testCase("buster-args", {
         var opt1 = this.a.createOption("-p");
         var opt2 = this.a.createOption("--port");
 
-        this.a.handle(["--port"], done(function (errors) {
+        this.a.parse(["--port"], done(function (errors) {
             refute(opt1.isSet);
             assert(opt2.isSet);
             assert.equals(opt2.timesSet, 1);
@@ -63,7 +63,7 @@ buster.testCase("buster-args", {
         var opt1 = this.a.createOption("-p");
         var opt2 = this.a.createOption("--port");
 
-        this.a.handle(["-p"], done(function (errors) {
+        this.a.parse(["-p"], done(function (errors) {
             assert(opt1.isSet);
             assert.equals(opt1.timesSet, 1);
             refute(opt2.isSet);
@@ -100,7 +100,7 @@ buster.testCase("buster-args", {
     "after operand separator": function (done) {
         var opt = this.a.createOption("--port");
 
-        this.a.handle(["--", "--port"], done(function (errors) {
+        this.a.parse(["--", "--port"], done(function (errors) {
             assert.defined(errors);
         }));
     }
