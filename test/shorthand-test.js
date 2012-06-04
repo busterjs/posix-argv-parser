@@ -1,7 +1,6 @@
 var buster = require("buster");
 var busterArgs = require("./../lib/buster-args");
-var assert = buster.assert;
-var refute = buster.refute;
+var shorthand = require("./../lib/shorthand");
 
 buster.testCase("Shorthands", {
     setUp: function () {
@@ -121,5 +120,46 @@ buster.testCase("Shorthands", {
             assert.equals(env.value, "node");
             assert.equals(anOpd.value, "foo");
         }));
+    },
+
+    "expand": {
+        "returns args untouched if shorthand is not present": function () {
+            var sh = shorthand.create("-x", ["--zuul", "dana"]);
+            var args = ["-a", "42", "--help"];
+
+            assert.equals(sh.expand(args), args);
+        },
+
+        "expands shorthand for the last option": function () {
+            var sh = shorthand.create("-x", ["--zuul", "dana"]);
+            var args = ["-a", "42", "-x"];
+
+            assert.equals(sh.expand(args), ["-a", "42", "--zuul", "dana"]);
+        },
+
+        "expands shorthand for middle option": function () {
+            var sh = shorthand.create("-x", ["--zuul", "dana"]);
+            var args = ["-a", "42", "-x", "--yo", "mister"];
+
+            assert.equals(sh.expand(args),
+                          ["-a", "42", "--zuul", "dana", "--yo", "mister"]);
+        },
+
+        "expands all occurrences of shorthand": function () {
+            var sh = shorthand.create("-x", ["--zuul", "dana"]);
+            var args = ["-x", "-x", "--yo"];
+
+            assert.equals(sh.expand(args),
+                          ["--zuul", "dana", "--zuul", "dana", "--yo"]);
+        },
+
+        "does not modify argument": function () {
+            var sh = shorthand.create("-x", ["--zuul", "dana"]);
+            var args = ["-x", "-x", "--yo"];
+            var expanded = sh.expand(args);
+
+            assert.equals(args, ["-x", "-x", "--yo"]);
+            refute.equals(args, expanded);
+        }
     }
 });
