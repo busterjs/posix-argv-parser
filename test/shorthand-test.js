@@ -102,7 +102,7 @@ buster.testCase("Shorthands", {
         try {
             this.a.addShorthand("-p", null);
         } catch (e) {
-            assert.match(e.message, /needs to be an array/i);
+            assert.match(e.message, /must be an array/i);
             done();
         }
     },
