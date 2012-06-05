@@ -12,7 +12,7 @@ var missingDirOrFile = "/tmp/buster/roflmao/does-not-exist";
 // TODO: don't depend on /dev/null being available.
 var notFileOrDirButExists = "/dev/null";
 
-buster.testCase("Built-in validator", {
+buster.testCase("validators", {
     setUp: function () {
         this.a = Object.create(busterArgs);
     },
@@ -30,21 +30,6 @@ buster.testCase("Built-in validator", {
         this.a.parse(["-p"], done(function (errors) {
             assert.equals(errors.length, 1);
             assert.equals(errors[0], actualError);
-        }));
-    },
-
-    "skips validator if option is not set": function (done) {
-        var opt = this.a.createOption("-p");
-        opt.addValidator(function (opt) {
-            var deferred = when.defer();
-            deferred.reject("Ouch");
-            return deferred;
-        });
-
-        var opt2 = this.a.createOption("-s");
-
-        this.a.parse(["-s"], done(function (errors) {
-            refute.defined(errors);
         }));
     },
 
@@ -198,6 +183,7 @@ buster.testCase("Built-in validator", {
 
             "test not setting option": function (done) {
                 this.a.parse([], done(function (errors) {
+                    assert.defined(errors);
                     assert.equals(errors.length, 1);
                     assert.match(errors[0], "-p");
                     assert.match(errors[0], /is required/);
@@ -214,6 +200,7 @@ buster.testCase("Built-in validator", {
 
             "test not setting option": function (done) {
                 this.a.parse([], done(function (errors) {
+                    assert.defined(errors);
                     assert.equals(errors.length, 1);
                     assert.match(errors[0], "-p");
                     assert.match(errors[0], /is required/);
@@ -419,6 +406,7 @@ buster.testCase("Built-in validator", {
         "test required": function (done) {
             this.o.addValidator(busterArgs.validators.required("I love ${1}!"));
             this.a.parse([], done(function (errors) {
+                assert.defined(errors);
                 assert.equals(errors[0], "I love -p!");
             }));
         },
@@ -464,12 +452,6 @@ buster.testCase("Built-in validator", {
                 assert.equals(errors[0], "Foo " + notFileOrDirButExists);
             }));
         }
-    }
-});
-
-buster.testCase("Validators", {
-    setUp: function () {
-        this.a = Object.create(busterArgs);
     },
 
     "should not be able to mutate argument": function (done) {
