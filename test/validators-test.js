@@ -41,7 +41,7 @@ buster.testCase("Built-in validator", {
             return deferred;
         });
 
-        this.a.createOption("-s");
+        var opt2 = this.a.createOption("-s");
 
         this.a.parse(["-s"], done(function (errors) {
             refute.defined(errors);
@@ -239,6 +239,7 @@ buster.testCase("Built-in validator", {
             "test on existing file": function (done) {
                 var self = this;
                 this.a.parse([existingFile], done(function (errors) {
+                    assert.defined(errors);
                     assert.equals(errors.length, 1);
                     assert.match(errors[0], /is not a directory/i);
                     assert.match(errors[0], existingFile);

@@ -3,7 +3,7 @@ var buster = require("buster");
 var busterArgs = require("./../lib/buster-args");
 var when = require("when");
 
-buster.testCase("Single dash option", {
+buster.testCase("Short options", {
     setUp: function () {
         this.a = Object.create(busterArgs);
     },
@@ -23,7 +23,7 @@ buster.testCase("Single dash option", {
             self.a.createOption("-pf");
         });
 
-        assert.exception(function () {
+        refute.exception(function () {
             self.a.createOption("--");
         });
 
@@ -268,7 +268,7 @@ buster.testCase("Single dash option", {
         var opt = this.a.createOption("-p");
 
         this.a.parse(["-p=foo"], done(function (errors) {
-            assert.match(errors[0], /does not have a value/i);
+            assert.match(errors[0], "does not take a value");
             assert.match(errors[0], "-p");
         }));
     },
@@ -328,7 +328,7 @@ buster.testCase("Single dash option", {
     }
 });
 
-buster.testCase("Double dash option", {
+buster.testCase("Long options", {
     setUp: function () {
         this.a = Object.create(busterArgs);
     },
@@ -457,6 +457,16 @@ buster.testCase("Double dash option", {
         }));
     },
 
+    "test passing value not matching other options": function (done) {
+        var opt1 = this.a.createOption("--port");
+        opt1.hasValue = true;
+        var opt2 = this.a.createOption("--zap");
+
+        this.a.parse(["--port", "--doit"], done(function (errors) {
+            assert.equals(opt1.value, "--doit");
+        }));
+    },
+
     "test passing value to option with value using equals": function (done) {
         var opt = this.a.createOption("--port");
         opt.hasValue = true;
@@ -472,7 +482,7 @@ buster.testCase("Double dash option", {
         var opt = this.a.createOption("--port");
 
         this.a.parse(["--port=foo"], done(function (errors) {
-            assert.match(errors[0], /does not have a value/i);
+            assert.match(errors[0], /does not take a value/i);
             assert.match(errors[0], "--port");
         }));
     },
