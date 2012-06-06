@@ -364,5 +364,14 @@ buster.testCase("Operands", {
             assert.equals(opt.value, "4224");
             assert.equals(opd.value, "foo");
         }));
+    },
+
+    "superfluous operand causes error": function (done) {
+        var opt = this.a.createOption("-a");
+
+        this.a.parse(["-a", "--", "foo"], done(function (err) {
+            assert.defined(err);
+            assert.match(err[0], "operand 'foo'");
+        }));
     }
 });
