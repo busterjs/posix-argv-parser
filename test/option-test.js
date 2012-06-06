@@ -313,11 +313,7 @@ buster.testCase("Short options", {
             assert(opt.isSet);
             assert.equals(opt.value, "foo");
 
-            opt.addValidator(function (arg) {
-                var deferred = when.defer();
-                deferred.reject("an error");
-                return deferred.promise;
-            });
+            opt.addValidator(function (arg) { return when.reject("an error"); });
 
             self.a.parse(["-p", "bar"], done(function (errors) {
                 assert.defined(errors);
@@ -507,11 +503,7 @@ buster.testCase("Long options", {
             assert(opt.isSet);
             assert.equals(opt.value, "foo");
 
-            opt.addValidator(function (arg) {
-                var deferred = when.defer();
-                deferred.reject("an error");
-                return deferred.promise;
-            });
+            opt.addValidator(function (arg) { return when.reject("an error"); });
 
             self.a.parse(["--port", "bar"], done(function (errors) {
                 assert.defined(errors);

@@ -24,7 +24,7 @@
     },
     "dependencies": {
         "buster-core": "~0.6",
-        "when": "https://github.com/cujojs/when/tarball/1.0.2"
+        "when": "~1.2"
     },
     "devDependencies": {
         "buster": ""

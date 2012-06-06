@@ -21,11 +21,7 @@ buster.testCase("validators", {
         var actualError = "An error message";
 
         var opt = this.a.createOption("-p");
-        opt.addValidator(function (opt) {
-            var deferred = when.defer();
-            deferred.reject(actualError);
-            return deferred.promise;
-        });
+        opt.addValidator(function (opt) { return when.reject(actualError); });
 
         this.a.parse(["-p"], done(function (errors) {
             assert.equals(errors.length, 1);
@@ -48,9 +44,7 @@ buster.testCase("validators", {
         var opt = this.a.createOption("-p");
         opt.hasValue = true;
         opt.addValidator(function (opt) {
-            var deferred = when.defer();
-            deferred.reject(opt.value + " is crazy.");
-            return deferred.promise;
+            return when.reject(opt.value + " is crazy.");
         });
 
         this.a.parse(["-p1234"], done(function (errors) {

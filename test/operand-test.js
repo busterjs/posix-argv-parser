@@ -188,11 +188,7 @@ buster.testCase("Operands", {
             assert(opd.isSet);
             assert.equals(opd.value, "foo");
 
-            opd.addValidator(function (arg) {
-                var deferred = when.defer();
-                deferred.reject("an error");
-                return deferred.promise;
-            });
+            opd.addValidator(function (arg) { return when.reject("an error"); });
 
             self.a.parse(["bar"], done(function (errors) {
                 assert.defined(errors);
