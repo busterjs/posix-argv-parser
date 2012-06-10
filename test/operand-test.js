@@ -356,7 +356,7 @@ buster.testCase("Operands", {
         opt.hasValue = true;
 
         this.a.parse(["--port", "4224", "foo"], done(function (err) {
-            refute.defined(err);
+            refute(err);
             assert.equals(opt.value, "4224");
             assert.equals(opd.value, "foo");
         }));

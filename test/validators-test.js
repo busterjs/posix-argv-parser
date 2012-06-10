@@ -36,7 +36,7 @@ buster.testCase("validators", {
         });
 
         this.a.parse(["-p"], done(function (errors) {
-            refute.defined(errors);
+            refute(errors);
         }));
     },
 
@@ -58,7 +58,7 @@ buster.testCase("validators", {
         opt.addValidator(function (opt) { return 42; });
 
         this.a.parse(["-p"], done(function (errors) {
-            refute.defined(errors);
+            refute(errors);
         }));
     },
 
@@ -67,7 +67,7 @@ buster.testCase("validators", {
         opt.addValidator(function (opt) { return false; });
 
         this.a.parse(["-p"], done(function (errors) {
-            refute.defined(errors);
+            refute(errors);
         }));
     },
 
@@ -91,7 +91,7 @@ buster.testCase("validators", {
         "test passing integer": function (done) {
             var self = this;
             this.a.parse(["-p123"], done(function (errors) {
-                refute.defined(errors);
+                refute(errors);
             }));
         },
 
@@ -130,7 +130,7 @@ buster.testCase("validators", {
         "test passing integer": function (done) {
             var self = this;
             this.a.parse(["-p123"], done(function (errors) {
-                refute.defined(errors);
+                refute(errors);
             }));
         },
 
@@ -153,7 +153,7 @@ buster.testCase("validators", {
         "test passing dot float": function (done) {
             var self = this;
             this.a.parse(["-p123.4"], done(function (errors) {
-                refute.defined(errors);
+                refute(errors);
             }));
         }
     },
@@ -171,7 +171,7 @@ buster.testCase("validators", {
 
             "test setting option with value": function (done) {
                 this.a.parse(["-pfoo"], done(function (errors) {
-                    refute.defined(errors);
+                    refute(errors);
                 }));
             },
 
@@ -188,7 +188,7 @@ buster.testCase("validators", {
         "for option without value": {
             "test setting option": function (done) {
                 this.a.parse(["-p"], done(function (errors) {
-                    refute.defined(errors);
+                    refute(errors);
                 }));
             },
 
@@ -213,7 +213,7 @@ buster.testCase("validators", {
             "test on existing directory": function (done) {
                 var self = this;
                 this.a.parse([existingDir], done(function (errors) {
-                    refute.defined(errors);
+                    refute(errors);
                 }));
             },
 
@@ -263,7 +263,7 @@ buster.testCase("validators", {
             "test on existing file": function (done) {
                 var self = this;
                 this.a.parse([existingFile], done(function (errors) {
-                    refute.defined(errors);
+                    refute(errors);
                 }));
             },
 
@@ -294,14 +294,14 @@ buster.testCase("validators", {
             "test on existing directory": function (done) {
                 var self = this;
                 this.a.parse([existingDir], done(function (errors) {
-                    refute.defined(errors);
+                    refute(errors);
                 }));
             },
 
             "test on existing file": function (done) {
                 var self = this;
                 this.a.parse([existingFile], done(function (errors) {
-                    refute.defined(errors);
+                    refute(errors);
                 }));
             },
 
@@ -339,7 +339,7 @@ buster.testCase("validators", {
 
             "should pass when operand is in enum": function (done) {
                 this.a.parse(["1"], done(function (errors) {
-                    refute.defined(errors);
+                    refute(errors);
                 }));
             },
 
@@ -357,7 +357,7 @@ buster.testCase("validators", {
 
             "should pass when there's no argument": function (done) {
                 this.a.parse([], done(function (errors) {
-                    refute.defined(errors);
+                    refute(errors);
                 }));
             }
         }
@@ -458,7 +458,7 @@ buster.testCase("validators", {
         });
 
         this.a.parse(["-p"], done(function (errors) {
-            refute.defined(errors);
+            refute(errors);
             assert(opt.isSet);
             refute(opt.value);
             refute(opt.hasOwnProperty("whatever"));

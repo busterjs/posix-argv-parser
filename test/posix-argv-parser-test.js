@@ -101,5 +101,17 @@ buster.testCase("posix-argv-parser", {
         this.a.parse(["--", "--port"], done(function (errors) {
             assert.defined(errors);
         }));
+    },
+
+    "yields options to parse callback": function (done) {
+        var opt = this.a.createOption("--port", "-p");
+        opt.hasValue = true;
+        this.a.createOption("--help");
+
+        this.a.parse(["--port", "4210"], done(function (err, options) {
+            assert.match(options["--port"], { value: "4210" });
+            assert.match(options["-p"], { value: "4210" });
+            assert.isFalse(options["--help"].isSet);
+        }));
     }
 });

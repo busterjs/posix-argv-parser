@@ -203,7 +203,7 @@ buster.testCase("Short options", {
         opt.acceptsValueAbsence = true;
 
         this.a.parse(["-p"], done(function (errors) {
-            refute.defined(errors);
+            refute(errors);
             assert(opt.isSet);
             refute(opt.value);
         }));
@@ -238,7 +238,7 @@ buster.testCase("Short options", {
         opt.hasValue = true;
 
         this.a.parse(["-p", "foo"], done(function (errors) {
-            refute.defined(errors);
+            refute(errors);
             assert(opt.isSet);
             assert.equals(opt.value, "foo");
         }));
@@ -258,7 +258,7 @@ buster.testCase("Short options", {
         opt.hasValue = true;
 
         this.a.parse(["-p=foo"], done(function (errors) {
-            refute.defined(errors);
+            refute(errors);
             assert(opt.isSet);
             assert.equals(opt.value, "foo");
         }));
@@ -434,7 +434,7 @@ buster.testCase("Long options", {
         opt.acceptsValueAbsence = true;
 
         this.a.parse(["--port"], done(function (errors) {
-            refute.defined(errors);
+            refute(errors);
             assert(opt.isSet);
             refute(opt.value);
         }));
@@ -468,7 +468,7 @@ buster.testCase("Long options", {
         opt.hasValue = true;
 
         this.a.parse(["--port=foo"], done(function (errors) {
-            refute.defined(errors);
+            refute(errors);
             assert(opt.isSet);
             assert.equals(opt.value, "foo");
         }));

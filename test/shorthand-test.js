@@ -12,7 +12,7 @@ buster.testCase("Shorthands", {
         this.a.addShorthand("-p", ["--port"]);
 
         this.a.parse(["-p"], function (errors) {
-            refute.defined(errors);
+            refute(errors);
             assert(opt.isSet);
             done();
         });
@@ -24,7 +24,7 @@ buster.testCase("Shorthands", {
         this.a.addShorthand("-p", ["--port", "1234"]);
 
         this.a.parse(["-p"], function (errors) {
-            refute.defined(errors);
+            refute(errors);
             assert(opt.isSet);
             assert.equals(opt.value, "1234");
             done();
@@ -115,7 +115,7 @@ buster.testCase("Shorthands", {
 
         var argv = ["--node", "foo"];
         this.a.parse(argv, done(function (errors) {
-            refute.defined(errors);
+            refute(errors);
 
             assert.equals(env.value, "node");
             assert.equals(anOpd.value, "foo");
