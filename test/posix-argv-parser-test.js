@@ -113,5 +113,22 @@ buster.testCase("posix-argv-parser", {
             assert.match(options["-p"], { value: "4210" });
             assert.isFalse(options["--help"].isSet);
         }));
+    },
+
+    "yields options with named operand": function (done) {
+        this.a.createOperand("filter");
+
+        this.a.parse(["yay"], done(function (err, options) {
+            assert.equals(options.filter.value, "yay");
+        }));
+    },
+
+    "yields greedy operand value as array": function (done) {
+        var opd = this.a.createOperand("filter");
+        opd.greedy = true;
+
+        this.a.parse(["yay", "man"], done(function (err, options) {
+            assert.equals(options.filter.value, ["yay", "man"]);
+        }));
     }
 });
