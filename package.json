@@ -1,8 +1,8 @@
 {
-    "name": "buster-args",
-    "version": "0.3.1",
-    "description": "Parser for CLI arguments.",
-    "homepage": "http://busterjs.org/docs/buster-args",
+    "name": "posix-argv-parser",
+    "version": "0.1.0",
+    "description": "POSIX compliant command-line argument parser.",
+    "homepage": "http://busterjs.org/docs/posix-argv-parser",
     "author": { "name": "August Lilleaas and Christian Johansen" },
     "contributors": [{
         "name": "Christian Johansen",
@@ -13,11 +13,11 @@
         "email": "august.lilleaas@gmail.com",
         "url": "http://augustl.com"
     }],
-    "main": "./lib/buster-args",
-    "repository": "git://gitorious.org/buster/buster-args",
+    "main": "./lib/posix-argv-parser",
+    "repository": "git://gitorious.org/buster/posix-argv-parser",
     "license": {
         "type": "BSD",
-        "url": "http://gitorious.org/buster/buster-args/blobs/master/LICENSE"
+        "url": "http://gitorious.org/buster/posix-argv-parser/blobs/master/LICENSE"
     },
     "scripts": {
         "test": "./node_modules/buster/bin/buster-test"

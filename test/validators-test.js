@@ -1,6 +1,6 @@
 /*jslint maxlen: 100 */
 var buster = require("buster");
-var busterArgs = require("./../lib/buster-args");
+var args = require("./../lib/posix-argv-parser");
 var path = require("path");
 var net = require("net");
 var when = require("when");
@@ -14,7 +14,7 @@ var notFileOrDirButExists = "/dev/null";
 
 buster.testCase("validators", {
     setUp: function () {
-        this.a = Object.create(busterArgs);
+        this.a = Object.create(args);
     },
 
     "basic validator with error": function (done) {
@@ -84,7 +84,7 @@ buster.testCase("validators", {
     "integer": {
         setUp: function () {
             this.opt = this.a.createOption("-p");
-            this.opt.addValidator(busterArgs.validators.integer());
+            this.opt.addValidator(args.validators.integer());
             this.opt.hasValue = true;
         },
 
@@ -123,7 +123,7 @@ buster.testCase("validators", {
     "number": {
         setUp: function () {
             this.opt = this.a.createOption("-p");
-            this.opt.addValidator(busterArgs.validators.number());
+            this.opt.addValidator(args.validators.number());
             this.opt.hasValue = true;
         },
 
@@ -161,7 +161,7 @@ buster.testCase("validators", {
     "required": {
         setUp: function () {
             this.opt = this.a.createOption("-p");
-            this.opt.addValidator(busterArgs.validators.required());
+            this.opt.addValidator(args.validators.required());
         },
 
         "for option with value": {
@@ -207,7 +207,7 @@ buster.testCase("validators", {
         "operand": {
             setUp: function () {
                 this.o = this.a.createOperand();
-                this.o.addValidator(busterArgs.validators.directory());
+                this.o.addValidator(args.validators.directory());
             },
 
             "test on existing directory": function (done) {
@@ -248,7 +248,7 @@ buster.testCase("validators", {
         "operand": {
             setUp: function () {
                 this.o = this.a.createOperand();
-                this.o.addValidator(busterArgs.validators.file());
+                this.o.addValidator(args.validators.file());
             },
 
             "test on existing directory": function (done) {
@@ -288,7 +288,7 @@ buster.testCase("validators", {
         "operand": {
             setUp: function () {
                 this.o = this.a.createOperand();
-                this.o.addValidator(busterArgs.validators.fileOrDirectory());
+                this.o.addValidator(args.validators.fileOrDirectory());
             },
 
             "test on existing directory": function (done) {
@@ -334,7 +334,7 @@ buster.testCase("validators", {
         "operand": {
             setUp: function () {
                 this.o = this.a.createOperand();
-                this.o.addValidator(busterArgs.validators.inEnum(["1", "2"]));
+                this.o.addValidator(args.validators.inEnum(["1", "2"]));
             },
 
             "should pass when operand is in enum": function (done) {
@@ -370,35 +370,35 @@ buster.testCase("validators", {
         },
 
         "test integer": function (done) {
-            this.o.addValidator(busterArgs.validators.integer("I love ${1}!"));
+            this.o.addValidator(args.validators.integer("I love ${1}!"));
             this.a.parse(["-p", "not a number"], done(function (errors) {
                 assert.equals(errors[0], "I love not a number!");
             }));
         },
 
         "test integer with signature": function (done) {
-            this.o.addValidator(busterArgs.validators.integer("I love ${1} and ${2}!"));
+            this.o.addValidator(args.validators.integer("I love ${1} and ${2}!"));
             this.a.parse(["-p", "not a number"], done(function (errors) {
                 assert.equals(errors[0], "I love not a number and -p!");
             }));
         },
 
         "test number": function (done) {
-            this.o.addValidator(busterArgs.validators.number("I love ${1}!"));
+            this.o.addValidator(args.validators.number("I love ${1}!"));
             this.a.parse(["-p", "not a number"], done(function (errors) {
                 assert.equals(errors[0], "I love not a number!");
             }));
         },
 
         "test number with signature": function (done) {
-            this.o.addValidator(busterArgs.validators.number("I love ${1} and ${2}!"));
+            this.o.addValidator(args.validators.number("I love ${1} and ${2}!"));
             this.a.parse(["-p", "not a number"], done(function (errors) {
                 assert.equals(errors[0], "I love not a number and -p!");
             }));
         },
 
         "test required": function (done) {
-            this.o.addValidator(busterArgs.validators.required("I love ${1}!"));
+            this.o.addValidator(args.validators.required("I love ${1}!"));
             this.a.parse([], done(function (errors) {
                 assert.defined(errors);
                 assert.equals(errors[0], "I love -p!");
@@ -406,42 +406,42 @@ buster.testCase("validators", {
         },
 
         "test file with no such file or dir": function (done) {
-            this.o.addValidator(busterArgs.validators.file("Foo ${1}"));
+            this.o.addValidator(args.validators.file("Foo ${1}"));
             this.a.parse(["-p", missingDirOrFile], done(function (errors) {
                 assert.equals(errors[0], "Foo " + missingDirOrFile);
             }));
         },
 
         "test file with directory": function (done) {
-            this.o.addValidator(busterArgs.validators.file("Foo ${1}"));
+            this.o.addValidator(args.validators.file("Foo ${1}"));
             this.a.parse(["-p", existingDir], done(function (errors) {
                 assert.equals(errors[0], "Foo " + existingDir);
             }));
         },
 
         "test dir with no such file or dir": function (done) {
-            this.o.addValidator(busterArgs.validators.directory("Foo ${1}"));
+            this.o.addValidator(args.validators.directory("Foo ${1}"));
             this.a.parse(["-p", missingDirOrFile], done(function (errors) {
                 assert.equals(errors[0], "Foo " + missingDirOrFile);
             }));
         },
 
         "test dir with file": function (done) {
-            this.o.addValidator(busterArgs.validators.directory("Foo ${1}"));
+            this.o.addValidator(args.validators.directory("Foo ${1}"));
             this.a.parse(["-p", existingFile], done(function (errors) {
                 assert.equals(errors[0], "Foo " + existingFile);
             }));
         },
 
         "test fileOrDir with no such file or dir": function (done) {
-            this.o.addValidator(busterArgs.validators.fileOrDirectory("Foo ${1}"));
+            this.o.addValidator(args.validators.fileOrDirectory("Foo ${1}"));
             this.a.parse(["-p", missingDirOrFile], done(function (errors) {
                 assert.equals(errors[0], "Foo " + missingDirOrFile);
             }));
         },
 
         "test fileOrDir with existing but not file or dir": function (done) {
-            this.o.addValidator(busterArgs.validators.fileOrDirectory("Foo ${1}"));
+            this.o.addValidator(args.validators.fileOrDirectory("Foo ${1}"));
             this.a.parse(["-p", notFileOrDirButExists], done(function (errors) {
                 assert.equals(errors[0], "Foo " + notFileOrDirButExists);
             }));

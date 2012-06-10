@@ -1,9 +1,9 @@
 var buster = require("buster");
-var busterArgs = require("./../lib/buster-args");
+var args = require("./../lib/posix-argv-parser");
 
-buster.testCase("buster-args", {
+buster.testCase("posix-argv-parser", {
     setUp: function () {
-        this.a = Object.create(busterArgs);
+        this.a = Object.create(args);
     },
 
     "not passing any options": function () {

@@ -1,11 +1,11 @@
 /*jslint maxlen: 100*/
 var buster = require("buster");
-var busterArgs = require("./../lib/buster-args");
+var args = require("./../lib/posix-argv-parser");
 var when = require("when");
 
 buster.testCase("Operands", {
     setUp: function () {
-        this.a = Object.create(busterArgs);
+        this.a = Object.create(args);
     },
 
     "test plain operand": function (done) {
@@ -113,7 +113,7 @@ buster.testCase("Operands", {
 
     "test not setting operand with required validator": function (done) {
         var opd = this.a.createOperand();
-        opd.addValidator(busterArgs.validators.required());
+        opd.addValidator(args.validators.required());
 
         this.a.parse([], done(function (errors) {
             assert.defined(errors);
@@ -123,7 +123,7 @@ buster.testCase("Operands", {
 
     "test creating option with operand present": function () {
         var self = this;
-        this.a.createOperand(busterArgs.OPD_DIRECTORY);
+        this.a.createOperand(args.OPD_DIRECTORY);
 
         refute.exception(function () {
             self.a.createOption("-p");

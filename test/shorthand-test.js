@@ -1,10 +1,10 @@
 var buster = require("buster");
-var busterArgs = require("./../lib/buster-args");
+var args = require("./../lib/posix-argv-parser");
 var shorthand = require("./../lib/shorthand");
 
 buster.testCase("Shorthands", {
     setUp: function () {
-        this.a = Object.create(busterArgs);
+        this.a = Object.create(args);
     },
 
     "test creating shorthand for option": function (done) {

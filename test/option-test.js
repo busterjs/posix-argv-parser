@@ -1,11 +1,11 @@
 /*jslint maxlen: 100 */
 var buster = require("buster");
-var busterArgs = require("./../lib/buster-args");
+var args = require("./../lib/posix-argv-parser");
 var when = require("when");
 
 buster.testCase("Short options", {
     setUp: function () {
-        this.a = Object.create(busterArgs);
+        this.a = Object.create(args);
     },
 
     "test one option": function (done) {
@@ -326,7 +326,7 @@ buster.testCase("Short options", {
 
 buster.testCase("Long options", {
     setUp: function () {
-        this.a = Object.create(busterArgs);
+        this.a = Object.create(args);
     },
 
     "test one option": function (done) {
