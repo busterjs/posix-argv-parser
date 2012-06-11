@@ -414,7 +414,7 @@ buster.testCase("validators", {
         "fails with understandable error": function (done) {
             this.a.createOption(["-v"], { validators: [v.maxTimesSet(2)] });
             this.a.parse(["-v", "-v", "-v"], done(function (errors, options) {
-                assert.match(errors[0], "-v can only be set 2 times");
+                assert.match(errors[0], "-v: can only be set 2 times");
             }));
         },
 
@@ -430,21 +430,21 @@ buster.testCase("validators", {
 
     "custom error messages": {
         "test integer": function (done) {
-            this.validatedOption(v.integer("I love ${1}!"));
+            this.validatedOption(v.integer("I love ${2}!"));
             this.a.parse(["-p", "not a number"], done(function (errors) {
                 assert.equals(errors[0], "I love not a number!");
             }));
         },
 
         "test integer with signature": function (done) {
-            this.validatedOption(v.integer("Yay ${1} and ${2}!"));
+            this.validatedOption(v.integer("Yay ${2} and ${1}!"));
             this.a.parse(["-p", "not a number"], done(function (errors) {
                 assert.equals(errors[0], "Yay not a number and -p!");
             }));
         },
 
         "test number": function (done) {
-            this.validatedOption(v.number("I love ${1}!"));
+            this.validatedOption(v.number("I love ${2}!"));
             this.a.parse(["-p", "not a number"], done(function (errors) {
                 assert.equals(errors[0], "I love not a number!");
             }));
@@ -453,7 +453,7 @@ buster.testCase("validators", {
         "test number with signature": function (done) {
             this.a.createOption(["-p"], {
                 hasValue: true,
-                validators: [v.number("I love ${1} and ${2}!")]
+                validators: [v.number("I love ${2} and ${1}!")]
             });
             this.a.parse(["-p", "not a number"], done(function (errors) {
                 assert.equals(errors[0], "I love not a number and -p!");
@@ -475,7 +475,7 @@ buster.testCase("validators", {
             this.stubFsStat({ isFile: false, isDirectory: false });
             this.a.createOption(["-p"], {
                 hasValue: true,
-                validators: [v.file("Foo ${1}")]
+                validators: [v.file("Foo ${2}")]
             });
             this.a.parse(["-p", "/dev/null"], done(function (errors) {
                 assert.equals(errors[0], "Foo /dev/null");
@@ -486,7 +486,7 @@ buster.testCase("validators", {
             this.stubFsStat({ isDirectory: true });
             this.a.createOption(["-p"], {
                 hasValue: true,
-                validators: [v.file("Foo ${1}")]
+                validators: [v.file("Foo ${2}")]
             });
             this.a.parse(["-p", "/some/dir"], done(function (errors) {
                 assert.equals(errors[0], "Foo /some/dir");
@@ -495,7 +495,7 @@ buster.testCase("validators", {
 
         "test dir with no such file or dir": function (done) {
             this.stubFsStat({ isFile: false, isDirectory: false });
-            this.validatedOption(v.directory("Foo ${1}"));
+            this.validatedOption(v.directory("Foo ${2}"));
             this.a.parse(["-p", "/dev/null"], done(function (errors) {
                 assert.equals(errors[0], "Foo /dev/null");
             }));
@@ -503,7 +503,7 @@ buster.testCase("validators", {
 
         "test dir with file": function (done) {
             this.stubFsStat({ isFile: true });
-            this.validatedOption(v.directory("Foo ${1}"));
+            this.validatedOption(v.directory("Foo ${2}"));
             this.a.parse(["-p", "/some/file"], done(function (errors) {
                 assert.equals(errors[0], "Foo /some/file");
             }));
@@ -511,7 +511,7 @@ buster.testCase("validators", {
 
         "test fileOrDir with no such file or dir": function (done) {
             this.stubFsStat({ isFile: false, isDirectory: false });
-            this.validatedOption(v.fileOrDirectory("Foo ${1}"));
+            this.validatedOption(v.fileOrDirectory("Foo ${2}"));
             this.a.parse(["-p", "/dev/null"], done(function (errors) {
                 assert.equals(errors[0], "Foo /dev/null");
             }));
@@ -523,7 +523,7 @@ buster.testCase("validators", {
                 isDirectory: this.stub().returns(false)
             });
 
-            this.validatedOption(v.fileOrDirectory("Foo ${1}"));
+            this.validatedOption(v.fileOrDirectory("Foo ${2}"));
             this.a.parse(["-p", "/dev/null"], done(function (errors) {
                 assert.equals(errors[0], "Foo /dev/null");
             }));
