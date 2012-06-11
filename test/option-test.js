@@ -292,25 +292,6 @@ buster.testCase("Short options", {
         this.a.parse(["--", "-p"], done(function (errors, options) {
             assert.defined(errors);
         }));
-    },
-
-    "//test failing validation resets": function (done) {
-        this.a.createOption(["-p"], { hasValue: true });
-
-        this.a.parse(["-p", "foo"], function (errors, options) {
-            assert(options["-p"].isSet);
-            assert.equals(options["-p"].value, "foo");
-
-            options["-p"].addValidator(function (arg) {
-                return when.reject("an error");
-            });
-
-            self.a.parse(["-p", "bar"], done(function (errors, options) {
-                assert.defined(errors);
-                assert(!options["-p"].isSet);
-                assert(!options["-p"].value);
-            }));
-        });
     }
 });
 
@@ -476,24 +457,5 @@ buster.testCase("Long options", {
             assert.match(errors[0], /unknown argument/i);
             assert.match(errors[0], "123");
         }));
-    },
-
-    "//test failing validation resets": function (done) {
-        this.a.createOption(["--port"], { hasValue: true });
-
-        this.a.parse(["--port", "foo"], function (errors, options) {
-            assert(options["--port"].isSet);
-            assert.equals(options["--port"].value, "foo");
-
-            options["--port"].addValidator(function (arg) {
-                return when.reject("an error");
-            });
-
-            self.a.parse(["--port", "bar"], done(function (errors, options) {
-                assert.defined(errors);
-                assert(!options["--port"].isSet);
-                assert(!options["--port"].value);
-            }));
-        });
     }
 });

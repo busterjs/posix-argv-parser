@@ -180,23 +180,6 @@ buster.testCase("Operands", {
         }));
     },
 
-    "// test failing validation resets": function (done) {
-        this.a.createOperand();
-
-        this.a.parse(["foo"], function (errors, options) {
-            assert(options.OPD.isSet);
-            assert.equals(options.OPD.value, "foo");
-
-            options.OPD.addValidator(function (arg) { return when.reject("an error"); });
-
-            this.a.parse(["bar"], done(function (errors) {
-                assert.defined(errors);
-                assert(!options.OPD.isSet);
-                assert(!options.OPD.value);
-            }));
-        }.bind(this));
-    },
-
     "test greedy operand with no value": function (done) {
         this.a.createOperand("rest", { greedy: true });
 
