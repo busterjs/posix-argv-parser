@@ -382,6 +382,52 @@ buster.testCase("validators", {
         }
     },
 
+    "maxTimesSet": {
+        "passes if not set": function (done) {
+            this.a.createOption(["-v"], { validators: [v.maxTimesSet(2)] });
+            this.a.parse([], done(function (errors, options) {
+                refute(errors);
+            }));
+        },
+
+        "passes if set few enough times": function (done) {
+            this.a.createOption(["-v"], { validators: [v.maxTimesSet(2)] });
+            this.a.parse(["-v"], done(function (errors, options) {
+                refute(errors);
+            }));
+        },
+
+        "passes if set max times": function (done) {
+            this.a.createOption(["-v"], { validators: [v.maxTimesSet(2)] });
+            this.a.parse(["-v", "-v"], done(function (errors, options) {
+                refute(errors);
+            }));
+        },
+
+        "fails if passed too many times": function (done) {
+            this.a.createOption(["-v"], { validators: [v.maxTimesSet(2)] });
+            this.a.parse(["-v", "-v", "-v"], done(function (errors, options) {
+                assert(errors);
+            }));
+        },
+
+        "fails with understandable error": function (done) {
+            this.a.createOption(["-v"], { validators: [v.maxTimesSet(2)] });
+            this.a.parse(["-v", "-v", "-v"], done(function (errors, options) {
+                assert.match(errors[0], "-v can only be set 2 times");
+            }));
+        },
+
+        "fails with custom error": function (done) {
+            this.a.createOption(["-v"], {
+                validators: [v.maxTimesSet(2, "${1} iz ${2}!")]
+            });
+            this.a.parse(["-v", "-v", "-v"], done(function (errors, options) {
+                assert.match(errors[0], "-v iz 2!");
+            }));
+        }
+    },
+
     "custom error messages": {
         "test integer": function (done) {
             this.validatedOption(v.integer("I love ${1}!"));
