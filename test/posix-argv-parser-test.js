@@ -130,5 +130,63 @@ buster.testCase("posix-argv-parser", {
         this.a.parse(["yay", "man"], done(function (err, options) {
             assert.equals(options.filter.value, ["yay", "man"]);
         }));
+    },
+
+    "transforms": {
+        "transforms value": function (done) {
+            var port = this.a.createOption("-p");
+            port.hasValue = true;
+            port.transform = this.stub().returns(1337);
+
+            this.a.parse(["-p", "1337"], done(function (err, options) {
+                assert.calledOnce(port.transform);
+                assert.same(options["-p"].value, 1337);
+            }));
+        },
+
+        "fails if transform is not a function": function (done) {
+            var port = this.a.createOption("-p");
+            port.hasValue = true;
+            port.transform = {};
+
+            this.a.parse(["-p", "1337"], done(function (errors) {
+                assert(errors);
+            }));
+        },
+
+        "fails if transform throws": function (done) {
+            var port = this.a.createOption("-p");
+            port.hasValue = true;
+            port.transform = this.stub().throws(new TypeError("Oh no"));
+
+            this.a.parse(["-p", "1337"], done(function (errors) {
+                assert(errors);
+                assert.match(errors[0], "Oh no");
+            }));
+        },
+
+        "validates raw untransformed value": function (done) {
+            var port = this.a.createOption("-p");
+            port.hasValue = true;
+            var validator = this.stub();
+            port.addValidator(validator);
+            port.transform = this.stub().returns(1337);
+
+            this.a.parse(["-p", "AAA"], done(function (errors, options) {
+                assert.match(validator.args[0][0], { value: "AAA" });
+            }));
+        },
+
+        "does not call transform if validation fails": function (done) {
+            var port = this.a.createOption("-p");
+            port.hasValue = true;
+            port.addValidator(args.validators.integer());
+            port.transform = this.stub();
+
+            this.a.parse(["-p", "AAA"], done(function (errors, options) {
+                assert(errors);
+                refute.called(port.transform);
+            }));
+        }
     }
 });
