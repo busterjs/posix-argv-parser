@@ -187,5 +187,12 @@ buster.testCase("posix-argv-parser", {
                 refute.called(transform);
             }));
         }
+    },
+
+    "includes non-provided arguments in results": function (done) {
+        this.a.createOption(["-p"]);
+        this.a.parse([], done(function (errors, options) {
+            assert.isFalse(options["-p"].isSet);
+        }));
     }
 });
