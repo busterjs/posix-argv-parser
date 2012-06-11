@@ -3,18 +3,18 @@ var buster = require("buster");
 var args = require("./../lib/posix-argv-parser");
 var path = require("path");
 var net = require("net");
+var fs = require("fs");
 var when = require("when");
-
-var fixtureDir = path.normalize(__dirname + "/fixtures");
-var existingDir = fixtureDir;
-var existingFile = fixtureDir + "/a_file.txt";
-var missingDirOrFile = "/tmp/buster/roflmao/does-not-exist";
-// TODO: don't depend on /dev/null being available.
-var notFileOrDirButExists = "/dev/null";
 
 buster.testCase("validators", {
     setUp: function () {
         this.a = Object.create(args);
+        this.stubFsStat = function (options) {
+            this.stub(fs, "stat").yields(options.error, {
+                isFile: this.stub().returns(!!options.isFile),
+                isDirectory: this.stub().returns(!!options.isDirectory)
+            });
+        };
     },
 
     "basic validator with error": function (done) {
@@ -211,28 +211,28 @@ buster.testCase("validators", {
             },
 
             "test on existing directory": function (done) {
-                var self = this;
-                this.a.parse([existingDir], done(function (errors) {
+                this.stubFsStat({ isDirectory: true });
+                this.a.parse(["/some/dir"], done(function (errors) {
                     refute(errors);
                 }));
             },
 
             "test on existing file": function (done) {
-                var self = this;
-                this.a.parse([existingFile], done(function (errors) {
+                this.stubFsStat({ isFile: true });
+                this.a.parse(["/some/dir"], done(function (errors) {
                     assert.defined(errors);
                     assert.equals(errors.length, 1);
                     assert.match(errors[0], /is not a directory/i);
-                    assert.match(errors[0], existingFile);
+                    assert.match(errors[0], "/some/dir");
                 }));
             },
 
             "test on none existing file/directory": function (done) {
-                var self = this;
-                this.a.parse([missingDirOrFile], done(function (errors) {
+                this.stubFsStat({ isFile: false, isDirectory: false });
+                this.a.parse(["/dev/null"], done(function (errors) {
                     assert.equals(errors.length, 1);
                     assert.match(errors[0], /is not a directory/i);
-                    assert.match(errors[0], missingDirOrFile);
+                    assert.match(errors[0], "/dev/null");
                 }));
             },
 
@@ -252,27 +252,27 @@ buster.testCase("validators", {
             },
 
             "test on existing directory": function (done) {
-                var self = this;
-                this.a.parse([existingDir], done(function (errors) {
+                this.stubFsStat({ isDirectory: true });
+                this.a.parse(["/var/lib"], done(function (errors) {
                     assert.equals(errors.length, 1);
                     assert.match(errors[0], /is not a file/i);
-                    assert.match(errors[0], existingDir);
+                    assert.match(errors[0], "/var/lib");
                 }));
             },
 
             "test on existing file": function (done) {
-                var self = this;
-                this.a.parse([existingFile], done(function (errors) {
+                this.stubFsStat({ isFile: true });
+                this.a.parse(["/some/file.txt"], done(function (errors) {
                     refute(errors);
                 }));
             },
 
             "test on none existing file/directory": function (done) {
-                var self = this;
-                this.a.parse([missingDirOrFile], done(function (errors) {
+                this.stubFsStat({ isFile: false, isDirectory: false });
+                this.a.parse(["/dev/null"], done(function (errors) {
                     assert.equals(errors.length, 1);
                     assert.match(errors[0], /is not a file/i);
-                    assert.match(errors[0], missingDirOrFile);
+                    assert.match(errors[0], "/dev/null");
                 }));
             },
 
@@ -292,25 +292,25 @@ buster.testCase("validators", {
             },
 
             "test on existing directory": function (done) {
-                var self = this;
-                this.a.parse([existingDir], done(function (errors) {
+                this.stubFsStat({ isDirectory: true });
+                this.a.parse(["/var/lib"], done(function (errors) {
                     refute(errors);
                 }));
             },
 
             "test on existing file": function (done) {
-                var self = this;
-                this.a.parse([existingFile], done(function (errors) {
+                this.stubFsStat({ isFile: true });
+                this.a.parse(["/some/file"], done(function (errors) {
                     refute(errors);
                 }));
             },
 
             "test on none existing file/directory": function (done) {
-                var self = this;
-                this.a.parse([missingDirOrFile], done(function (errors) {
+                this.stubFsStat({ isFile: false, isDirectory: false });
+                this.a.parse(["/dev/null"], done(function (errors) {
                     assert.equals(errors.length, 1);
                     assert.match(errors[0], /not a file or directory/i);
-                    assert.match(errors[0], missingDirOrFile);
+                    assert.match(errors[0], "/dev/null");
                 }));
             },
 
@@ -321,10 +321,15 @@ buster.testCase("validators", {
             },
 
             "test with existing item that isn't file or directory": function (done) {
-                this.a.parse([notFileOrDirButExists], done(function (errors) {
+                this.stub(fs, "stat").yields(null, {
+                    isFile: this.stub().returns(false),
+                    isDirectory: this.stub().returns(false)
+                });
+
+                this.a.parse(["/dev/null"], done(function (errors) {
                     assert.equals(errors.length, 1);
                     assert.match(errors[0], /not a file or directory/i);
-                    assert.match(errors[0], notFileOrDirButExists);
+                    assert.match(errors[0], "/dev/null");
                 }));
             }
         }
@@ -406,44 +411,54 @@ buster.testCase("validators", {
         },
 
         "test file with no such file or dir": function (done) {
+            this.stubFsStat({ isFile: false, isDirectory: false });
             this.o.addValidator(args.validators.file("Foo ${1}"));
-            this.a.parse(["-p", missingDirOrFile], done(function (errors) {
-                assert.equals(errors[0], "Foo " + missingDirOrFile);
+            this.a.parse(["-p", "/dev/null"], done(function (errors) {
+                assert.equals(errors[0], "Foo /dev/null");
             }));
         },
 
         "test file with directory": function (done) {
+            this.stubFsStat({ isDirectory: true });
             this.o.addValidator(args.validators.file("Foo ${1}"));
-            this.a.parse(["-p", existingDir], done(function (errors) {
-                assert.equals(errors[0], "Foo " + existingDir);
+            this.a.parse(["-p", "/some/dir"], done(function (errors) {
+                assert.equals(errors[0], "Foo /some/dir");
             }));
         },
 
         "test dir with no such file or dir": function (done) {
+            this.stubFsStat({ isFile: false, isDirectory: false });
             this.o.addValidator(args.validators.directory("Foo ${1}"));
-            this.a.parse(["-p", missingDirOrFile], done(function (errors) {
-                assert.equals(errors[0], "Foo " + missingDirOrFile);
+            this.a.parse(["-p", "/dev/null"], done(function (errors) {
+                assert.equals(errors[0], "Foo /dev/null");
             }));
         },
 
         "test dir with file": function (done) {
+            this.stubFsStat({ isFile: true });
             this.o.addValidator(args.validators.directory("Foo ${1}"));
-            this.a.parse(["-p", existingFile], done(function (errors) {
-                assert.equals(errors[0], "Foo " + existingFile);
+            this.a.parse(["-p", "/some/file"], done(function (errors) {
+                assert.equals(errors[0], "Foo /some/file");
             }));
         },
 
         "test fileOrDir with no such file or dir": function (done) {
+            this.stubFsStat({ isFile: false, isDirectory: false });
             this.o.addValidator(args.validators.fileOrDirectory("Foo ${1}"));
-            this.a.parse(["-p", missingDirOrFile], done(function (errors) {
-                assert.equals(errors[0], "Foo " + missingDirOrFile);
+            this.a.parse(["-p", "/dev/null"], done(function (errors) {
+                assert.equals(errors[0], "Foo /dev/null");
             }));
         },
 
         "test fileOrDir with existing but not file or dir": function (done) {
+            this.stub(fs, "stat").yields(null, {
+                isFile: this.stub().returns(false),
+                isDirectory: this.stub().returns(false)
+            });
+
             this.o.addValidator(args.validators.fileOrDirectory("Foo ${1}"));
-            this.a.parse(["-p", notFileOrDirButExists], done(function (errors) {
-                assert.equals(errors[0], "Foo " + notFileOrDirButExists);
+            this.a.parse(["-p", "/dev/null"], done(function (errors) {
+                assert.equals(errors[0], "Foo /dev/null");
             }));
         }
     },
