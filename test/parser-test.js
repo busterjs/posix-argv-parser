@@ -4,16 +4,14 @@ var p = require("../lib/parser");
 
 buster.testCase("parser", {
     setUp: function () {
-        this.a = Object.create(args);
+        this.a = args.create();
     },
 
     "expandShorthands": {
         setUp: function () {
-            var port = this.a.createOption("-p", "--port");
-            port.hasValue = true;
-            this.a.createOption("-h", "--help");
-            var logLevel = this.a.createOption("-l", "--log-level");
-            logLevel.hasValue = true;
+            this.a.createOption(["-p", "--port"], { hasValue: true });
+            this.a.createOption(["-h", "--help"]);
+            this.a.createOption(["-l", "--log-level"], { hasValue: true });
         },
 
         "returns arguments untouched when no shorthands": function () {

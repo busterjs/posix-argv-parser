@@ -5,23 +5,33 @@ var path = require("path");
 var net = require("net");
 var fs = require("fs");
 var when = require("when");
+var v = args.validators;
 
 buster.testCase("validators", {
     setUp: function () {
-        this.a = Object.create(args);
+        this.a = args.create();
         this.stubFsStat = function (options) {
             this.stub(fs, "stat").yields(options.error, {
                 isFile: this.stub().returns(!!options.isFile),
                 isDirectory: this.stub().returns(!!options.isDirectory)
             });
         };
+        this.validatedOption = function (validator) {
+            this.a.createOption(["-p"], {
+                hasValue: true,
+                validators: [validator]
+            });
+        };
+        this.validatedOperand = function (validator) {
+            this.a.createOperand("rest", { validators: [validator] });
+        };
     },
 
     "basic validator with error": function (done) {
         var actualError = "An error message";
-
-        var opt = this.a.createOption("-p");
-        opt.addValidator(function (opt) { return when.reject(actualError); });
+        this.a.createOption(["-p"], {
+            validators: [function (opt) { return when.reject(actualError); }]
+        });
 
         this.a.parse(["-p"], done(function (errors) {
             assert.equals(errors.length, 1);
@@ -30,9 +40,8 @@ buster.testCase("validators", {
     },
 
     "basic validator without error": function (done) {
-        var opt = this.a.createOption("-p");
-        opt.addValidator(function (opt) {
-            return when();
+        this.a.createOption(["-p"], {
+            validators: [function (opt) { return when(); }]
         });
 
         this.a.parse(["-p"], done(function (errors) {
@@ -41,10 +50,11 @@ buster.testCase("validators", {
     },
 
     "adds validator that uses the value of the option": function (done) {
-        var opt = this.a.createOption("-p");
-        opt.hasValue = true;
-        opt.addValidator(function (opt) {
-            return when.reject(opt.value + " is crazy.");
+        this.a.createOption(["-p"], {
+            hasValue: true,
+            validators: [function (opt) {
+                return when.reject(opt.value + " is crazy.");
+            }]
         });
 
         this.a.parse(["-p1234"], done(function (errors) {
@@ -54,8 +64,9 @@ buster.testCase("validators", {
     },
 
     "passes for non-promise return value from validator": function (done) {
-        var opt = this.a.createOption("-p");
-        opt.addValidator(function (opt) { return 42; });
+        this.a.createOption(["-p"], {
+            validators: [function (opt) { return 42; }]
+        });
 
         this.a.parse(["-p"], done(function (errors) {
             refute(errors);
@@ -63,8 +74,9 @@ buster.testCase("validators", {
     },
 
     "passes for falsy return value from validator": function (done) {
-        var opt = this.a.createOption("-p");
-        opt.addValidator(function (opt) { return false; });
+        this.a.createOption(["-p"], {
+            validators: [function (opt) { return false; }]
+        });
 
         this.a.parse(["-p"], done(function (errors) {
             refute(errors);
@@ -72,8 +84,9 @@ buster.testCase("validators", {
     },
 
     "fails for validator throwing exception": function (done) {
-        var opt = this.a.createOption("-p");
-        opt.addValidator(function (opt) { throw new Error("Oh my jeebus"); });
+        this.a.createOption(["-p"], {
+            validators: [function (opt) { throw new Error("Oh my jeebus"); }]
+        });
 
         this.a.parse(["-p"], done(function (errors) {
             assert.equals(errors.length, 1);
@@ -83,13 +96,10 @@ buster.testCase("validators", {
 
     "integer": {
         setUp: function () {
-            this.opt = this.a.createOption("-p");
-            this.opt.addValidator(args.validators.integer());
-            this.opt.hasValue = true;
+            this.validatedOption(v.integer());
         },
 
         "test passing integer": function (done) {
-            var self = this;
             this.a.parse(["-p123"], done(function (errors) {
                 refute(errors);
             }));
@@ -122,9 +132,7 @@ buster.testCase("validators", {
 
     "number": {
         setUp: function () {
-            this.opt = this.a.createOption("-p");
-            this.opt.addValidator(args.validators.number());
-            this.opt.hasValue = true;
+            this.validatedOption(v.number());
         },
 
         "passes for integer": function (done) {
@@ -170,14 +178,9 @@ buster.testCase("validators", {
     },
 
     "required": {
-        setUp: function () {
-            this.opt = this.a.createOption("-p");
-            this.opt.addValidator(args.validators.required());
-        },
-
         "for option with value": {
             setUp: function () {
-                this.opt.hasValue = true;
+                this.validatedOption(v.required());
             },
 
             "test setting option with value": function (done) {
@@ -197,6 +200,10 @@ buster.testCase("validators", {
         },
 
         "for option without value": {
+            setUp: function () {
+                this.a.createOption(["-p"], { validators: [v.required()] });
+            },
+
             "test setting option": function (done) {
                 this.a.parse(["-p"], done(function (errors) {
                     refute(errors);
@@ -217,8 +224,7 @@ buster.testCase("validators", {
     "directory": {
         "operand": {
             setUp: function () {
-                this.o = this.a.createOperand();
-                this.o.addValidator(args.validators.directory());
+                this.validatedOperand(v.directory());
             },
 
             "test on existing directory": function (done) {
@@ -249,7 +255,7 @@ buster.testCase("validators", {
 
             "test no value": function (done) {
                 this.a.parse([], done(function (errors) {
-                    assert(true);
+                    refute(errors);
                 }));
             }
         }
@@ -258,8 +264,7 @@ buster.testCase("validators", {
     "file": {
         "operand": {
             setUp: function () {
-                this.o = this.a.createOperand();
-                this.o.addValidator(args.validators.file());
+                this.validatedOperand(v.file());
             },
 
             "test on existing directory": function (done) {
@@ -289,7 +294,7 @@ buster.testCase("validators", {
 
             "test no value": function (done) {
                 this.a.parse([], done(function (errors) {
-                    assert(true);
+                    refute(errors);
                 }));
             }
         }
@@ -298,8 +303,7 @@ buster.testCase("validators", {
     "fileOrDirectory": {
         "operand": {
             setUp: function () {
-                this.o = this.a.createOperand();
-                this.o.addValidator(args.validators.fileOrDirectory());
+                this.validatedOperand(v.fileOrDirectory());
             },
 
             "test on existing directory": function (done) {
@@ -349,8 +353,7 @@ buster.testCase("validators", {
     "inEnum": {
         "operand": {
             setUp: function () {
-                this.o = this.a.createOperand();
-                this.o.addValidator(args.validators.inEnum(["1", "2"]));
+                this.validatedOperand(v.inEnum(["1", "2"]));
             },
 
             "passes when operand is in enum": function (done) {
@@ -379,42 +382,89 @@ buster.testCase("validators", {
         }
     },
 
-    "custom error messages": {
-        setUp: function () {
-            this.o = this.a.createOption("-p");
-            this.o.hasValue = true;
+    "maxTimesSet": {
+        "passes if not set": function (done) {
+            this.a.createOption(["-v"], { validators: [v.maxTimesSet(2)] });
+            this.a.parse([], done(function (errors, options) {
+                refute(errors);
+            }));
         },
 
+        "passes if set few enough times": function (done) {
+            this.a.createOption(["-v"], { validators: [v.maxTimesSet(2)] });
+            this.a.parse(["-v"], done(function (errors, options) {
+                refute(errors);
+            }));
+        },
+
+        "passes if set max times": function (done) {
+            this.a.createOption(["-v"], { validators: [v.maxTimesSet(2)] });
+            this.a.parse(["-v", "-v"], done(function (errors, options) {
+                refute(errors);
+            }));
+        },
+
+        "fails if passed too many times": function (done) {
+            this.a.createOption(["-v"], { validators: [v.maxTimesSet(2)] });
+            this.a.parse(["-v", "-v", "-v"], done(function (errors, options) {
+                assert(errors);
+            }));
+        },
+
+        "fails with understandable error": function (done) {
+            this.a.createOption(["-v"], { validators: [v.maxTimesSet(2)] });
+            this.a.parse(["-v", "-v", "-v"], done(function (errors, options) {
+                assert.match(errors[0], "-v can only be set 2 times");
+            }));
+        },
+
+        "fails with custom error": function (done) {
+            this.a.createOption(["-v"], {
+                validators: [v.maxTimesSet(2, "${1} iz ${2}!")]
+            });
+            this.a.parse(["-v", "-v", "-v"], done(function (errors, options) {
+                assert.match(errors[0], "-v iz 2!");
+            }));
+        }
+    },
+
+    "custom error messages": {
         "test integer": function (done) {
-            this.o.addValidator(args.validators.integer("I love ${1}!"));
+            this.validatedOption(v.integer("I love ${1}!"));
             this.a.parse(["-p", "not a number"], done(function (errors) {
                 assert.equals(errors[0], "I love not a number!");
             }));
         },
 
         "test integer with signature": function (done) {
-            this.o.addValidator(args.validators.integer("I love ${1} and ${2}!"));
+            this.validatedOption(v.integer("Yay ${1} and ${2}!"));
             this.a.parse(["-p", "not a number"], done(function (errors) {
-                assert.equals(errors[0], "I love not a number and -p!");
+                assert.equals(errors[0], "Yay not a number and -p!");
             }));
         },
 
         "test number": function (done) {
-            this.o.addValidator(args.validators.number("I love ${1}!"));
+            this.validatedOption(v.number("I love ${1}!"));
             this.a.parse(["-p", "not a number"], done(function (errors) {
                 assert.equals(errors[0], "I love not a number!");
             }));
         },
 
         "test number with signature": function (done) {
-            this.o.addValidator(args.validators.number("I love ${1} and ${2}!"));
+            this.a.createOption(["-p"], {
+                hasValue: true,
+                validators: [v.number("I love ${1} and ${2}!")]
+            });
             this.a.parse(["-p", "not a number"], done(function (errors) {
                 assert.equals(errors[0], "I love not a number and -p!");
             }));
         },
 
         "test required": function (done) {
-            this.o.addValidator(args.validators.required("I love ${1}!"));
+            this.a.createOption(["-p"], {
+                hasValue: true,
+                validators: [v.required("I love ${1}!")]
+            });
             this.a.parse([], done(function (errors) {
                 assert.defined(errors);
                 assert.equals(errors[0], "I love -p!");
@@ -423,7 +473,10 @@ buster.testCase("validators", {
 
         "test file with no such file or dir": function (done) {
             this.stubFsStat({ isFile: false, isDirectory: false });
-            this.o.addValidator(args.validators.file("Foo ${1}"));
+            this.a.createOption(["-p"], {
+                hasValue: true,
+                validators: [v.file("Foo ${1}")]
+            });
             this.a.parse(["-p", "/dev/null"], done(function (errors) {
                 assert.equals(errors[0], "Foo /dev/null");
             }));
@@ -431,7 +484,10 @@ buster.testCase("validators", {
 
         "test file with directory": function (done) {
             this.stubFsStat({ isDirectory: true });
-            this.o.addValidator(args.validators.file("Foo ${1}"));
+            this.a.createOption(["-p"], {
+                hasValue: true,
+                validators: [v.file("Foo ${1}")]
+            });
             this.a.parse(["-p", "/some/dir"], done(function (errors) {
                 assert.equals(errors[0], "Foo /some/dir");
             }));
@@ -439,7 +495,7 @@ buster.testCase("validators", {
 
         "test dir with no such file or dir": function (done) {
             this.stubFsStat({ isFile: false, isDirectory: false });
-            this.o.addValidator(args.validators.directory("Foo ${1}"));
+            this.validatedOption(v.directory("Foo ${1}"));
             this.a.parse(["-p", "/dev/null"], done(function (errors) {
                 assert.equals(errors[0], "Foo /dev/null");
             }));
@@ -447,7 +503,7 @@ buster.testCase("validators", {
 
         "test dir with file": function (done) {
             this.stubFsStat({ isFile: true });
-            this.o.addValidator(args.validators.directory("Foo ${1}"));
+            this.validatedOption(v.directory("Foo ${1}"));
             this.a.parse(["-p", "/some/file"], done(function (errors) {
                 assert.equals(errors[0], "Foo /some/file");
             }));
@@ -455,7 +511,7 @@ buster.testCase("validators", {
 
         "test fileOrDir with no such file or dir": function (done) {
             this.stubFsStat({ isFile: false, isDirectory: false });
-            this.o.addValidator(args.validators.fileOrDirectory("Foo ${1}"));
+            this.validatedOption(v.fileOrDirectory("Foo ${1}"));
             this.a.parse(["-p", "/dev/null"], done(function (errors) {
                 assert.equals(errors[0], "Foo /dev/null");
             }));
@@ -467,7 +523,7 @@ buster.testCase("validators", {
                 isDirectory: this.stub().returns(false)
             });
 
-            this.o.addValidator(args.validators.fileOrDirectory("Foo ${1}"));
+            this.validatedOption(v.fileOrDirectory("Foo ${1}"));
             this.a.parse(["-p", "/dev/null"], done(function (errors) {
                 assert.equals(errors[0], "Foo /dev/null");
             }));
@@ -475,19 +531,36 @@ buster.testCase("validators", {
     },
 
     "should not be able to mutate argument": function (done) {
-        var opt = this.a.createOption("-p");
-        opt.addValidator(function (o) {
-            o.isSet = false;
-            o.actualValue = "test";
-            o.whatever = 123;
-            return when();
+        this.a.createOption(["-p"], {
+            validators: [function (o) {
+                o.isSet = false;
+                o.value = "test";
+                o.whatever = 123;
+            }]
         });
 
-        this.a.parse(["-p"], done(function (errors) {
+        this.a.parse(["-p"], done(function (errors, options) {
             refute(errors);
-            assert(opt.isSet);
-            refute(opt.value);
-            refute(opt.hasOwnProperty("whatever"));
+            assert(options["-p"].isSet);
+            refute(options["-p"].value);
+            refute(options["-p"].hasOwnProperty("whatever"));
+        }));
+    },
+
+    "operands should not be able to mutate argument": function (done) {
+        this.a.createOperand({
+            validators: [function (o) {
+                o.isSet = false;
+                o.value = "test";
+                o.whatever = 123;
+            }]
+        });
+
+        this.a.parse(["--", "hey"], done(function (errors, options) {
+            refute(errors);
+            assert(options.OPD.isSet);
+            assert.equals(options.OPD.value, "hey");
+            refute(options.OPD.hasOwnProperty("whatever"));
         }));
     }
 });
