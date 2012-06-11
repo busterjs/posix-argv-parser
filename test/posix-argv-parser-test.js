@@ -3,7 +3,7 @@ var args = require("./../lib/posix-argv-parser");
 
 buster.testCase("posix-argv-parser", {
     setUp: function () {
-        this.a = Object.create(args);
+        this.a = args.create();
     },
 
     "not passing any options": function () {
@@ -162,15 +162,15 @@ buster.testCase("posix-argv-parser", {
         },
 
         "validates raw untransformed value": function (done) {
-            var validator = this.stub();
+            var validatorValue;
             this.a.createOption(["-p"], {
                 hasValue: true,
-                validators: [validator],
+                validators: [function (opt) { validatorValue = opt.value; }],
                 transform: this.stub().returns(1337)
             });
 
             this.a.parse(["-p", "AAA"], done(function (errors, options) {
-                assert.match(validator.args[0][0], { value: "AAA" });
+                assert.equals(validatorValue, "AAA");
             }));
         },
 

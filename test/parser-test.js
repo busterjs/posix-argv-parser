@@ -4,7 +4,7 @@ var p = require("../lib/parser");
 
 buster.testCase("parser", {
     setUp: function () {
-        this.a = Object.create(args);
+        this.a = args.create();
     },
 
     "expandShorthands": {

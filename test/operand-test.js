@@ -5,7 +5,7 @@ var when = require("when");
 
 buster.testCase("Operands", {
     setUp: function () {
-        this.a = Object.create(args);
+        this.a = args.create();
     },
 
     "test plain operand": function (done) {

@@ -5,7 +5,7 @@ var when = require("when");
 
 buster.testCase("Short options", {
     setUp: function () {
-        this.a = Object.create(args);
+        this.a = args.create();
     },
 
     "test one option": function (done) {
@@ -297,7 +297,7 @@ buster.testCase("Short options", {
 
 buster.testCase("Long options", {
     setUp: function () {
-        this.a = Object.create(args);
+        this.a = args.create();
     },
 
     "test one option": function (done) {

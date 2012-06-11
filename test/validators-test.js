@@ -9,7 +9,7 @@ var v = args.validators;
 
 buster.testCase("validators", {
     setUp: function () {
-        this.a = Object.create(args);
+        this.a = args.create();
         this.stubFsStat = function (options) {
             this.stub(fs, "stat").yields(options.error, {
                 isFile: this.stub().returns(!!options.isFile),
@@ -531,20 +531,36 @@ buster.testCase("validators", {
     },
 
     "should not be able to mutate argument": function (done) {
-        var opt = this.a.createOption(["-p"], {
+        this.a.createOption(["-p"], {
             validators: [function (o) {
                 o.isSet = false;
-                o.actualValue = "test";
+                o.value = "test";
                 o.whatever = 123;
-                return when();
             }]
         });
 
-        this.a.parse(["-p"], done(function (errors) {
+        this.a.parse(["-p"], done(function (errors, options) {
             refute(errors);
-            assert(opt.isSet);
-            refute(opt.value);
-            refute(opt.hasOwnProperty("whatever"));
+            assert(options["-p"].isSet);
+            refute(options["-p"].value);
+            refute(options["-p"].hasOwnProperty("whatever"));
+        }));
+    },
+
+    "operands should not be able to mutate argument": function (done) {
+        this.a.createOperand({
+            validators: [function (o) {
+                o.isSet = false;
+                o.value = "test";
+                o.whatever = 123;
+            }]
+        });
+
+        this.a.parse(["--", "hey"], done(function (errors, options) {
+            refute(errors);
+            assert(options.OPD.isSet);
+            assert.equals(options.OPD.value, "hey");
+            refute(options.OPD.hasOwnProperty("whatever"));
         }));
     }
 });

@@ -4,7 +4,7 @@ var shorthand = require("./../lib/shorthand");
 
 buster.testCase("Shorthands", {
     setUp: function () {
-        this.a = Object.create(args);
+        this.a = args.create();
     },
 
     "test creating shorthand for option": function (done) {
