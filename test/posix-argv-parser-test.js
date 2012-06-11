@@ -9,12 +9,12 @@ buster.testCase("posix-argv-parser", {
     "not passing any options": function () {
         var self = this;
         assert.exception(function () {
-            self.a.createOption();
+            self.a.createOption([]);
         });
     },
 
     "handling non-existent option errors": function (done) {
-        this.a.createOption("-p");
+        this.a.createOption(["-p"]);
         this.a.parse(["-z"], done(function (errors) {
             assert.equals(errors.length, 1);
             assert.match(errors[0], /unknown argument/i);
@@ -23,8 +23,8 @@ buster.testCase("posix-argv-parser", {
     },
 
     "one and two dash option with both passed, single first": function (done) {
-        var opt1 = this.a.createOption("-p");
-        var opt2 = this.a.createOption("--port");
+        var opt1 = this.a.createOption(["-p"]);
+        var opt2 = this.a.createOption(["--port"]);
 
         this.a.parse(["-p", "--port"], done(function (errors) {
             assert(opt1.isSet);
@@ -35,8 +35,8 @@ buster.testCase("posix-argv-parser", {
     },
 
     "one and two dash option with both passed, double first": function (done) {
-        var opt1 = this.a.createOption("-p");
-        var opt2 = this.a.createOption("--port");
+        var opt1 = this.a.createOption(["-p"]);
+        var opt2 = this.a.createOption(["--port"]);
 
         this.a.parse(["--port", "-p"], done(function (errors) {
             assert(opt1.isSet);
@@ -47,8 +47,8 @@ buster.testCase("posix-argv-parser", {
     },
 
     "one and two dash option with only double dash passed": function (done) {
-        var opt1 = this.a.createOption("-p");
-        var opt2 = this.a.createOption("--port");
+        var opt1 = this.a.createOption(["-p"]);
+        var opt2 = this.a.createOption(["--port"]);
 
         this.a.parse(["--port"], done(function (errors) {
             refute(opt1.isSet);
@@ -58,8 +58,8 @@ buster.testCase("posix-argv-parser", {
     },
 
     "one and two dash option with only single dash passed": function (done) {
-        var opt1 = this.a.createOption("-p");
-        var opt2 = this.a.createOption("--port");
+        var opt1 = this.a.createOption(["-p"]);
+        var opt2 = this.a.createOption(["--port"]);
 
         this.a.parse(["-p"], done(function (errors) {
             assert(opt1.isSet);
@@ -72,31 +72,31 @@ buster.testCase("posix-argv-parser", {
         var self = this;
 
         assert.exception(function () {
-            self.a.createOption("-p", "-p");
+            self.a.createOption(["-p", "-p"]);
         });
 
         assert.exception(function () {
-            self.a.createOption("--port", "--port");
+            self.a.createOption(["--port", "--port"]);
         });
     },
 
     "same option specified in a different option": function () {
         var self = this;
-        this.a.createOption("-p");
+        this.a.createOption(["-p"]);
 
         assert.exception(function () {
-            self.a.createOption("-p");
+            self.a.createOption(["-p"]);
         });
 
-        this.a.createOption("--port");
+        this.a.createOption(["--port"]);
 
         assert.exception(function () {
-            self.a.createOption("--port");
+            self.a.createOption(["--port"]);
         });
     },
 
     "after operand separator": function (done) {
-        var opt = this.a.createOption("--port");
+        var opt = this.a.createOption(["--port"]);
 
         this.a.parse(["--", "--port"], done(function (errors) {
             assert.defined(errors);
@@ -104,9 +104,9 @@ buster.testCase("posix-argv-parser", {
     },
 
     "yields options to parse callback": function (done) {
-        var opt = this.a.createOption("--port", "-p");
+        var opt = this.a.createOption(["--port", "-p"]);
         opt.hasValue = true;
-        this.a.createOption("--help");
+        this.a.createOption(["--help"]);
 
         this.a.parse(["--port", "4210"], done(function (err, options) {
             assert.match(options["--port"], { value: "4210" });
@@ -134,7 +134,7 @@ buster.testCase("posix-argv-parser", {
 
     "transforms": {
         "transforms value": function (done) {
-            var port = this.a.createOption("-p");
+            var port = this.a.createOption(["-p"]);
             port.hasValue = true;
             port.transform = this.stub().returns(1337);
 
@@ -145,7 +145,7 @@ buster.testCase("posix-argv-parser", {
         },
 
         "fails if transform is not a function": function (done) {
-            var port = this.a.createOption("-p");
+            var port = this.a.createOption(["-p"]);
             port.hasValue = true;
             port.transform = {};
 
@@ -155,7 +155,7 @@ buster.testCase("posix-argv-parser", {
         },
 
         "fails if transform throws": function (done) {
-            var port = this.a.createOption("-p");
+            var port = this.a.createOption(["-p"]);
             port.hasValue = true;
             port.transform = this.stub().throws(new TypeError("Oh no"));
 
@@ -166,7 +166,7 @@ buster.testCase("posix-argv-parser", {
         },
 
         "validates raw untransformed value": function (done) {
-            var port = this.a.createOption("-p");
+            var port = this.a.createOption(["-p"]);
             port.hasValue = true;
             var validator = this.stub();
             port.addValidator(validator);
@@ -178,7 +178,7 @@ buster.testCase("posix-argv-parser", {
         },
 
         "does not call transform if validation fails": function (done) {
-            var port = this.a.createOption("-p");
+            var port = this.a.createOption(["-p"]);
             port.hasValue = true;
             port.addValidator(args.validators.integer());
             port.transform = this.stub();

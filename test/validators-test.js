@@ -20,7 +20,7 @@ buster.testCase("validators", {
     "basic validator with error": function (done) {
         var actualError = "An error message";
 
-        var opt = this.a.createOption("-p");
+        var opt = this.a.createOption(["-p"]);
         opt.addValidator(function (opt) { return when.reject(actualError); });
 
         this.a.parse(["-p"], done(function (errors) {
@@ -30,7 +30,7 @@ buster.testCase("validators", {
     },
 
     "basic validator without error": function (done) {
-        var opt = this.a.createOption("-p");
+        var opt = this.a.createOption(["-p"]);
         opt.addValidator(function (opt) {
             return when();
         });
@@ -41,7 +41,7 @@ buster.testCase("validators", {
     },
 
     "adds validator that uses the value of the option": function (done) {
-        var opt = this.a.createOption("-p");
+        var opt = this.a.createOption(["-p"]);
         opt.hasValue = true;
         opt.addValidator(function (opt) {
             return when.reject(opt.value + " is crazy.");
@@ -54,7 +54,7 @@ buster.testCase("validators", {
     },
 
     "passes for non-promise return value from validator": function (done) {
-        var opt = this.a.createOption("-p");
+        var opt = this.a.createOption(["-p"]);
         opt.addValidator(function (opt) { return 42; });
 
         this.a.parse(["-p"], done(function (errors) {
@@ -63,7 +63,7 @@ buster.testCase("validators", {
     },
 
     "passes for falsy return value from validator": function (done) {
-        var opt = this.a.createOption("-p");
+        var opt = this.a.createOption(["-p"]);
         opt.addValidator(function (opt) { return false; });
 
         this.a.parse(["-p"], done(function (errors) {
@@ -72,7 +72,7 @@ buster.testCase("validators", {
     },
 
     "fails for validator throwing exception": function (done) {
-        var opt = this.a.createOption("-p");
+        var opt = this.a.createOption(["-p"]);
         opt.addValidator(function (opt) { throw new Error("Oh my jeebus"); });
 
         this.a.parse(["-p"], done(function (errors) {
@@ -83,7 +83,7 @@ buster.testCase("validators", {
 
     "integer": {
         setUp: function () {
-            this.opt = this.a.createOption("-p");
+            this.opt = this.a.createOption(["-p"]);
             this.opt.addValidator(args.validators.integer());
             this.opt.hasValue = true;
         },
@@ -122,7 +122,7 @@ buster.testCase("validators", {
 
     "number": {
         setUp: function () {
-            this.opt = this.a.createOption("-p");
+            this.opt = this.a.createOption(["-p"]);
             this.opt.addValidator(args.validators.number());
             this.opt.hasValue = true;
         },
@@ -171,7 +171,7 @@ buster.testCase("validators", {
 
     "required": {
         setUp: function () {
-            this.opt = this.a.createOption("-p");
+            this.opt = this.a.createOption(["-p"]);
             this.opt.addValidator(args.validators.required());
         },
 
@@ -381,7 +381,7 @@ buster.testCase("validators", {
 
     "custom error messages": {
         setUp: function () {
-            this.o = this.a.createOption("-p");
+            this.o = this.a.createOption(["-p"]);
             this.o.hasValue = true;
         },
 
@@ -475,7 +475,7 @@ buster.testCase("validators", {
     },
 
     "should not be able to mutate argument": function (done) {
-        var opt = this.a.createOption("-p");
+        var opt = this.a.createOption(["-p"]);
         opt.addValidator(function (o) {
             o.isSet = false;
             o.actualValue = "test";

@@ -9,7 +9,7 @@ buster.testCase("Short options", {
     },
 
     "test one option": function (done) {
-        var opt = this.a.createOption("-p");
+        var opt = this.a.createOption(["-p"]);
         this.a.parse(["-p"], done(function (errors) {
             assert(opt.isSet);
             assert.equals(opt.timesSet, 1);
@@ -20,28 +20,28 @@ buster.testCase("Short options", {
         var self = this;
 
         assert.exception(function () {
-            self.a.createOption("-pf");
+            self.a.createOption(["-pf"]);
         });
 
         refute.exception(function () {
-            self.a.createOption("--");
+            self.a.createOption(["--"]);
         });
 
         assert.exception(function () {
-            self.a.createOption("-pff");
+            self.a.createOption(["-pff"]);
         });
 
         assert.exception(function () {
-            self.a.createOption("-p-f");
+            self.a.createOption(["-p-f"]);
         });
 
         assert.exception(function () {
-            self.a.createOption("-p", "-pfff");
+            self.a.createOption(["-p", "-pfff"]);
         });
     },
 
     "test one option twice as separate options": function (done) {
-        var opt = this.a.createOption("-p");
+        var opt = this.a.createOption(["-p"]);
         this.a.parse(["-p", "-p"], done(function (errors) {
             assert(opt.isSet);
             assert.equals(opt.timesSet, 2);
@@ -49,7 +49,7 @@ buster.testCase("Short options", {
     },
 
     "test one option thrice as separate options": function (done) {
-        var opt = this.a.createOption("-p");
+        var opt = this.a.createOption(["-p"]);
         this.a.parse(["-p", "-p", "-p"], done(function (errors) {
             assert(opt.isSet);
             assert.equals(opt.timesSet, 3);
@@ -57,7 +57,7 @@ buster.testCase("Short options", {
     },
 
     "test one option twice as one grouped option": function (done) {
-        var opt = this.a.createOption("-p");
+        var opt = this.a.createOption(["-p"]);
         this.a.parse(["-pp"], done(function (errors) {
             assert(opt.isSet);
             assert.equals(opt.timesSet, 2);
@@ -65,7 +65,7 @@ buster.testCase("Short options", {
     },
 
     "test one option thrice as one grouped option": function (done) {
-        var opt = this.a.createOption("-p");
+        var opt = this.a.createOption(["-p"]);
         this.a.parse(["-ppp"], done(function (errors) {
             assert(opt.isSet);
             assert.equals(opt.timesSet, 3);
@@ -73,7 +73,7 @@ buster.testCase("Short options", {
     },
 
     "test one option thrice as bith grouped and separate": function (done) {
-        var opt = this.a.createOption("-p");
+        var opt = this.a.createOption(["-p"]);
         this.a.parse(["-pp", "-p"], done(function (errors) {
             assert(opt.isSet);
             assert.equals(opt.timesSet, 3);
@@ -81,8 +81,8 @@ buster.testCase("Short options", {
     },
 
     "test two options as separate args": function (done) {
-        var opt1 = this.a.createOption("-p");
-        var opt2 = this.a.createOption("-z");
+        var opt1 = this.a.createOption(["-p"]);
+        var opt2 = this.a.createOption(["-z"]);
 
         this.a.parse(["-p", "-z"], done(function (errors) {
             assert(opt1.isSet);
@@ -93,8 +93,8 @@ buster.testCase("Short options", {
     },
 
     "test two options as one arg": function (done) {
-        var opt1 = this.a.createOption("-p");
-        var opt2 = this.a.createOption("-z");
+        var opt1 = this.a.createOption(["-p"]);
+        var opt2 = this.a.createOption(["-z"]);
 
         this.a.parse(["-pz"], done(function (errors) {
             assert(opt1.isSet);
@@ -105,8 +105,8 @@ buster.testCase("Short options", {
     },
 
     "test two options two times grouped with self": function (done) {
-        var opt1 = this.a.createOption("-p");
-        var opt2 = this.a.createOption("-z");
+        var opt1 = this.a.createOption(["-p"]);
+        var opt2 = this.a.createOption(["-z"]);
 
         this.a.parse(["-pp", "-zz"], done(function (errors) {
             assert(opt1.isSet);
@@ -117,8 +117,8 @@ buster.testCase("Short options", {
     },
 
     "test two options two times grouped with other": function (done) {
-        var opt1 = this.a.createOption("-p");
-        var opt2 = this.a.createOption("-z");
+        var opt1 = this.a.createOption(["-p"]);
+        var opt2 = this.a.createOption(["-z"]);
 
         this.a.parse(["-pz", "-zp"], done(function (errors) {
             assert(opt1.isSet);
@@ -129,8 +129,8 @@ buster.testCase("Short options", {
     },
 
     "test two options where only one occurs": function (done) {
-        var opt1 = this.a.createOption("-p");
-        var opt2 = this.a.createOption("-z");
+        var opt1 = this.a.createOption(["-p"]);
+        var opt2 = this.a.createOption(["-z"]);
 
         this.a.parse(["-p"], done(function (errors) {
             assert(opt1.isSet);
@@ -140,8 +140,8 @@ buster.testCase("Short options", {
     },
 
     "test two options each occurring thrice": function (done) {
-        var opt1 = this.a.createOption("-p");
-        var opt2 = this.a.createOption("-z");
+        var opt1 = this.a.createOption(["-p"]);
+        var opt2 = this.a.createOption(["-z"]);
 
         this.a.parse(["-pzz", "-ppz"], done(function (errors) {
             assert(opt1.isSet);
@@ -152,7 +152,7 @@ buster.testCase("Short options", {
     },
 
     "test option with value": function (done) {
-        var opt = this.a.createOption("-p");
+        var opt = this.a.createOption(["-p"]);
         opt.hasValue = true;
 
         this.a.parse(["-pfoo"], done(function (errors) {
@@ -162,7 +162,7 @@ buster.testCase("Short options", {
     },
 
     "test option with value but no value passed": function (done) {
-        var opt = this.a.createOption("-p");
+        var opt = this.a.createOption(["-p"]);
         opt.hasValue = true;
 
         this.a.parse(["-p"], done(function (errors) {
@@ -174,7 +174,7 @@ buster.testCase("Short options", {
     },
 
     "test option with value and default value": function (done) {
-        var opt = this.a.createOption("-p");
+        var opt = this.a.createOption(["-p"]);
         opt.hasValue = true;
         opt.defaultValue = "bar";
 
@@ -185,7 +185,7 @@ buster.testCase("Short options", {
     },
 
     "test option without value but with default value": function (done) {
-        var opt = this.a.createOption("-p");
+        var opt = this.a.createOption(["-p"]);
         opt.hasValue = true;
         opt.defaultValue = "bar";
 
@@ -198,7 +198,7 @@ buster.testCase("Short options", {
     },
 
     "test option having value and accepting not getting one passed": function (done) {
-        var opt = this.a.createOption("-p");
+        var opt = this.a.createOption(["-p"]);
         opt.hasValue = true;
         opt.acceptsValueAbsence = true;
 
@@ -210,9 +210,9 @@ buster.testCase("Short options", {
     },
 
     "test passing value matching other option": function (done) {
-        var opt1 = this.a.createOption("-p");
+        var opt1 = this.a.createOption(["-p"]);
         opt1.hasValue = true;
-        var opt2 = this.a.createOption("-z");
+        var opt2 = this.a.createOption(["-z"]);
 
         this.a.parse(["-pz"], done(function (errors) {
             assert(opt1.isSet);
@@ -222,9 +222,9 @@ buster.testCase("Short options", {
     },
 
     "test passing value matching other option as well as that other option": function (done) {
-        var opt1 = this.a.createOption("-p");
+        var opt1 = this.a.createOption(["-p"]);
         opt1.hasValue = true;
-        var opt2 = this.a.createOption("-z");
+        var opt2 = this.a.createOption(["-z"]);
 
         this.a.parse(["-pz", "-z"], done(function (errors) {
             assert(opt1.isSet);
@@ -234,7 +234,7 @@ buster.testCase("Short options", {
     },
 
     "test passing value to option with value with space between option and value": function (done) {
-        var opt = this.a.createOption("-p");
+        var opt = this.a.createOption(["-p"]);
         opt.hasValue = true;
 
         this.a.parse(["-p", "foo"], done(function (errors) {
@@ -245,7 +245,7 @@ buster.testCase("Short options", {
     },
 
     "passing value to option without value with space between option and value": function (done) {
-        var opt = this.a.createOption("-p");
+        var opt = this.a.createOption(["-p"]);
 
         this.a.parse(["-p", "foo"], done(function (errors) {
             assert.match(errors[0], /unknown argument/i);
@@ -254,7 +254,7 @@ buster.testCase("Short options", {
     },
 
     "test passing value to option with value using equals": function (done) {
-        var opt = this.a.createOption("-p");
+        var opt = this.a.createOption(["-p"]);
         opt.hasValue = true;
 
         this.a.parse(["-p=foo"], done(function (errors) {
@@ -265,7 +265,7 @@ buster.testCase("Short options", {
     },
 
     "test passing value to option without value using equals": function (done) {
-        var opt = this.a.createOption("-p");
+        var opt = this.a.createOption(["-p"]);
 
         this.a.parse(["-p=foo"], done(function (errors) {
             assert.match(errors[0], "does not take a value");
@@ -274,7 +274,7 @@ buster.testCase("Short options", {
     },
 
     "test equals sign with spaces": function (done) {
-        var opt = this.a.createOption("-p");
+        var opt = this.a.createOption(["-p"]);
         opt.hasValue = true;
 
         this.a.parse(["-p", "=", "123"], done(function (errors) {
@@ -297,7 +297,7 @@ buster.testCase("Short options", {
     },
 
     "test after operand separator": function (done) {
-        var opt = this.a.createOption("-p");
+        var opt = this.a.createOption(["-p"]);
 
         this.a.parse(["--", "-p"], done(function (errors) {
             assert.defined(errors);
@@ -306,7 +306,7 @@ buster.testCase("Short options", {
 
     "test failing validation resets": function (done) {
         var self = this;
-        var opt = this.a.createOption("-p");
+        var opt = this.a.createOption(["-p"]);
         opt.hasValue = true;
 
         this.a.parse(["-p", "foo"], function () {
@@ -330,7 +330,7 @@ buster.testCase("Long options", {
     },
 
     "test one option": function (done) {
-        var opt = this.a.createOption("--port");
+        var opt = this.a.createOption(["--port"]);
         this.a.parse(["--port"], done(function (errors) {
             assert(opt.isSet);
             assert.equals(opt.timesSet, 1);
@@ -338,7 +338,7 @@ buster.testCase("Long options", {
     },
 
     "test containing a dash": function (done) {
-        var opt = this.a.createOption("--port-it");
+        var opt = this.a.createOption(["--port-it"]);
         this.a.parse(["--port-it"], done(function (errors) {
             assert(opt.isSet);
             assert.equals(opt.timesSet, 1);
@@ -346,7 +346,7 @@ buster.testCase("Long options", {
     },
 
     "test containing a dash and has value": function (done) {
-        var opt = this.a.createOption("--port-it");
+        var opt = this.a.createOption(["--port-it"]);
         opt.hasValue = true;
 
         this.a.parse(["--port-it", "1234"], done(function (errors) {
@@ -356,7 +356,7 @@ buster.testCase("Long options", {
     },
 
     "test one option twice as separate options": function (done) {
-        var opt = this.a.createOption("--port");
+        var opt = this.a.createOption(["--port"]);
         this.a.parse(["--port", "--port"], done(function (errors) {
             assert(opt.isSet);
             assert.equals(opt.timesSet, 2);
@@ -364,7 +364,7 @@ buster.testCase("Long options", {
     },
 
     "test one option thrice as separate options": function (done) {
-        var opt = this.a.createOption("--port");
+        var opt = this.a.createOption(["--port"]);
         this.a.parse(["--port", "--port", "--port"], done(function (errors) {
             assert(opt.isSet);
             assert.equals(opt.timesSet, 3);
@@ -372,8 +372,8 @@ buster.testCase("Long options", {
     },
 
     "test two options both being set": function (done) {
-        var opt1 = this.a.createOption("--port");
-        var opt2 = this.a.createOption("--zap");
+        var opt1 = this.a.createOption(["--port"]);
+        var opt2 = this.a.createOption(["--zap"]);
 
         this.a.parse(["--port", "--zap"], done(function (errors) {
             assert(opt1.isSet);
@@ -384,7 +384,7 @@ buster.testCase("Long options", {
     },
 
     "test option with value": function (done) {
-        var opt = this.a.createOption("--port");
+        var opt = this.a.createOption(["--port"]);
         opt.hasValue = true;
         this.a.parse(["--port", "foo"], done(function (errors) {
             assert(opt.isSet);
@@ -393,7 +393,7 @@ buster.testCase("Long options", {
     },
 
     "test option with value but no value passed": function (done) {
-        var opt = this.a.createOption("--port");
+        var opt = this.a.createOption(["--port"]);
         opt.hasValue = true;
 
         this.a.parse(["--port"], done(function (errors) {
@@ -405,7 +405,7 @@ buster.testCase("Long options", {
     },
 
     "test option with value and default value": function (done) {
-        var opt = this.a.createOption("--port");
+        var opt = this.a.createOption(["--port"]);
         opt.hasValue = true;
         opt.defaultValue = "bar";
 
@@ -416,7 +416,7 @@ buster.testCase("Long options", {
     },
 
     "test option without value but with default value": function (done) {
-        var opt = this.a.createOption("--port");
+        var opt = this.a.createOption(["--port"]);
         opt.hasValue = true;
         opt.defaultValue = "bar";
 
@@ -429,7 +429,7 @@ buster.testCase("Long options", {
     },
 
     "test option having value and accepting not getting one passed": function (done) {
-        var opt = this.a.createOption("--port");
+        var opt = this.a.createOption(["--port"]);
         opt.hasValue = true;
         opt.acceptsValueAbsence = true;
 
@@ -441,9 +441,9 @@ buster.testCase("Long options", {
     },
 
     "test passing value matching other option": function (done) {
-        var opt1 = this.a.createOption("--port");
+        var opt1 = this.a.createOption(["--port"]);
         opt1.hasValue = true;
-        var opt2 = this.a.createOption("--zap");
+        var opt2 = this.a.createOption(["--zap"]);
 
         this.a.parse(["--port", "--zap"], done(function (errors) {
             assert.defined(errors);
@@ -454,9 +454,9 @@ buster.testCase("Long options", {
     },
 
     "test passing value not matching other options": function (done) {
-        var opt1 = this.a.createOption("--port");
+        var opt1 = this.a.createOption(["--port"]);
         opt1.hasValue = true;
-        var opt2 = this.a.createOption("--zap");
+        var opt2 = this.a.createOption(["--zap"]);
 
         this.a.parse(["--port", "--doit"], done(function (errors) {
             assert.equals(opt1.value, "--doit");
@@ -464,7 +464,7 @@ buster.testCase("Long options", {
     },
 
     "test passing value to option with value using equals": function (done) {
-        var opt = this.a.createOption("--port");
+        var opt = this.a.createOption(["--port"]);
         opt.hasValue = true;
 
         this.a.parse(["--port=foo"], done(function (errors) {
@@ -475,7 +475,7 @@ buster.testCase("Long options", {
     },
 
     "test passing value to option without value using equals": function (done) {
-        var opt = this.a.createOption("--port");
+        var opt = this.a.createOption(["--port"]);
 
         this.a.parse(["--port=foo"], done(function (errors) {
             assert.match(errors[0], /does not take a value/i);
@@ -484,7 +484,7 @@ buster.testCase("Long options", {
     },
 
     "test equals sign with spaces": function (done) {
-        var opt = this.a.createOption("--port");
+        var opt = this.a.createOption(["--port"]);
         opt.hasValue = true;
 
         this.a.parse(["--port", "=", "123"], done(function (errors) {
@@ -496,7 +496,7 @@ buster.testCase("Long options", {
 
     "test failing validation resets": function (done) {
         var self = this;
-        var opt = this.a.createOption("--port");
+        var opt = this.a.createOption(["--port"]);
         opt.hasValue = true;
 
         this.a.parse(["--port", "foo"], function () {

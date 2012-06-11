@@ -9,10 +9,10 @@ buster.testCase("parser", {
 
     "expandShorthands": {
         setUp: function () {
-            var port = this.a.createOption("-p", "--port");
+            var port = this.a.createOption(["-p", "--port"]);
             port.hasValue = true;
-            this.a.createOption("-h", "--help");
-            var logLevel = this.a.createOption("-l", "--log-level");
+            this.a.createOption(["-h", "--help"]);
+            var logLevel = this.a.createOption(["-l", "--log-level"]);
             logLevel.hasValue = true;
         },
 

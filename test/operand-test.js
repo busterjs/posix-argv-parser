@@ -18,7 +18,7 @@ buster.testCase("Operands", {
     },
 
     "test single dash option and operand with option first": function (done) {
-        var opt = this.a.createOption("-p");
+        var opt = this.a.createOption(["-p"]);
         var opd = this.a.createOperand();
 
         this.a.parse(["-p", "123abc"], done(function (errors) {
@@ -29,7 +29,7 @@ buster.testCase("Operands", {
     },
 
     "test single dash option and operand with operand first": function (done) {
-        var opt = this.a.createOption("-p");
+        var opt = this.a.createOption(["-p"]);
         var opd = this.a.createOperand();
 
         this.a.parse(["123abc", "-p"], done(function (errors) {
@@ -40,7 +40,7 @@ buster.testCase("Operands", {
     },
 
     "test single dash option with value and operand": function (done) {
-        var opt = this.a.createOption("-p");
+        var opt = this.a.createOption(["-p"]);
         opt.hasValue = true;
         var opd = this.a.createOperand();
 
@@ -51,7 +51,7 @@ buster.testCase("Operands", {
     },
 
     "test single dash option with value and operand without option after operand": function (done) {
-        var opt = this.a.createOption("-p");
+        var opt = this.a.createOption(["-p"]);
         opt.hasValue = true;
         var opd = this.a.createOperand();
 
@@ -65,7 +65,7 @@ buster.testCase("Operands", {
     },
 
     "test double dash option and operand with option first": function (done) {
-        var opt = this.a.createOption("--port");
+        var opt = this.a.createOption(["--port"]);
         var opd = this.a.createOperand();
 
         this.a.parse(["--port", "123abc"], done(function (errors) {
@@ -76,7 +76,7 @@ buster.testCase("Operands", {
     },
 
     "test double dash option and operand with operand first": function (done) {
-        var opt = this.a.createOption("--port");
+        var opt = this.a.createOption(["--port"]);
         var opd = this.a.createOperand();
 
         this.a.parse(["123abc", "--port"], done(function (errors) {
@@ -87,7 +87,7 @@ buster.testCase("Operands", {
     },
 
     "test double dash option with value and operand": function (done) {
-        var opt = this.a.createOption("--port");
+        var opt = this.a.createOption(["--port"]);
         opt.hasValue = true;
         var opd = this.a.createOperand();
 
@@ -99,7 +99,7 @@ buster.testCase("Operands", {
     },
 
     "test double dash option with value and operand with option after operand": function (done) {
-        var opt = this.a.createOption("--port");
+        var opt = this.a.createOption(["--port"]);
         opt.hasValue = true;
         var opd = this.a.createOperand();
 
@@ -126,12 +126,12 @@ buster.testCase("Operands", {
         this.a.createOperand(args.OPD_DIRECTORY);
 
         refute.exception(function () {
-            self.a.createOption("-p");
+            self.a.createOption(["-p"]);
         });
     },
 
     "test specifying operand after double dash": function (done) {
-        var opt = this.a.createOption("-p");
+        var opt = this.a.createOption(["-p"]);
         var opd = this.a.createOperand();
 
         this.a.parse(["-p", "--", "gocha"], done(function (errors) {
@@ -142,7 +142,7 @@ buster.testCase("Operands", {
     },
 
     "test specifying operand starting with dash after double dash": function (done) {
-        var opt = this.a.createOption("-p");
+        var opt = this.a.createOption(["-p"]);
         var opd = this.a.createOperand();
 
         this.a.parse(["-p", "--", "-gocha"], done(function (errors) {
@@ -153,7 +153,7 @@ buster.testCase("Operands", {
     },
 
     "test specifying multiple operands after double dash": function (done) {
-        var opt = this.a.createOption("-p");
+        var opt = this.a.createOption(["-p"]);
         var opd1 = this.a.createOperand();
         var opd2 = this.a.createOperand();
 
@@ -167,7 +167,7 @@ buster.testCase("Operands", {
     },
 
     "test multiple operands starting with a dash": function (done) {
-        var opt = this.a.createOption("-p");
+        var opt = this.a.createOption(["-p"]);
         var opd1 = this.a.createOperand();
         var opd2 = this.a.createOperand();
 
@@ -239,7 +239,7 @@ buster.testCase("Operands", {
     },
 
     "test greedy operand preceded by option": function (done) {
-        var opt = this.a.createOption("-p");
+        var opt = this.a.createOption(["-p"]);
 
         var opd = this.a.createOperand();
         opd.greedy = true;
@@ -252,7 +252,7 @@ buster.testCase("Operands", {
     },
 
     "test greedy operand followed by option": function (done) {
-        var opt = this.a.createOption("-p");
+        var opt = this.a.createOption(["-p"]);
 
         var opd = this.a.createOperand();
         opd.greedy = true;
@@ -265,7 +265,7 @@ buster.testCase("Operands", {
     },
 
     "test greedy operand with option in between": function (done) {
-        var opt = this.a.createOption("-p");
+        var opt = this.a.createOption(["-p"]);
 
         var opd = this.a.createOperand();
         opd.greedy = true;
@@ -278,7 +278,7 @@ buster.testCase("Operands", {
     },
 
     "test greedy operand preceded by option with value": function (done) {
-        var opt = this.a.createOption("-p");
+        var opt = this.a.createOption(["-p"]);
         opt.hasValue = true;
 
         var opd = this.a.createOperand();
@@ -293,7 +293,7 @@ buster.testCase("Operands", {
     },
 
     "test greedy operand followed by option with value": function (done) {
-        var opt = this.a.createOption("-p");
+        var opt = this.a.createOption(["-p"]);
         opt.hasValue = true;
 
         var opd = this.a.createOperand();
@@ -308,7 +308,7 @@ buster.testCase("Operands", {
     },
 
     "test greedy operand with option with value in between": function (done) {
-        var opt = this.a.createOption("-p");
+        var opt = this.a.createOption(["-p"]);
         opt.hasValue = true;
 
         var opd = this.a.createOperand();
@@ -352,7 +352,7 @@ buster.testCase("Operands", {
     "test double dash option with value before operand": function (done) {
         var opd = this.a.createOperand();
 
-        var opt = this.a.createOption("--port");
+        var opt = this.a.createOption(["--port"]);
         opt.hasValue = true;
 
         this.a.parse(["--port", "4224", "foo"], done(function (err) {
@@ -363,7 +363,7 @@ buster.testCase("Operands", {
     },
 
     "superfluous operand causes error": function (done) {
-        var opt = this.a.createOption("-a");
+        var opt = this.a.createOption(["-a"]);
 
         this.a.parse(["-a", "--", "foo"], done(function (err) {
             assert.defined(err);

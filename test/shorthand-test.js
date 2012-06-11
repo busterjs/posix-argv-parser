@@ -8,7 +8,7 @@ buster.testCase("Shorthands", {
     },
 
     "test creating shorthand for option": function (done) {
-        var opt = this.a.createOption("--port");
+        var opt = this.a.createOption(["--port"]);
         this.a.addShorthand("-p", ["--port"]);
 
         this.a.parse(["-p"], function (errors) {
@@ -19,7 +19,7 @@ buster.testCase("Shorthands", {
     },
 
     "test shorthand for option with value and setting value": function (done) {
-        var opt = this.a.createOption("--port");
+        var opt = this.a.createOption(["--port"]);
         opt.hasValue = true;
         this.a.addShorthand("-p", ["--port", "1234"]);
 
@@ -32,7 +32,7 @@ buster.testCase("Shorthands", {
     },
 
     "test shorthand for option with value not setting value": function (done) {
-        var opt = this.a.createOption("--port");
+        var opt = this.a.createOption(["--port"]);
         opt.hasValue = true;
         this.a.addShorthand("-p", ["--port"]);
 
@@ -66,7 +66,7 @@ buster.testCase("Shorthands", {
 
     "test shorthand for option that already exists": function () {
         var self = this;
-        var opt = this.a.createOption("-p");
+        var opt = this.a.createOption(["-p"]);
 
         assert.exception(function () {
             self.a.addShorthand("-p", ["--port"]);
@@ -108,7 +108,7 @@ buster.testCase("Shorthands", {
     },
 
     "test operand and shorthand integration": function (done) {
-        var env = this.a.createOption("-e");
+        var env = this.a.createOption(["-e"]);
         env.hasValue = true;
         var anOpd = this.a.createOperand();
         this.a.addShorthand("--node", ["-e", "node"]);
