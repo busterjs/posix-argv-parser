@@ -117,7 +117,7 @@ buster.testCase("validators", {
                 assert.match(errors[0], "123.4");
                 assert.match(errors[0], /not an integer/);
             }));
-        },
+        }
     },
 
     "number": {
@@ -127,14 +127,14 @@ buster.testCase("validators", {
             this.opt.hasValue = true;
         },
 
-        "test passing integer": function (done) {
+        "passes for integer": function (done) {
             var self = this;
             this.a.parse(["-p123"], done(function (errors) {
                 refute(errors);
             }));
         },
 
-        "test passing string": function (done) {
+        "fails on letters": function (done) {
             this.a.parse(["-pabc"], done(function (errors) {
                 assert.equals(errors.length, 1);
                 assert.match(errors[0], "abc");
@@ -142,7 +142,7 @@ buster.testCase("validators", {
             }));
         },
 
-        "test passing comma float": function (done) {
+        "fails for float with comma": function (done) {
             this.a.parse(["-p123,4"], done(function (errors) {
                 assert.equals(errors.length, 1);
                 assert.match(errors[0], "123,4");
@@ -150,9 +150,20 @@ buster.testCase("validators", {
             }));
         },
 
-        "test passing dot float": function (done) {
-            var self = this;
+        "passes for float with dot": function (done) {
             this.a.parse(["-p123.4"], done(function (errors) {
+                refute(errors);
+            }));
+        },
+
+        "passes for float with leading +": function (done) {
+            this.a.parse(["-p+123.4"], done(function (errors) {
+                refute(errors);
+            }));
+        },
+
+        "passes for float with leading -": function (done) {
+            this.a.parse(["-p-123.4"], done(function (errors) {
                 refute(errors);
             }));
         }
@@ -342,25 +353,25 @@ buster.testCase("validators", {
                 this.o.addValidator(args.validators.inEnum(["1", "2"]));
             },
 
-            "should pass when operand is in enum": function (done) {
+            "passes when operand is in enum": function (done) {
                 this.a.parse(["1"], done(function (errors) {
                     refute(errors);
                 }));
             },
 
-            "should fail when operand is not in enum": function (done) {
+            "fails when operand is not in enum": function (done) {
                 this.a.parse(["3"], done(function (errors) {
                     assert(errors instanceof Array);
                 }));
             },
 
-            "should fail with readable message": function (done) {
+            "fails with readable message": function (done) {
                 this.a.parse(["3"], done(function (errors) {
                     assert.match(errors[0], "expected one of [1, 2], got 3");
                 }));
             },
 
-            "should pass when there's no argument": function (done) {
+            "passes when there's no argument": function (done) {
                 this.a.parse([], done(function (errors) {
                     refute(errors);
                 }));
