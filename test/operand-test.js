@@ -126,33 +126,30 @@ buster.testCase("Operands", {
         }.bind(this));
     },
 
-    "// test specifying operand after double dash": function (done) {
+    "test specifying operand after double dash": function (done) {
         this.a.createOption(["-p"]);
-        // TODO: options.OPD should be set
-        var opd = this.a.createOperand();
+        this.a.createOperand();
 
         this.a.parse(["-p", "--", "gocha"], done(function (errors, options) {
             assert(options["-p"].isSet);
-            assert(opd.isSet);
-            assert.equals(opd.value, "gocha");
+            assert(options.OPD.isSet);
+            assert.equals(options.OPD.value, "gocha");
         }));
     },
 
-    "// test specifying operand starting with dash after double dash": function (done) {
+    "test specifying operand starting with dash after double dash": function (done) {
         this.a.createOption(["-p"]);
-        // TODO: options.rest should be set
         this.a.createOperand("rest");
 
         this.a.parse(["-p", "--", "-gocha"], done(function (errors, options) {
             assert(options["-p"].isSet);
-            assert(options.OPD.isSet);
-            assert.equals(options.OPD.value, "-gocha");
+            assert(options.rest.isSet);
+            assert.equals(options.rest.value, "-gocha");
         }));
     },
 
-    "// test specifying multiple operands after double dash": function (done) {
+    "test specifying multiple operands after double dash": function (done) {
         this.a.createOption(["-p"]);
-        // TODO: options.opd1 and options.opd2 should be set
         this.a.createOperand("opd1");
         this.a.createOperand("opd2");
 
@@ -165,9 +162,8 @@ buster.testCase("Operands", {
         }));
     },
 
-    "// test multiple operands starting with a dash": function (done) {
+    "test multiple operands starting with a dash": function (done) {
         this.a.createOption(["-p"]);
-        // TODO: options.opd1 and options.opd2 should be set
         this.a.createOperand("opd1");
         this.a.createOperand("opd2");
 
