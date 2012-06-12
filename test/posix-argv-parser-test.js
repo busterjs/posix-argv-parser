@@ -201,5 +201,13 @@ buster.testCase("posix-argv-parser", {
         this.a.parse([], done(function (errors, options) {
             assert.equals(options["-p"].value, "hey");
         }));
+    },
+
+    "keeps noop description property": function () {
+        this.a.createOption(["-p"], { description: "Use for related data" });
+        this.a.createOperand({ description: "Bla bla" });
+
+        assert.match(this.a.options[0].description, "Use for");
+        assert.match(this.a.options[1].description, "Bla bla");
     }
 });
