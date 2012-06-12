@@ -194,5 +194,12 @@ buster.testCase("posix-argv-parser", {
         this.a.parse([], done(function (errors, options) {
             assert.isFalse(options["-p"].isSet);
         }));
+    },
+
+    "uses default value for not provided option": function (done) {
+        this.a.createOption(["-p"], { defaultValue: "hey" });
+        this.a.parse([], done(function (errors, options) {
+            assert.equals(options["-p"].value, "hey");
+        }));
     }
 });
