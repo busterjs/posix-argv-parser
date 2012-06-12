@@ -99,5 +99,22 @@ buster.testCase("types", {
                 assert.same(options["-p"].value, 1111.3);
             }));
         }
+    },
+
+    "enum": {
+        "throws without values": function () {
+            assert.exception(function () {
+                t.enum();
+            });
+        },
+
+        "validates values in enum": function (done) {
+            this.a.createOption(["-p"], t.enum(["1", "2", "3", "4"]));
+            this.a.createOption(["-t"], t.enum(["1", "2", "3", "4"]));
+
+            this.a.parse(["-p", "1", "-t", "5"], done(function (err) {
+                assert.match(err[0], "-t");
+            }));
+        }
     }
 });
