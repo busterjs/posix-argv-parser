@@ -209,5 +209,13 @@ buster.testCase("posix-argv-parser", {
 
         assert.match(this.a.options[0].description, "Use for");
         assert.match(this.a.options[1].description, "Bla bla");
+    },
+
+    "fails gracefully on non-existent option": function (done) {
+        this.a.createOption(["-p"]);
+
+        this.a.parse(["-node"], done(function (errors, options) {
+            assert.match(errors[0], "Unknown option '-node'");
+        }));
     }
 });
