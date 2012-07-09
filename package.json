@@ -1,6 +1,6 @@
 {
     "name": "posix-argv-parser",
-    "version": "0.4.0",
+    "version": "0.4.1",
     "description": "POSIX compliant command-line argument parser.",
     "homepage": "http://busterjs.org/docs/posix-argv-parser",
     "author": { "name": "August Lilleaas and Christian Johansen" },
