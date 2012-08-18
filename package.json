@@ -14,16 +14,15 @@
         "url": "http://augustl.com"
     }],
     "main": "./lib/posix-argv-parser",
-    "repository": "git://gitorious.org/buster/posix-argv-parser",
+    "repository": "https://github.com/busterjs/posix-argv-parser.git",
     "license": {
         "type": "BSD",
-        "url": "http://gitorious.org/buster/posix-argv-parser/blobs/master/LICENSE"
+        "url": "https://github.com/busterjs/posix-argv-parser/blob/master/LICENSE"
     },
     "scripts": {
         "test": "./node_modules/buster/bin/buster-test"
     },
     "dependencies": {
-        "buster-core": ">=0.6.2",
         "when": "https://github.com/cujojs/when/tarball/1.3.0"
     },
     "devDependencies": {
