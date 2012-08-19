@@ -3,7 +3,7 @@
     "version": "0.4.1",
     "description": "POSIX compliant command-line argument parser.",
     "homepage": "http://busterjs.org/docs/posix-argv-parser",
-    "author": { "name": "August Lilleaas and Christian Johansen" },
+    "author": { "name": "August Lilleaas" },
     "contributors": [{
         "name": "Christian Johansen",
         "email": "christian@cjohansen.no",
@@ -12,6 +12,10 @@
         "name": "August Lilleaas",
         "email": "august.lilleaas@gmail.com",
         "url": "http://augustl.com"
+    }, {
+        "name": "Stein Magnus Jodal",
+        "email": "stein.magnus@jodal.no",
+        "url": "http://jodal.no"
     }],
     "main": "./lib/posix-argv-parser",
     "repository": "https://github.com/busterjs/posix-argv-parser.git",
