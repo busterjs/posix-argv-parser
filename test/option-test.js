@@ -168,6 +168,16 @@ buster.testCase("Short options", {
         }));
     },
 
+    "option with empty value": function (done) {
+        this.a.createOption(["-p"], { hasValue: true });
+
+        this.a.parse(["-p", ""], done(function (errors, options) {
+            assert.isNull(errors);
+            assert(options["-p"].isSet);
+            assert.equals(options["-p"].value, "");
+        }));
+    },
+
     "test option with value and default value": function (done) {
         this.a.createOption(["-p"], { defaultValue: "bar" });
 
