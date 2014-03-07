@@ -30,6 +30,6 @@
         "when": "https://github.com/cujojs/when/tarball/1.8.1"
     },
     "devDependencies": {
-        "buster-node": "0.1"
+        "buster-node": "*"
     }
 }
