@@ -219,5 +219,18 @@ buster.testCase("posix-argv-parser", {
         this.a.parse(["-node"], done(function (errors, options) {
             assert.match(errors[0], "Unknown option '-node'");
         }));
+    },
+
+    "does not use option value as operand": function (done) {
+        this.a.createOption(['--config', '-c'], {hasValue: false});
+        this.a.createOption(['--length', '-l'], {hasValue: true});
+        this.a.createOperand('service');
+
+        this.a.parse(['-cl', '10'], done(function (error, options) {
+            assert.isTrue(options["-c"].isSet);
+            assert.isTrue(options["-l"].isSet);
+            assert.equals(options["-l"].value, "10");
+            assert.isFalse(options.service.isSet);
+        }));
     }
 });
