@@ -477,6 +477,6 @@ args.parse(process.argv.slice(2), function (errors, options) {
 
 **1.0.1** (25.03.2014)
 
-* Fix for issue #391, posix-argv-parser fails when short option is combined with shorthand
-* Fix for issue #394, Compound short options and operands are conflated
+* Fix for issue [#391, posix-argv-parser fails when short option is combined with shorthand](https://github.com/busterjs/buster/issues/391)
+* Fix for issue [#394, Compound short options and operands are conflated](https://github.com/busterjs/buster/issues/394)
 
