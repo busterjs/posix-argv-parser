@@ -148,6 +148,15 @@ buster.testCase("Shorthands", {
 
             assert.equals(args, ["-x", "-x", "--yo"]);
             refute.equals(args, expanded);
+        },
+
+        "not tries to call pop for string arg with trailing dash": function () {
+            var sh = shorthand.create("-x", ["--zuul", "dana"]);
+            var args = ["should-"];
+
+            refute.exception(function () {
+                sh.expand(args);
+            });
         }
     }
 });
