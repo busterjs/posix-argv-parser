@@ -475,6 +475,11 @@ args.parse(process.argv.slice(2), function (errors, options) {
 
 ## Changelog
 
+**1.0.2** (23.04.2014)
+
+* additional fix for issue [#391](https://github.com/busterjs/buster/issues/391), [not call pop for string arg with trailing dash](https://github.com/busterjs/posix-argv-parser/commit/923797b4896523128586dc901567b4f0ffe2d837)
+
+
 **1.0.1** (25.03.2014)
 
 * Fix for issue [#391, posix-argv-parser fails when short option is combined with shorthand](https://github.com/busterjs/buster/issues/391)
