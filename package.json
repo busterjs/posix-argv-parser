@@ -19,10 +19,7 @@
     }],
     "main": "./lib/posix-argv-parser",
     "repository": "https://github.com/busterjs/posix-argv-parser.git",
-    "license": {
-        "type": "BSD",
-        "url": "https://github.com/busterjs/posix-argv-parser/blob/master/LICENSE"
-    },
+    "license": "BSD-3-Clause",
     "scripts": {
         "test": "node run-tests.js"
     },
