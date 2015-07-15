@@ -17,6 +17,7 @@
         "email": "stein.magnus@jodal.no",
         "url": "http://jodal.no"
     }],
+    "license": "BSD-3-Clause",
     "main": "./lib/posix-argv-parser",
     "repository": "https://github.com/busterjs/posix-argv-parser.git",
     "license": "BSD-3-Clause",
