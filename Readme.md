@@ -51,7 +51,7 @@ args.createOperand("rootPath", {
     validators: [v.file(), v.required()]
 });
 
-posixArgvParser.parse(process.argv.slice(2), function (errors, options) {
+args.parse(process.argv.slice(2), function (errors, options) {
     if (errors) { return console.log(errors[0]); }
 
     // Various useful ways to get the values from the options.
