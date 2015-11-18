@@ -19,15 +19,17 @@
     }],
     "license": "BSD-3-Clause",
     "main": "./lib/posix-argv-parser",
+    "engines": {
+        "node": ">= 4"
+    },
     "repository": "https://github.com/busterjs/posix-argv-parser.git",
-    "license": "BSD-3-Clause",
     "scripts": {
         "test": "node run-tests.js"
     },
     "dependencies": {
-        "when": "https://github.com/cujojs/when/tarball/1.8.1"
+        "when": "3.x"
     },
     "devDependencies": {
-        "buster-node": "*"
+        "buster-node": "0.7.x"
     }
 }
