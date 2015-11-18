@@ -475,12 +475,17 @@ args.parse(process.argv.slice(2), function (errors, options) {
 
 ## Changelog
 
-**1.0.2** (23.04.2014)
+**2.0.0** (2015-Nov-18)
+
+* Potentially breaking: updated when.js v1 to v3 (no more zalgo in promises)
+* Added `engines` property in `package.json` with a node v4+ requirement
+
+**1.0.2** (2014-Apr-23)
 
 * additional fix for issue [#391](https://github.com/busterjs/buster/issues/391), [not call pop for string arg with trailing dash](https://github.com/busterjs/posix-argv-parser/commit/923797b4896523128586dc901567b4f0ffe2d837)
 
 
-**1.0.1** (25.03.2014)
+**1.0.1** (2014-Mar-25)
 
 * Fix for issue [#391, posix-argv-parser fails when short option is combined with shorthand](https://github.com/busterjs/buster/issues/391)
 * Fix for issue [#394, Compound short options and operands are conflated](https://github.com/busterjs/buster/issues/394)
